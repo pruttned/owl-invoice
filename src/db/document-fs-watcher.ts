@@ -1,20 +1,19 @@
 import chokidar from 'chokidar';
 import path from 'path';
-import fs from 'fs';
-import globP from 'glob';
-import { promisify } from 'util';
-import yaml from 'js-yaml';
 import { remove } from 'lodash';
 
-const glob = promisify(globP);
-const readFile = promisify(fs.readFile);
-
 const docFileExt = 'yaml';
-const docFileGlob = `*.{docFileExt}`;
+const docFileGlob = `*.${docFileExt}`;
 
-export class DocumentFsWatcher {
-    watcher: chokidar.FSWatcher | null;
-    listeners: documentFsListener[] = [];
+export interface IDocumentFsWatcher {
+    addListener: (listener: documentFsListener) => void;
+    removeListener: (listener: documentFsListener) => void;
+    close: () => void;
+}
+
+export class DocumentFsWatcher implements IDocumentFsWatcher {
+    private watcher: chokidar.FSWatcher | null;
+    private listeners: documentFsListener[] = [];
 
     constructor(dir: string) {
         this.watcher = chokidar.watch(path.join(dir, `**/${docFileGlob}`));
@@ -27,7 +26,7 @@ export class DocumentFsWatcher {
         this.listeners.push(listener);
     }
     removeListener(listener: documentFsListener) {
-        remove(this.listeners, listener);
+        remove<documentFsListener>(this.listeners, listener);
     }
     close() {
         if (this.watcher) {
@@ -35,7 +34,7 @@ export class DocumentFsWatcher {
             this.watcher = null;
         }
     }
-    onChange(args: IOnChangeArgs) {
+    private onChange(args: IOnChangeArgs) {
         this.listeners.forEach(l => l(args));
     }
 }
