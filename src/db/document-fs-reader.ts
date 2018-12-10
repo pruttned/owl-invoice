@@ -1,9 +1,9 @@
-import chokidar from 'chokidar';
 import path from 'path';
 import fs from 'fs';
 import globP from 'glob';
 import { promisify } from 'util';
 import yaml from 'js-yaml';
+import { DocumentFsWatcher } from './document-fs-watcher';
 
 const glob = promisify(globP);
 const readFile = promisify(fs.readFile);
@@ -12,24 +12,17 @@ const docFileExt = 'yaml';
 const docFileGlob = `*.{docFileExt}`;
 
 export class DocumentFsReader {
-    watcher: chokidar.FSWatcher | null;
     index: { [id: string]: IndexDocument[] | null } = {};
+    onFsChangeBdn: (args: any) => void;
 
-    constructor(private dir: string) {
-        this.watcher = chokidar.watch(path.join(dir, `**/${docFileGlob}`));
-        this.watcher
-            .on('add', p => this.onChange(p))
-            .on('unlink', p => this.onChange(p))
-            .on('change', p => this.onChange(p));
+    constructor(private dir: string, private watcher: DocumentFsWatcher) {
+        this.onFsChangeBdn = args => this.onFsChange(args);
     }
     close() {
-        if (this.watcher) {
-            this.watcher.close();
-            this.watcher = null;
-        }
+        this.watcher.removeListener(this.onFsChangeBdn);
     }
 
-    onChange(file: string) {
+    onFsChange(file: string) {
         const collection = this.getCollectionFromPath(file);
         if (this.index) {
             this.index[collection] = null;
