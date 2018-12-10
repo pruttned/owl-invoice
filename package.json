@@ -17,15 +17,19 @@
     "apollo-server-express": "^2.2.2",
     "dataloader": "^1.4.0",
     "dotenv": "^6.1.0",
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
     "graphql": "^14.0.2",
-    "graphql-tools": "^4.0.3"
+    "graphql-tools": "^4.0.3",
+    "wkhtmltopdf": "^0.3.4"
   },
   "devDependencies": {
+    "@types/ejs": "^2.6.0",
     "@types/graphql": "^14.0.3",
     "concurrently": "^4.1.0",
     "nodemon": "^1.18.6",
     "run.env": "^1.1.0",
+    "ts-node": "^7.0.1",
     "typescript": "^3.2.1"
   }
 }
