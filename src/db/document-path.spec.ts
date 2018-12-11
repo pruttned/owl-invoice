@@ -1,6 +1,6 @@
 import { getCollectionFromPath, getIdFromPath } from './document-path';
 
-describe('DocumentFsReader', () => {
+describe('DocumentPath', () => {
 
     describe('getCollectionFromPath', () => {
         test('get collection from path', async () => {

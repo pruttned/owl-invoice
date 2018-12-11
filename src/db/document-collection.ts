@@ -6,14 +6,14 @@ import { Document } from './document';
 import fs from 'fs';
 import { promisify } from 'util';
 import globP from 'glob';
-import { DocumentFsReader } from './document-fs-reader';
+import { DocumentFs } from './document-fs';
 
 const readFile = promisify(fs.readFile);
 const glob = promisify(globP);
 
 
 export class DocumentCollection {
-    constructor(private name: string, private fsReader: DocumentFsReader) {
+    constructor(private name: string, private fsReader: DocumentFs) {
     }
     // async getAll(query?: IQuery) {
     //     var files = await glob(path.join(this.dir, '*.yaml'));

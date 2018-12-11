@@ -10,7 +10,7 @@ import { DOC_FILE_GLOB, DOC_FILE_EXT, getCollectionFromPath, getIdFromPath } fro
 const glob = promisify(globP);
 const readFile = promisify(fs.readFile);
 
-export class DocumentFsReader {
+export class DocumentFs {
     private index: { [id: string]: IndexDocument[] | null } = {};
     private documentCache = new NodeCache({ stdTTL: 60 * 15, checkperiod: 60 * 5 }); //seconds
     private onFsChangeBdn: (args: any) => void;
