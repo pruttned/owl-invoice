@@ -4,15 +4,15 @@ import globP from 'glob';
 import { promisify } from 'util';
 import yaml from 'js-yaml';
 import { IDocumentFsWatcher, IOnChangeArgs } from './document-fs-watcher';
+import NodeCache from 'node-cache';
+import { DOC_FILE_GLOB, DOC_FILE_EXT, getCollectionFromPath, getIdFromPath } from './document-path';
 
 const glob = promisify(globP);
 const readFile = promisify(fs.readFile);
 
-const docFileExt = 'yaml';
-const docFileGlob = `*.${docFileExt}`;
-
 export class DocumentFsReader {
     private index: { [id: string]: IndexDocument[] | null } = {};
+    private documentCache = new NodeCache({ stdTTL: 60 * 15, checkperiod: 60 * 5 }); //seconds
     private onFsChangeBdn: (args: any) => void;
 
     constructor(private dir: string, private watcher: IDocumentFsWatcher) {
@@ -23,15 +23,22 @@ export class DocumentFsReader {
         this.watcher.removeListener(this.onFsChangeBdn);
     }
 
-    async readDocument(collection: string, id: string): Promise<any> {
-        const file = this.getDocumentPath(collection, id);
-        const fileContent = await readFile(file, 'utf-8');
-        return yaml.safeLoad(fileContent);
+    async getDocument(collection: string, id: string): Promise<any> {
+        const documentCacheKey = this.getDocumentCacheKey(collection, id);
+        let document = this.documentCache.get(documentCacheKey);
+        if (!document) {
+            const file = this.getDocumentPath(collection, id);
+            const fileContent = await readFile(file, 'utf-8');
+            document = yaml.safeLoad(fileContent);
+
+            this.documentCache.set(documentCacheKey, document);
+        }
+        return document;
     }
 
-    async getDocuments(collection: string): Promise<string[]> {
+    async getCollection(collection: string): Promise<string[]> {
         if (!this.index[collection]) {
-            this.index[collection] = (await glob(path.join(this.dir, collection, docFileGlob))).map(p => ({
+            this.index[collection] = (await glob(path.join(this.dir, collection, DOC_FILE_GLOB))).map(p => ({
                 id: path.basename(p, path.extname(p)),
                 path: p
             }));
@@ -41,18 +48,23 @@ export class DocumentFsReader {
     }
 
     private onFsChange(args: IOnChangeArgs) {
-        const collection = this.getCollectionFromPath(args.file);
+        const collection = getCollectionFromPath(args.file);
+        const id = getIdFromPath(args.file);
+        const documentCacheKey = this.getDocumentCacheKey(collection, id);
+
+        this.documentCache.del(documentCacheKey);
+
         if (this.index) {
             this.index[collection] = null;
         }
     }
 
-    private getCollectionFromPath(file: string): string {
-        return path.basename(path.dirname(file));
+    private getDocumentPath(collection: string, id: string) {
+        return path.join(this.dir, collection, `${id}.${DOC_FILE_EXT}`);
     }
 
-    private getDocumentPath(collection: string, id: string) {
-        return path.join(this.dir, collection, `${id}.${docFileExt}`);
+    private getDocumentCacheKey(collection: string, id: string) {
+        return `${collection}-${id}`;
     }
 }
 

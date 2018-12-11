@@ -23,11 +23,11 @@ export class DocumentCollection {
     //     }))
     // }
     async getAll(query?: IQuery) {
-        let docs = await this.fsReader.getDocuments(this.name);
+        let docs = await this.fsReader.getCollection(this.name);
         if (query && query.id) {
             docs = docs.filter(d => minimatch(d, query.id));
         }
-        return Promise.all(docs.map(doc => this.fsReader.readDocument(this.name, doc)));
+        return Promise.all(docs.map(doc => this.fsReader.getDocument(this.name, doc)));
         // var files = await glob(path.join(this.dir, '*.yaml'));
         // return Promise.all(files.map(async f => {
         //     var fileContent = await readFile(f, 'utf-8');

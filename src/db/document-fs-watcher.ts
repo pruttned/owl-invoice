@@ -1,9 +1,7 @@
+import { DOC_FILE_GLOB } from './document-path';
 import chokidar from 'chokidar';
 import path from 'path';
 import { remove } from 'lodash';
-
-const docFileExt = 'yaml';
-const docFileGlob = `*.${docFileExt}`;
 
 export interface IDocumentFsWatcher {
     addListener: (listener: documentFsListener) => void;
@@ -16,7 +14,7 @@ export class DocumentFsWatcher implements IDocumentFsWatcher {
     private listeners: documentFsListener[] = [];
 
     constructor(dir: string) {
-        this.watcher = chokidar.watch(path.join(dir, `**/${docFileGlob}`));
+        this.watcher = chokidar.watch(path.join(dir, `**/${DOC_FILE_GLOB}`));
         this.watcher
             .on('add', file => this.onChange({ file }))
             .on('unlink', file => this.onChange({ file }))
