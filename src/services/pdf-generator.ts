@@ -30,6 +30,6 @@ let invoice = {
     client: 'some client',
     test: 'ahoj'
 };
-new PdfGenerator().generate('templates/template.html', invoice).then(stream => {
+new PdfGenerator().generate('templates/invoice-sk.html', invoice).then(stream => {
     //  stream.pipe(fs.createWriteStream('out2.pdf'));
 }).catch(console.error);
