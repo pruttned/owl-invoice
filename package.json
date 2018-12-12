@@ -25,7 +25,8 @@
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.11",
     "micromatch": "^3.1.10",
-    "node-cache": "^4.2.0"
+    "node-cache": "^4.2.0",
+    "sift": "^7.0.1"
   },
   "devDependencies": {
     "@types/chokidar": "^1.7.5",
