@@ -24,11 +24,11 @@
             padding-bottom: 10px;
         }
 
-        .header-col-2 :nth-child(1) {
+        header :nth-child(1) {
             display: inline;
         }
 
-        .header-col-2 :nth-child(2) {
+        header :nth-child(2) {
             float: right;
         }
 
@@ -48,26 +48,6 @@
             font-size: 1.3rem;
         }
 
-        .issue-date {
-            margin-left: auto;
-        }
-
-        .contact-icon {
-            width: 15px;
-            vertical-align: middle;
-        }
-
-        .contact-text {
-            vertical-align: middle;
-        }
-
-        /* .header-separator {
-            width: 100vw;
-            margin-left: -60px;
-            margin-top: 15px;
-            border-top: 1px solid #888888;
-        } */
-
         .items-sum-price {
             border-top: 1px solid black;
         }
@@ -76,19 +56,13 @@
             text-align: left;
         }
 
-        .payment-info-wrapper {
-            margin-left: auto;
-        }
-
         .payment-info {
-            /* border: 1px solid #555555; */
             background: #eeeeee;
-            /* border-radius: 3px; */
             padding: 25px 65px;
             margin: 0 -65px;
         }
 
-        .payment-info-text {
+        .payment-info-main {
             position: relative;
         }
 
@@ -103,13 +77,8 @@
             height: 86px;
         }
 
-        .payment-info-name {
-            /* text-align: right; */
-        }
-
         .payment-info-value {
-            padding-left: 10px;
-            /* text-align: right; */
+            padding-left: 15px;
         }
 
         table {
@@ -132,16 +101,12 @@
             display: inline;
         }
 
-        .items {
-            margin-bottom: 20px;
-        }
-
         .item {
             border-top: 1px dotted #333333;
         }
 
         .item :nth-child(1) {
-            display: inline;
+            display: inline-block;
         }
 
         .item :nth-child(2) {
@@ -167,11 +132,11 @@
             display: inline-block;
         }
 
-        .client-wrapper {
+        .client {
             width: 280px;
             border: 1px solid #555555;
-            border-radius: 50px;
-            padding: 15px 40px;
+            border-radius: 20px;
+            padding: 15px 30px;
             margin: -15px 0 -20px auto;
             float: right;
         }
@@ -189,6 +154,15 @@
         .footer-item {
             margin-right: 5px;
         }
+
+        .contact-icon {
+            width: 15px;
+            vertical-align: middle;
+        }
+
+        .contact-text {
+            vertical-align: middle;
+        }
     </style>
 </head>
 
@@ -196,27 +170,13 @@
     <div class="content">
 
         <header>
-            <div class="header-col-2">
-                <h1>Faktúra: <strong>2018007</strong></h1>
-                <div class="issue-date">Dátum vystavenia: 25.4.2018</div>
-
-                <!-- <div>
-                    <span>ICO: 20231231</span>
-                    <span>IC DPH: 20231231</span>
-                    <span>DIC: 20231231</span>
-                </div> -->
-            </div>
+            <h1>Faktúra: <strong>2018007</strong></h1>
+            <div>Dátum vystavenia: 25.4.2018</div>
         </header>
 
-        <!-- <div class="header-separator"></div> -->
-
-        <!-- <div class="section title">
-
-        </div> -->
-
-        <div class="section col-2">
+        <div class="section">
             <div class="supplier">
-                <h2>Dodavatel</h2>
+                <h2>Dodávateľ</h2>
                 <div>Ivan Ruttkay-Nedecký</div>
                 <div>Furdekova 25</div>
                 <div>851 04 Bratislava</div>
@@ -226,95 +186,85 @@
                 <div>DIC: 3123</div>
             </div>
 
-            <div class="client-wrapper">
+            <div class="client">
                 <h2>Zákazník</h2>
-                <!-- <div class="client-border"> -->
-                <div class="client">
-                    <div>Steinringer web and IT solutions, a.s.</div>
-                    <div>Zelena 9</div>
-                    <div>8504 20 Bratislava</div>
-                    <div>ICO: 123123123</div>
-                    <div>ICDPH: SK123123123</div>
-                    <div>DIC: 3123</div>
-                </div>
-                <!-- </div> -->
+                <div>Steinringer web and IT solutions, a.s.</div>
+                <div>Zelena 9</div>
+                <div>8504 20 Bratislava</div>
+                <div>ICO: 123123123</div>
+                <div>ICDPH: SK123123123</div>
+                <div>DIC: 3123</div>
             </div>
         </div>
 
         <div class="section items">
             <div class="item">
-                <h2 class="item-col">Poskytnuté služby</h2>
-                <div class="item-col">Suma</div>
+                <h2>Poskytnuté služby</h2>
+                <div>Suma</div>
             </div>
 
             <div class="item">
-                <div class="item-col">Prace za mesiac jun, celkovy odpracovany cas 132 hodin</div>
-                <div class="item-col">2430 €</div>
+                <div>Prace za mesiac jun, celkovy odpracovany cas 132 hodin</div>
+                <div>2430 €</div>
             </div>
 
             <div class="item">
-                <div class="item-col">Ine dalsie sluzby</div>
-                <div class="item-col">30 €</div>
+                <div>Ine dalsie sluzby</div>
+                <div>30 €</div>
             </div>
 
             <div class="item">
-                <div class="item-col">AT:etwas anderes<br>SK:nieco uplne ine</div>
-                <div class="item-col">110 €</div>
+                <div>AT:etwas anderes<br>SK:nieco uplne ine</div>
+                <div>110 €</div>
             </div>
 
             <div class="item item-sum-price">
-                <div class="item-col">Celkova suma na uhradu</div>
-                <div class="item-col">2460 €</div>
+                <div>Celkova suma na uhradu</div>
+                <div>2460 €</div>
             </div>
         </div>
 
-        <div class="section payment-info-wrapper">
-
-            <div class="payment-info">
-                <h2>Platobné údaje</h2>
-                <div class="payment-info-price">
-                    <div class="payment-info-price-name">Celková suma na úhradu:</div>
-                    <div class="strong payment-info-price-value">2460 €</div>
+        <div class="section payment-info">
+            <h2>Platobné údaje</h2>
+            <div class="payment-info-price">
+                <div class="payment-info-price-name">Celková suma na úhradu:</div>
+                <div class="payment-info-price-value strong">2460 €</div>
+            </div>
+            <div class="payment-info-main">
+                <table>
+                    <tr>
+                        <td>IBAN:</td>
+                        <td class="strong payment-info-value">SK2312000000000039438</td>
+                    </tr>
+                    <tr>
+                        <td>Variabilny symbol:</td>
+                        <td class="strong payment-info-value">2018007</td>
+                    </tr>
+                    <tr>
+                        <td>Datum splatnosti:</td>
+                        <td class="payment-info-value">24.12.2018</td>
+                    </tr>
+                    <tr>
+                        <td>Bankove spojenie:</td>
+                        <td class="payment-info-value">Slovenska sporitelna, as (GIBASKBX)</td>
+                    </tr>
+                </table>
+                <div class="payment-info-qr">
+                    <img class="payment-info-qr-image" src="file:///C:/git/owl-invoice/templates/pay-by-square.png" />
                 </div>
-                <!-- <div class="payment-info-container"> -->
-                <div class="payment-info-text">
-                    <table>
-                        <tr class="">
-                            <td class="payment-info-name">IBAN:</td>
-                            <td class="strong payment-info-value">SK2312000000000039438</td>
-                        </tr>
-                        <tr class="">
-                            <td class="payment-info-name">Variabilny symbol:</td>
-                            <td class="strong payment-info-value">2018007</td>
-                        </tr>
-                        <tr>
-                            <td class="payment-info-name">Datum splatnosti:</td>
-                            <td class="payment-info-value">24.12.2018</td>
-                        </tr>
-                        <tr>
-                            <td class="payment-info-name">Bankove spojenie:</td>
-                            <td class="payment-info-value">Slovenska sporitelna, as (GIBASKBX)</td>
-                        </tr>
-                    </table>
-                    <div class="payment-info-qr">
-                        <img class="payment-info-qr-image" src="file:///C:/git/owl-invoice/templates/pay-by-square.png" />
-                    </div>
-                </div>
-
-                <!-- </div> -->
             </div>
         </div>
-
-
-
 
         <footer>
             <span class="footer-item">Ivan Ruttkay-Nedecky</span>
-            <span class="footer-item"><img class="contact-icon" src="file:///C:/git/owl-invoice/templates/phone.svg" />
-                <span class="contact-text">0904 020
-                    889</span></span>
-            <span class="footer-item"></span><img class="contact-icon" src="file:///C:/git/owl-invoice/templates/email.svg" />
-            <span class="contact-text">iruttkayn@gmail.com</span></span>
+            <span class="footer-item">
+                <img class="contact-icon" src="file:///C:/git/owl-invoice/templates/phone.svg" />
+                <span class="contact-text">0904 020889</span>
+            </span>
+            <span class="footer-item">
+                <img class="contact-icon" src="file:///C:/git/owl-invoice/templates/email.svg" />
+                <span class="contact-text">iruttkayn@gmail.com</span>
+            </span>
         </footer>
     </div>
 </body>
