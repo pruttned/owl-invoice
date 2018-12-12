@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style>
         .content {
             font-family: "source sans pro light";
@@ -23,13 +24,12 @@
             padding-bottom: 10px;
         }
 
-        .header-col-2 {
-            display: flex;
-            /* align-items: center; */
+        .header-col-2 :nth-child(1) {
+            display: inline;
         }
 
         .header-col-2 :nth-child(2) {
-            /* margin-left: auto; */
+            float: right;
         }
 
         h1,
@@ -42,21 +42,14 @@
             margin-bottom: 15px;
         }
 
-        .title {
-            /* display: flex;
-            align-items: center; */
-            /* margin: 30px 0; */
-        }
 
         h1 {
             font-weight: normal;
-            /* margin-top: 50px; */
             font-size: 1.3rem;
         }
 
         .issue-date {
             margin-left: auto;
-            /* margin-bottom: 50px; */
         }
 
         .contact-icon {
@@ -95,22 +88,19 @@
             margin: 0 -65px;
         }
 
-        .payment-info-container {
-            display: flex;
-        }
-
         .payment-info-text {
-            /* width:350px; */
+            position: relative;
         }
 
         .payment-info-qr {
-            /* background: red; */
-            margin: auto;
-            margin-right: 0;
+            position: absolute;
+            top: 0;
+            right: 0;
         }
 
-        .payment-info-qr-image-wrapper {
-            width: 76px;
+        .payment-info-qr-image {
+            width: 78px;
+            height: 86px;
         }
 
         .payment-info-name {
@@ -128,24 +118,18 @@
 
         .payment-info-price {
             border-bottom: 2px dotted #333333;
-            display: flex;
             padding-bottom: 5px;
             margin-bottom: 10px;
         }
 
         .payment-info-price-value {
             font-size: 1.5rem;
-            margin-left: auto;
+            float: right;
         }
 
         .payment-info-price-name {
             font-size: 1.1rem;
-        }
-
-        .col-2 {
-            display: flex;
-            /* margin-top: 40px; */
-            margin-bottom: 30px;
+            display: inline;
         }
 
         .items {
@@ -153,19 +137,19 @@
         }
 
         .item {
-            /* background: yellow; */
-            display: flex;
-            align-items: center;
             border-top: 1px dotted #333333;
         }
 
+        .item :nth-child(1) {
+            display: inline;
+        }
+
         .item :nth-child(2) {
-            margin-left: auto;
+            float: right;
         }
 
         .items :first-child,
         .items :nth-child(2) {
-            /* background: red; */
             border: none;
         }
 
@@ -179,12 +163,17 @@
             margin-top: 40px;
         }
 
+        .supplier {
+            display: inline-block;
+        }
+
         .client-wrapper {
             width: 280px;
             border: 1px solid #555555;
             border-radius: 50px;
             padding: 15px 40px;
             margin: -15px 0 -20px auto;
+            float: right;
         }
 
         footer {
@@ -284,11 +273,12 @@
             <div class="payment-info">
                 <h2>Platobné údaje</h2>
                 <div class="payment-info-price">
-                    <span class="payment-info-price-name">Celková suma na úhradu:</span>
-                    <span class="strong payment-info-price-value">2460 €</span>
+                    <div class="payment-info-price-name">Celková suma na úhradu:</div>
+                    <div class="strong payment-info-price-value">2460 €</div>
                 </div>
-                <div class="payment-info-container">
-                    <table class="payment-info-text">
+                <!-- <div class="payment-info-container"> -->
+                <div class="payment-info-text">
+                    <table>
                         <tr class="">
                             <td class="payment-info-name">IBAN:</td>
                             <td class="strong payment-info-value">SK2312000000000039438</td>
@@ -307,11 +297,11 @@
                         </tr>
                     </table>
                     <div class="payment-info-qr">
-                        <div class=" payment-info-qr-image-wrapper">
-                            <img class="payment-info-qr-image" src="file:///C:/git/owl-invoice/templates/pay-by-square.png" />
-                        </div>
+                        <img class="payment-info-qr-image" src="file:///C:/git/owl-invoice/templates/pay-by-square.png" />
                     </div>
                 </div>
+
+                <!-- </div> -->
             </div>
         </div>
 
@@ -320,9 +310,11 @@
 
         <footer>
             <span class="footer-item">Ivan Ruttkay-Nedecky</span>
-            <span class="footer-item"><img class="contact-icon" src="file:///C:/git/owl-invoice/templates/phone.svg" /> <span class="contact-text">0904 020
+            <span class="footer-item"><img class="contact-icon" src="file:///C:/git/owl-invoice/templates/phone.svg" />
+                <span class="contact-text">0904 020
                     889</span></span>
-            <span class="footer-item"></span><img class="contact-icon" src="file:///C:/git/owl-invoice/templates/email.svg" /> <span class="contact-text">iruttkayn@gmail.com</span></span>
+            <span class="footer-item"></span><img class="contact-icon" src="file:///C:/git/owl-invoice/templates/email.svg" />
+            <span class="contact-text">iruttkayn@gmail.com</span></span>
         </footer>
     </div>
 </body>

@@ -10,7 +10,7 @@ export class PdfGenerator {
                 if (ejsError || !html) {
                     reject(ejsError || new Error('No result returned from the template engine.'));
                 } else {
-                    wkhtmltopdf(html, (wkError: Error, pdfStream: Stream) => {
+                    wkhtmltopdf(html, { marginTop: 0, marginBottom: 0, marginLeft: 0, marginRight: 0 }, (wkError: Error, pdfStream: Stream) => {
                         if (wkError) {
                             reject(wkError);
                         } else {
