@@ -1,6 +1,7 @@
 import { DocumentCollection } from './document-collection';
 import { IDocumentFs } from './document-fs';
 import sift, { SiftQuery } from 'sift';
+import { includes } from 'lodash';
 
 describe('DocumentCollection', () => {
 
@@ -11,8 +12,12 @@ describe('DocumentCollection', () => {
         }))
     }));
 
+    interface IDoc {
+        tags: string[];
+    }
+
     let documentFsMock: IDocumentFs;
-    let documentCollection: DocumentCollection<any>;
+    let documentCollection: DocumentCollection<IDoc>;
 
     beforeEach(() => {
         documentFsMock = new DocumentFsMock();
@@ -50,6 +55,14 @@ describe('DocumentCollection', () => {
                     }
                 });
                 expect(res).toEqual([{ tags: ['abc'] }]);
+            });
+        });
+        describe('by function query', () => {
+            test('get matched documents', async () => {
+                let res = await documentCollection.getAll({
+                    where: (item: IDoc) => includes(item.tags, 'ab')
+                });
+                expect(res).toEqual([{ tags: ['ab'] }]);
             });
         });
     });
