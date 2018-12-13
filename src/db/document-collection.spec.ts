@@ -12,7 +12,7 @@ describe('DocumentCollection', () => {
     }));
 
     let documentFsMock: IDocumentFs;
-    let documentCollection: DocumentCollection;
+    let documentCollection: DocumentCollection<any>;
 
     beforeEach(() => {
         documentFsMock = new DocumentFsMock();

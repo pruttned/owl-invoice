@@ -3,11 +3,11 @@ import { IQuery } from "./query";
 import { IDocumentFs } from './document-fs';
 import sift from 'sift';
 
-export class DocumentCollection {
+export class DocumentCollection<T> {
     constructor(private name: string, private fsReader: IDocumentFs) {
     }
 
-    async getAll(query?: IQuery) {
+    async getAll<T>(query?: IQuery<T>) {
         let collection = await this.fsReader.getCollection(this.name);
         if (query && query.id) {
             collection = collection.filter(d => micromatch.isMatch(d, query.id!!));
