@@ -5,10 +5,11 @@
     <style>
         .content {
             font-family: "source sans pro light";
-            padding: 40px;
+            padding: 60px;
             line-height: 1.4rem;
             color: #333333;
             position: relative;
+            height: 92%;
         }
 
         strong,
@@ -16,11 +17,10 @@
             font-weight: bold;
             color: black;
             font-family: "source sans pro";
-
         }
 
         header {
-            border-bottom: 1px solid #555555;
+            border-bottom: 1px solid #aaaaaa;
             padding-bottom: 10px;
         }
 
@@ -48,61 +48,53 @@
             font-size: 1.3rem;
         }
 
-        .items-sum-price {
-            border-top: 1px solid black;
-        }
-
-        th {
-            text-align: left;
-        }
-
         .payment-info {
             background: #eeeeee;
-            padding: 25px 65px;
-            margin: 0 -65px;
+            padding: 25px 20px;
+            border-radius: 20px;
+            margin: 0 -20px;
         }
 
-        .payment-info-main {
-            position: relative;
+        .payment-info-name {
+            padding-top: 5px
+        }
+
+        .payment-info-value {
+            padding-left: 250px;
+            padding-top: 5px
         }
 
         .payment-info-qr {
             position: absolute;
-            top: 0;
-            right: 0;
+            top: 25px;
+            right: 112px;
         }
 
         .payment-info-qr-image {
-            width: 78px;
-            height: 86px;
+            width: 180px;
+            height: 180px;
         }
 
-        .payment-info-value {
-            padding-left: 15px;
+        .payment-info-price-value {
+            border-bottom: 1px solid #666666;
+            font-size: 1.5rem;
+            padding-bottom: 5px;
+        }
+
+        .payment-info-price-name {
+            border-bottom: 1px solid #666666;
+            font-size: 1.1rem;
+            padding-bottom: 5px;
         }
 
         table {
             border-collapse: collapse;
         }
 
-        .payment-info-price {
-            border-bottom: 2px dotted #333333;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-        }
-
-        .payment-info-price-value {
-            font-size: 1.5rem;
-            float: right;
-        }
-
-        .payment-info-price-name {
-            font-size: 1.1rem;
-            display: inline;
-        }
-
         .item {
-            border-top: 1px dotted #333333;
+            border-top: 1px dotted #aaaaaa;
+            padding-bottom: 2px;
+            padding-top: 2px;
         }
 
         .item :nth-child(1) {
@@ -119,7 +111,7 @@
         }
 
         .item-sum-price {
-            border-top: 1px solid #555555;
+            border-top: 1px solid #aaaaaa;
             font-size: 1.1rem;
             padding-top: 5px;
         }
@@ -133,8 +125,8 @@
         }
 
         .client {
-            width: 280px;
-            border: 1px solid #555555;
+            width: 383px;
+            border: 1px solid #aaaaaa;
             border-radius: 20px;
             padding: 15px 30px;
             margin: -15px 0 -20px auto;
@@ -146,7 +138,7 @@
             bottom: 10px;
             right: 0;
             left: 0;
-            /* border-top: 1px solid #555555; */
+            border-top: 1px solid #aaaaaa;
             margin: 0 40px;
             padding-top: 10px;
         }
@@ -220,39 +212,37 @@
 
             <div class="item item-sum-price">
                 <div>Celkova suma na uhradu</div>
-                <div>2460 €</div>
+                <div class="item strong item-sum-price-value">2460 €</div>
             </div>
         </div>
 
         <div class="section payment-info">
             <h2>Platobné údaje</h2>
-            <div class="payment-info-price">
-                <div class="payment-info-price-name">Celková suma na úhradu:</div>
-                <div class="payment-info-price-value strong">2460 €</div>
-            </div>
-            <div class="payment-info-main">
-                <table>
-                    <tr>
-                        <td>IBAN:</td>
-                        <td class="strong payment-info-value">SK2312000000000039438</td>
-                    </tr>
-                    <tr>
-                        <td>Variabilny symbol:</td>
-                        <td class="strong payment-info-value">2018007</td>
-                    </tr>
-                    <tr>
-                        <td>Datum splatnosti:</td>
-                        <td class="payment-info-value">24.12.2018</td>
-                    </tr>
-                    <tr>
-                        <td>Bankove spojenie:</td>
-                        <td class="payment-info-value">Slovenska sporitelna, as (GIBASKBX)</td>
-                    </tr>
-                </table>
-                <div class="payment-info-qr">
+            <table>
+                <tr>
+                    <td class="payment-info-price-name payment-info-name">Celková suma na úhradu:</td>
+                    <td class="payment-info-price-value strong payment-info-value">2460 €</td>
+                </tr>
+                <tr>
+                    <td class="payment-info-name">IBAN:</td>
+                    <td class="strong payment-info-value">SK2312000000000039438</td>
+                </tr>
+                <tr>
+                    <td class="payment-info-name">Variabilny symbol:</td>
+                    <td class="strong payment-info-value">2018007</td>
+                </tr>
+                <tr>
+                    <td class="payment-info-name">Datum splatnosti:</td>
+                    <td class="payment-info-value">24.12.2018</td>
+                </tr>
+                <tr>
+                    <td class="payment-info-name">Bankove spojenie:</td>
+                    <td class="payment-info-value">Slovenska sporitelna, as (GIBASKBX)</td>
+                </tr>
+            </table>
+            <!-- <div class="payment-info-qr">
                     <img class="payment-info-qr-image" src="file:///C:/git/owl-invoice/templates/pay-by-square.png" />
-                </div>
-            </div>
+                </div> -->
         </div>
 
         <footer>
