@@ -64,23 +64,23 @@ describe('DocumentFs', () => {
 
     describe('getDocument', () => {
         test('retrieve specified document', async () => {
-            expect(await documentFs.getDocument('col1', 'c1f1')).toEqual({ title: 'c1f1' });
+            expect(await documentFs.getDocument('col1', 'c1f1')).toEqual({ id: 'c1f1', title: 'c1f1' });
         });
         test('cache retrieved document', async () => {
             await documentFs.getDocument('col1', 'c1f1');
             fs.writeFileSync('c:/db/col1/c1f1.yaml', 'title: c1f1X'); //should not change document, because there was no refresh from watcher
             fs.writeFileSync('c:/db/col1/c1f2.yaml', 'title: c1f2X'); //this should update, because the document was not retrieved yet
-            expect(await documentFs.getDocument('col1', 'c1f1')).toEqual({ title: 'c1f1' });
-            expect(await documentFs.getDocument('col1', 'c1f2')).toEqual({ title: 'c1f2X' });
+            expect(await documentFs.getDocument('col1', 'c1f1')).toEqual({ id: 'c1f1', title: 'c1f1' });
+            expect(await documentFs.getDocument('col1', 'c1f2')).toEqual({ id: 'c1f2', title: 'c1f2X' });
         });
         test('reload document after fs change', async () => {
             await documentFs.getDocument('col1', 'c1f1');
             await documentFs.getDocument('col1', 'c1f2');
-            fs.writeFileSync('c:/db/col1/c1f1.yaml', 'title: c1f1X'); 
+            fs.writeFileSync('c:/db/col1/c1f1.yaml', 'title: c1f1X');
             fs.writeFileSync('c:/db/col1/c1f2.yaml', 'title: c1f2X'); // this should not be updated, because there were no onChange for this file
             documentFsWatcherMock.onChange({ file: 'c:/col1/c1f1.yaml' });
-            expect(await documentFs.getDocument('col1', 'c1f1')).toEqual({ title: 'c1f1X' });
-            expect(await documentFs.getDocument('col1', 'c1f2')).toEqual({ title: 'c1f2' });
+            expect(await documentFs.getDocument('col1', 'c1f1')).toEqual({ id: 'c1f1', title: 'c1f1X' });
+            expect(await documentFs.getDocument('col1', 'c1f2')).toEqual({ id: 'c1f2', title: 'c1f2' });
         });
     })
 })
