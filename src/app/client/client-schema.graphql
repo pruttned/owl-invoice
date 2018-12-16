@@ -1,5 +1,4 @@
-type Client 
-{
+type Client {
     id: String!,
     name: String!,
     address: String!,
@@ -8,8 +7,7 @@ type Client
     vatNumber: String #IC DPH
 }
 
-input CreateClientInput
-{
+input CreateClientInput {
     id: String!,
     name: String!,
     address: String!,
@@ -18,7 +16,12 @@ input CreateClientInput
     vatNumber: String #IC DPH
 }
 
-type Mutation {
+extend type Query { 
+    clients: [Client],
+    client(id:String!): Client,
+}
+
+extend type Mutation {
     createClient(input: CreateClientInput): Client,
     updateClient(input: CreateClientInput): Client
 }

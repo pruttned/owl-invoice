@@ -27,7 +27,7 @@ class Db {
         this.documentFs = new DocumentFs(dir, this.documentFsWatcher);
 
         this._invoices = new DocumentCollection<InvoiceDocument>('invoice', this.documentFs);
-        this._clients = new DocumentCollection<InvoiceDocument>('client', this.documentFs);
+        this._clients = new DocumentCollection<ClientDocument>('client', this.documentFs);
     }
 
     close() {

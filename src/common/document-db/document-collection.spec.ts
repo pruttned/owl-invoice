@@ -67,6 +67,24 @@ describe('DocumentCollection', () => {
             });
         });
     });
+
+    describe('singleOrDefault', () => {
+        test('get document by id', async () => {
+            expect(await documentCollection.singleOrDefault('ab')).toEqual({ tags: ['ab'] });
+        });
+        test('get undefined for nonexisting id', async () => {
+            expect(await documentCollection.singleOrDefault('abxcxc')).toBeUndefined();
+        });
+    });
+
+    describe('single', () => {
+        test('get document by id', async () => {
+            expect(await documentCollection.single('ab')).toEqual({ tags: ['ab'] });
+        });
+        test('throw for nonexisting id', async () => {
+            await expect(documentCollection.single('abxcxc')).rejects.toThrow(/not found/i);
+        });
+    });
 })
 
 
