@@ -5,16 +5,16 @@ import sift from 'sift';
 import { isFunction } from 'lodash'
 
 export class DocumentCollection<T> {
-    constructor(private name: string, private fsReader: IDocumentFs) {
+    constructor(private name: string, private documentFs: IDocumentFs) {
     }
 
     async getAll<T>(query?: IQuery<T>) {
-        let collection = await this.fsReader.getCollection(this.name);
+        let collection = await this.documentFs.getCollection(this.name);
         if (query && query.id) {
             collection = collection.filter(d => micromatch.isMatch(d, query.id!!));
         }
 
-        let docs = await Promise.all(collection.map(doc => this.fsReader.getDocument(this.name, doc)));
+        let docs = await Promise.all(collection.map(doc => this.documentFs.getDocument(this.name, doc)));
 
         if (query && query.where) {
             if (isFunction(query.where)) {
