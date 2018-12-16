@@ -13,6 +13,7 @@ describe('DocumentCollection', () => {
     }));
 
     interface IDoc {
+        id: string;
         tags: string[];
     }
 

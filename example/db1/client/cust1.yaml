@@ -3,3 +3,6 @@ name: Customer 1
 address: |-
   This is address for customer1
   it has more lines
+taxId: dic1
+businessId: ico1
+vatNumber: icdph1

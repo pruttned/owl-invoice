@@ -1,0 +1,24 @@
+type Client 
+{
+    id: String!,
+    name: String!,
+    address: String!,
+    taxId: String, #DIC
+    businessId: String, #ICO
+    vatNumber: String #IC DPH
+}
+
+input CreateClientInput
+{
+    id: String!,
+    name: String!,
+    address: String!,
+    taxId: String, #DIC
+    businessId: String, #ICO
+    vatNumber: String #IC DPH
+}
+
+type Mutation {
+    createClient(input: CreateClientInput): Client,
+    updateClient(input: CreateClientInput): Client
+}

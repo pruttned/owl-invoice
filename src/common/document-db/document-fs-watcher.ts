@@ -14,11 +14,13 @@ export class DocumentFsWatcher implements IDocumentFsWatcher {
     private listeners: documentFsListener[] = [];
 
     constructor(dir: string) {
-        this.watcher = chokidar.watch(path.join(dir, `**/${DOC_FILE_GLOB}`));
+        //https://github.com/paulmillr/chokidar/issues/645
+        this.watcher = chokidar.watch(`**/${DOC_FILE_GLOB}`, { cwd: dir });
         this.watcher
-            .on('add', file => this.onChange({ file }))
+            .on('add', file => console.log('add'))
             .on('unlink', file => this.onChange({ file }))
-            .on('change', file => this.onChange({ file }));
+            .on('change', file => this.onChange({ file }))
+            ;
     }
     addListener(listener: documentFsListener) {
         this.listeners.push(listener);
@@ -33,6 +35,7 @@ export class DocumentFsWatcher implements IDocumentFsWatcher {
         }
     }
     private onChange(args: IOnChangeArgs) {
+        console.log('onFsChange', args);
         this.listeners.forEach(l => l(args));
     }
 }

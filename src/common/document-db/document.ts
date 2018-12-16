@@ -1,4 +1,4 @@
 export interface Document {
     id: string;
-    path: string;
+    [key: string]: any;
 }

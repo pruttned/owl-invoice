@@ -6,14 +6,18 @@ import yaml from 'js-yaml';
 import { IDocumentFsWatcher, IOnChangeArgs } from './document-fs-watcher';
 import NodeCache from 'node-cache';
 import { DOC_FILE_GLOB, DOC_FILE_EXT, getCollectionFromPath, getIdFromPath } from './document-path';
+import { Document } from './document';
+import { omit } from 'lodash';
 
 const glob = promisify(globP);
 const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
 
-export interface IDocumentFs {
+export interface IDocumentFs { //TODO: remove interface
     close(): void;
     getDocument(collection: string, id: string): Promise<any>;
     getCollection(collection: string): Promise<string[]>;
+    writeDocument(collection: string, document: Document, options?: WriteDocumentOptions): Promise<any>;
 }
 
 export class DocumentFs implements IDocumentFs {
@@ -35,10 +39,29 @@ export class DocumentFs implements IDocumentFs {
         if (!document) {
             const file = this.getDocumentPath(collection, id);
             const fileContent = await readFile(file, 'utf-8');
-            document = yaml.safeLoad(fileContent);
+            document = yaml.safeLoad(fileContent) || {};
+            (document as any)['id'] = id;
 
             this.documentCache.set(documentCacheKey, document);
         }
+        return document;
+    }
+
+    async writeDocument(collection: string, document: Document, options?: WriteDocumentOptions): Promise<any> {
+        if (!document.id) {
+            throw new Error('missing id');
+        }
+
+        const file = this.getDocumentPath(collection, document.id);
+        if (options && options.noOverride) {
+            if (fs.existsSync(file)) {
+                throw new Error(`document '${document.id}' already exists in collection '${collection}'`);
+            }
+        }
+
+        this.invalidateDocumentInCache(collection, document.id);
+        const fileContent = yaml.safeDump(this.excludeInternalProperties(document));
+        await writeFile(file, fileContent, 'utf-8');
         return document;
     }
 
@@ -56,10 +79,12 @@ export class DocumentFs implements IDocumentFs {
     private onFsChange(args: IOnChangeArgs) {
         const collection = getCollectionFromPath(args.file);
         const id = getIdFromPath(args.file);
+        this.invalidateDocumentInCache(collection, id);
+    }
+
+    private invalidateDocumentInCache(collection: string, id: string) {
         const documentCacheKey = this.getDocumentCacheKey(collection, id);
-
         this.documentCache.del(documentCacheKey);
-
         if (this.index) {
             this.index[collection] = null;
         }
@@ -72,9 +97,17 @@ export class DocumentFs implements IDocumentFs {
     private getDocumentCacheKey(collection: string, id: string) {
         return `${collection}-${id}`;
     }
+
+    private excludeInternalProperties(document: any): any {
+        return omit(document, 'id');
+    }
 }
 
 interface IndexDocument {
     id: string;
     path: string;
+}
+
+interface WriteDocumentOptions {
+    noOverride?: boolean;
 }
