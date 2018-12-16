@@ -1,0 +1,329 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        .content {
+            font-family: "source sans pro light";
+            padding: 60px;
+            line-height: 1.4rem;
+            color: #333333;
+            position: relative;
+            height: 92%;
+        }
+
+        strong,
+        .strong {
+            font-weight: bold;
+            color: black;
+            font-family: "source sans pro";
+        }
+
+        header {
+            border-bottom: 1px solid #aaaaaa;
+            padding-bottom: 10px;
+        }
+
+        header :nth-child(1) {
+            display: inline;
+        }
+
+        header :nth-child(2) {
+            float: right;
+        }
+
+        h1,
+        h2 {
+            color: black;
+            margin: 0;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+        }
+
+
+        h1 {
+            font-weight: normal;
+            font-size: 1.3rem;
+        }
+
+        .payment-info {
+            background: #eeeeee;
+            padding: 25px 20px;
+            border-radius: 20px;
+            margin: 0 -20px;
+        }
+
+        .payment-info-name {
+            padding-top: 5px
+        }
+
+        .payment-info-value {
+            padding-left: 250px;
+            padding-top: 5px
+        }
+
+        .payment-info-qr {
+            position: absolute;
+            top: 25px;
+            right: 112px;
+        }
+
+        .payment-info-qr-image {
+            width: 180px;
+            height: 180px;
+        }
+
+        .payment-info-price-value {
+            border-bottom: 1px solid #666666;
+            font-size: 1.5rem;
+            padding-bottom: 5px;
+        }
+
+        .payment-info-price-name {
+            border-bottom: 1px solid #666666;
+            font-size: 1.1rem;
+            padding-bottom: 5px;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        .item {
+            border-top: 1px dotted #aaaaaa;
+            padding-bottom: 2px;
+            padding-top: 2px;
+        }
+
+        .item :nth-child(1) {
+            display: inline-block;
+        }
+
+        .item :nth-child(2) {
+            float: right;
+        }
+
+        .items :first-child,
+        .items :nth-child(2) {
+            border: none;
+        }
+
+        .item-sum-price {
+            border-top: 1px solid #aaaaaa;
+            font-size: 1.1rem;
+            padding-top: 5px;
+        }
+
+        .section {
+            margin-top: 40px;
+        }
+
+        .supplier {
+            display: inline-block;
+        }
+
+        .client {
+            width: 383px;
+            border: 1px solid #aaaaaa;
+            border-radius: 20px;
+            padding: 15px 30px;
+            margin: -15px 0 -20px auto;
+            float: right;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            right: 0;
+            left: 0;
+            border-top: 1px solid #aaaaaa;
+            margin: 0 40px;
+            padding-top: 10px;
+        }
+
+        .footer-item {
+            margin-right: 5px;
+        }
+
+        .contact-icon {
+            width: 15px;
+            vertical-align: middle;
+        }
+
+        .contact-text {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <header>
+            <h1>
+                <%= helper.capitalizeFirstLetter(resources.invoice) %>:
+                <strong>
+                    <%= invoice.number %>
+                </strong>
+            </h1>
+            <div>
+                <%= helper.capitalizeFirstLetter(resources.issueDate) %>:
+                <%= helper.formatDate(invoice.issueDate) %>
+            </div>
+        </header>
+
+        <div class="section">
+            <div class="supplier">
+                <h2>
+                    <%= helper.capitalizeFirstLetter(resources.supplier) %>
+                </h2>
+                <div>
+                    <%= supplier.name %>
+                </div>
+                <div>
+                    <%- helper.preserveLineEndings(supplier.address) %>
+                </div>
+                <div>
+                    <%= supplier.register %>
+                </div>
+                <div>
+                    <%= resources.businessId %>:
+                    <%= supplier.businessId %>
+                </div>
+                <div>
+                    <%= resources.vatNumber %>:
+                    <%= supplier.vatNumber %>
+                </div>
+                <div>
+                    <%= resources.taxId %>:
+                    <%= supplier.taxId %>
+                </div>
+            </div>
+
+            <div class="client">
+                <h2>
+                    <%= helper.capitalizeFirstLetter(resources.client) %>
+                </h2>
+                <div>
+                    <%= invoice.client.name %>
+                </div>
+                <div>
+                    <%- helper.preserveLineEndings(invoice.client.address) %>
+                </div>
+                <div>
+                    <%= resources.businessId %>:
+                    <%= invoice.client.businessId %>
+                </div>
+                <div>
+                    <%= resources.vatNumber %>:
+                    <%= invoice.client.vatNumber %>
+                </div>
+                <div>
+                    <%= resources.taxId %>:
+                    <%= invoice.client.taxId %>
+                </div>
+            </div>
+        </div>
+
+        <div class="section items">
+            <div class="item">
+                <h2>
+                    <%= helper.capitalizeFirstLetter(resources.invoiceItems) %>
+                </h2>
+                <div>
+                    <%= resources.sumPrice %>
+                </div>
+            </div>
+
+            <% invoice.items.forEach(function(item){ %>
+            <div class="item">
+                <div>
+                    <%= item.text %>
+                </div>
+                <div>
+                    <%= helper.getInvoiceItemSumPrice(item) %> €
+                </div>
+            </div>
+            <% }); %>
+
+            <div class="item item-sum-price">
+                <div>
+                    <%= helper.capitalizeFirstLetter(resources.invoicePrice) %>
+                </div>
+                <div class="item strong item-sum-price-value">
+                    <%= helper.getInvoiceSumPrice(invoice) %> €
+                </div>
+            </div>
+        </div>
+
+        <div class="section payment-info">
+            <h2>Platobné údaje</h2>
+            <table>
+                <tr>
+                    <td class="payment-info-price-name payment-info-name">
+                        <%= helper.capitalizeFirstLetter(resources.invoicePrice) %>:
+                    </td>
+                    <td class="payment-info-price-value strong payment-info-value">
+                        <%= helper.getInvoiceSumPrice(invoice) %> €
+                    </td>
+                </tr>
+                <tr>
+                    <td class="payment-info-name">
+                        <%= resources.iban %>:
+                    </td>
+                    <td class="strong payment-info-value">
+                        <%= supplier.iban %>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="payment-info-name">
+                        <%= helper.capitalizeFirstLetter(resources.variableSymbol) %>:
+                    </td>
+                    <td class="strong payment-info-value">
+                        <%= invoice.variableSymbol %>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="payment-info-name">
+                        <%= helper.capitalizeFirstLetter(resources.dueDate) %>:
+                    </td>
+                    <td class="payment-info-value">
+                        <%= helper.formatDate(invoice.dueDate) %>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="payment-info-name">
+                        <%= helper.capitalizeFirstLetter(resources.bank) %>:
+                    </td>
+                    <td class="payment-info-value">
+                        <%= supplier.bank %>
+                    </td>
+                </tr>
+            </table>
+            <!-- <div class="payment-info-qr">
+                    <img class="payment-info-qr-image" src="file:///C:/git/owl-invoice/templates/pay-by-square.png" />
+                </div> -->
+        </div>
+
+        <footer>
+            <span class="footer-item">
+                <%= supplier.name %>
+            </span>
+            <span class="footer-item">
+                <img class="contact-icon" src="<%= getTemplateResourcePath('phone.svg') %>" />
+                <span class="contact-text">
+                    <%= supplier.phoneNumber %>
+                </span>
+            </span>
+            <span class="footer-item">
+                <img class="contact-icon" src="<%= getTemplateResourcePath('email.svg') %>" />
+                <span class="contact-text">
+                    <%= supplier.email %>
+                </span>
+            </span>
+        </footer>
+    </div>
+</body>
+
+</html>
