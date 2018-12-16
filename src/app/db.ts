@@ -7,12 +7,12 @@ import { DocumentFs } from './../common/document-db/document-fs';
 class Db {
     private documentFs: DocumentFs | null = null;
     private documentFsWatcher: DocumentFsWatcher | null = null;
-    private _documents: DocumentCollection<InvoiceDocument> | null = null;
+    private _invoices: DocumentCollection<InvoiceDocument> | null = null;
     private _clients: DocumentCollection<ClientDocument> | null = null;
 
-    get documents(): DocumentCollection<InvoiceDocument> {
+    get invoices(): DocumentCollection<InvoiceDocument> {
         this.checkIsInit();
-        return this._documents!;
+        return this._invoices!;
     }
     get clients(): DocumentCollection<ClientDocument> {
         this.checkIsInit();
@@ -25,6 +25,9 @@ class Db {
         }
         this.documentFsWatcher = new DocumentFsWatcher(dir);
         this.documentFs = new DocumentFs(dir, this.documentFsWatcher);
+
+        this._invoices = new DocumentCollection<InvoiceDocument>('invoice', this.documentFs);
+        this._clients = new DocumentCollection<InvoiceDocument>('client', this.documentFs);
     }
 
     close() {
