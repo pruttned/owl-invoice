@@ -1,5 +1,9 @@
 type Client 
-{ 
-    id: String,
-    name: String!, 
+{
+    id: String!,
+    name: String!,
+    address: String!,
+    taxId: String, #DIC
+    businessId: String, #ICO
+    vatNumber: String #IC DPH
 }
