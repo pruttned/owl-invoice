@@ -1,4 +1,5 @@
-export interface InvoiceDocument{
-    number: string, 
+export interface InvoiceDocument {
+    id: string;
+    number: string,
     client: string,
 }

@@ -1,4 +1,5 @@
 export interface ClientDocument {
+    id: string;
     name: string;
     address: string;
     taxId: string; //DIC
