@@ -17,6 +17,7 @@
     "apollo-server-express": "^2.2.2",
     "chokidar": "^2.0.4",
     "dataloader": "^1.4.0",
+    "dateformat": "^3.0.3",
     "dotenv": "^6.1.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
@@ -27,13 +28,14 @@
     "lodash": "^4.17.11",
     "micromatch": "^3.1.10",
     "node-cache": "^4.2.0",
-    "sift": "^7.0.1"
+    "sift": "^7.0.1",
     "wkhtmltopdf": "^0.3.4"
   },
   "devDependencies": {
     "@types/chokidar": "^1.7.5",
-    "@types/glob": "^7.1.1",
+    "@types/dateformat": "^1.0.1",
     "@types/ejs": "^2.6.0",
+    "@types/glob": "^7.1.1",
     "@types/graphql": "^14.0.3",
     "@types/jest": "^23.3.10",
     "@types/js-yaml": "^3.11.2",
