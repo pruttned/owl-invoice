@@ -35,7 +35,8 @@ export class DocumentFs implements IDocumentFs {
         if (!document) {
             const file = this.getDocumentPath(collection, id);
             const fileContent = await readFile(file, 'utf-8');
-            document = yaml.safeLoad(fileContent);
+            document = yaml.safeLoad(fileContent) || {};
+            (document as any)['id'] = id;
 
             this.documentCache.set(documentCacheKey, document);
         }

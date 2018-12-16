@@ -1,5 +1,6 @@
 type Invoice 
 { 
+    id: String,
     number: String!, 
     client: Client!,
 }

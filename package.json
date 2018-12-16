@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "client": "cd client && npm start",
-    "server": "nodemon --exec \"node -r dotenv/config\" dist/index.js",
+    "server": "nodemon -e js,json,graphql --exec \"node -r dotenv/config\" dist/index.js",
     "start": "concurrently --kill-others-on-fail \"npm run watch-server\" \"gulp watch\" \"npm run server\" \"npm run client\"",
     "start-server": "concurrently --kill-others-on-fail \"npm run watch-server\" \"npm run server\" \"gulp watch\"",
     "build-ts": "tsc",
