@@ -8,7 +8,7 @@ export class DocumentCollection<T> {
     constructor(private name: string, private documentFs: IDocumentFs) {
     }
 
-    async getAll<T>(query?: IQuery<T>) {
+    async getAll<T>(query?: IQuery<T>): Promise<T[]> {
         let collection = await this.documentFs.getCollection(this.name);
         if (query && query.id) {
             collection = collection.filter(d => micromatch.isMatch(d, query.id!!));
