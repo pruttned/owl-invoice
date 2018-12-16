@@ -4,6 +4,9 @@ class ClientService {
     getAll(): Promise<ClientDocument[]> {
         return db.clients.getAll();
     }
+    getById(id: string): Promise<ClientDocument> {
+        return db.clients.single(id);
+    }
     create(client: ClientDocument): Promise<ClientDocument> {
         return db.clients.create(client);
     }

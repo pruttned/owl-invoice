@@ -5,22 +5,26 @@ import fs from 'fs';
 import { db } from './app/db';
 import { merge } from 'lodash';
 import { clientResolver } from './app/client/client-resolver';
+import { invoiceResolver } from './app/invoice/invoice-resolver';
 import glob from 'glob';
+import { GraphQLDate } from 'graphql-iso-date';
 
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || 'localhost';
 
-console.log(path.join(__dirname, '**/*.graphql'));
 const typeDefs = glob.sync(path.join(__dirname, '**/*.graphql'))
     .map(f => gql(fs.readFileSync(f, 'utf8')));
 
 db.init('e:\\work\\git\\owl-invoice\\example\\db1');
-console.log(typeDefs);
+
+const scalarResolver = {
+    Date: GraphQLDate
+}
 const app = express();
 //https://www.apollographql.com/docs/apollo-server/essentials/data.html#context
 const server = new ApolloServer({
     typeDefs,
-    resolvers: merge(clientResolver, {}),
+    resolvers: merge(scalarResolver, clientResolver, invoiceResolver),
     context: async () => ({
         // someNumber: await Promise.resolve(123),
         // loaders: {
