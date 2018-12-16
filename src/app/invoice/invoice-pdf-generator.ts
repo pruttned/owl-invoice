@@ -1,10 +1,10 @@
 import { Stream } from 'stream';
-import { Invoice } from '../models/invoice';
-import { pdfGenerator } from './pdf-generator';
+import { Invoice } from './invoice';
+import { pdfGenerator } from '../../common/pdf-generator';
 import path from 'path';
-import { Language, resources } from './resources';
-import { HtmlHelper } from './htmlHelper';
-import { supplier } from '../models/supplier';
+import { Language, resources } from '../resources';
+import { HtmlHelper } from '../../services/htmlHelper';
+import { supplier } from '../supplier/supplier';
 
 class InvoicePdfGenerator {
     public async generate(invoice: Invoice, templateDefinition: InvoiceTemplateDefinition): Promise<Stream> {

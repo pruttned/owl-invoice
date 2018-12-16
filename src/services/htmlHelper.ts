@@ -1,5 +1,5 @@
 import dateformat from 'dateformat';
-import { InvoiceItem, Invoice } from '../models/invoice';
+import { InvoiceItem, Invoice } from '../app/invoice/invoice';
 
 export class HtmlHelper {
     public static capitalizeFirstLetter(input: string): string {
