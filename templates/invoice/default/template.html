@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -162,27 +162,27 @@
     <div class="content">
         <header>
             <h1>
-                <%= helper.capitalizeFirstLetter(resources.invoice) %>:
+                <%= html.capitalizeFirstLetter(resources.invoice) %>:
                 <strong>
                     <%= invoice.number %>
                 </strong>
             </h1>
             <div>
-                <%= helper.capitalizeFirstLetter(resources.issueDate) %>:
-                <%= helper.formatDate(invoice.issueDate) %>
+                <%= html.capitalizeFirstLetter(resources.issueDate) %>:
+                <%= html.formatDate(invoice.issueDate) %>
             </div>
         </header>
 
         <div class="section">
             <div class="supplier">
                 <h2>
-                    <%= helper.capitalizeFirstLetter(resources.supplier) %>
+                    <%= html.capitalizeFirstLetter(resources.supplier) %>
                 </h2>
                 <div>
                     <%= supplier.name %>
                 </div>
                 <div>
-                    <%- helper.preserveLineEndings(supplier.address) %>
+                    <%- html.preserveLineEndings(supplier.address) %>
                 </div>
                 <div>
                     <%= supplier.register %>
@@ -203,13 +203,13 @@
 
             <div class="client">
                 <h2>
-                    <%= helper.capitalizeFirstLetter(resources.client) %>
+                    <%= html.capitalizeFirstLetter(resources.client) %>
                 </h2>
                 <div>
                     <%= invoice.client.name %>
                 </div>
                 <div>
-                    <%- helper.preserveLineEndings(invoice.client.address) %>
+                    <%- html.preserveLineEndings(invoice.client.address) %>
                 </div>
                 <div>
                     <%= resources.businessId %>:
@@ -229,7 +229,7 @@
         <div class="section items">
             <div class="item">
                 <h2>
-                    <%= helper.capitalizeFirstLetter(resources.invoiceItems) %>
+                    <%= html.capitalizeFirstLetter(resources.invoiceItems) %>
                 </h2>
                 <div>
                     <%= resources.sumPrice %>
@@ -242,17 +242,17 @@
                     <%= item.text %>
                 </div>
                 <div>
-                    <%= helper.getInvoiceItemSumPrice(item) %> €
+                    <%= getItemSumPrice(item) %> €
                 </div>
             </div>
             <% }); %>
 
             <div class="item item-sum-price">
                 <div>
-                    <%= helper.capitalizeFirstLetter(resources.invoicePrice) %>
+                    <%= html.capitalizeFirstLetter(resources.invoicePrice) %>
                 </div>
                 <div class="item strong item-sum-price-value">
-                    <%= helper.getInvoiceSumPrice(invoice) %> €
+                    <%= getSumPrice(invoice) %> €
                 </div>
             </div>
         </div>
@@ -262,10 +262,10 @@
             <table>
                 <tr>
                     <td class="payment-info-price-name payment-info-name">
-                        <%= helper.capitalizeFirstLetter(resources.invoicePrice) %>:
+                        <%= html.capitalizeFirstLetter(resources.invoicePrice) %>:
                     </td>
                     <td class="payment-info-price-value strong payment-info-value">
-                        <%= helper.getInvoiceSumPrice(invoice) %> €
+                        <%= getSumPrice(invoice) %> €
                     </td>
                 </tr>
                 <tr>
@@ -278,7 +278,7 @@
                 </tr>
                 <tr>
                     <td class="payment-info-name">
-                        <%= helper.capitalizeFirstLetter(resources.variableSymbol) %>:
+                        <%= html.capitalizeFirstLetter(resources.variableSymbol) %>:
                     </td>
                     <td class="strong payment-info-value">
                         <%= invoice.variableSymbol %>
@@ -286,15 +286,15 @@
                 </tr>
                 <tr>
                     <td class="payment-info-name">
-                        <%= helper.capitalizeFirstLetter(resources.dueDate) %>:
+                        <%= html.capitalizeFirstLetter(resources.dueDate) %>:
                     </td>
                     <td class="payment-info-value">
-                        <%= helper.formatDate(invoice.dueDate) %>
+                        <%= html.formatDate(invoice.dueDate) %>
                     </td>
                 </tr>
                 <tr>
                     <td class="payment-info-name">
-                        <%= helper.capitalizeFirstLetter(resources.bank) %>:
+                        <%= html.capitalizeFirstLetter(resources.bank) %>:
                     </td>
                     <td class="payment-info-value">
                         <%= supplier.bank %>

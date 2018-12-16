@@ -3,17 +3,20 @@ import { Invoice } from './invoice';
 import { pdfGenerator } from '../../common/pdf-generator';
 import path from 'path';
 import { Language, resources } from '../resources';
-import { HtmlHelper } from '../../services/htmlHelper';
+import { htmlHelper } from '../../common/htmlHelper';
 import { supplier } from '../supplier/supplier';
+import { invoiceService } from './invoice-service';
 
 class InvoicePdfGenerator {
     public async generate(invoice: Invoice, templateDefinition: InvoiceTemplateDefinition): Promise<Stream> {
         let viewModel = {
             invoice,
             supplier,
-            getTemplateResourcePath: (relativePath : string) => `file:///${path.resolve(path.join('templates', 'invoice', templateDefinition.templateName, relativePath))}`,
             resources: resources.get(templateDefinition.templateParams.language),
-            helper: HtmlHelper
+            html: htmlHelper,
+            getItemSumPrice: invoiceService.getItemSumPrice,
+            getSumPrice: invoiceService.getSumPrice,
+            getTemplateResourcePath: (relativePath: string) => `file:///${path.resolve(path.join('templates', 'invoice', templateDefinition.templateName, relativePath))}`,
         };
         return await pdfGenerator.generate(path.join('invoice', templateDefinition.templateName, 'template.html'), viewModel);
     }
