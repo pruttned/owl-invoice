@@ -1,44 +1,80 @@
-// const wkhtmltopdf: any = require('wkhtmltopdf');
-// import ejs from 'ejs';
-// import { Stream } from 'stream';
-// import fs from 'fs';
-// import { Invoice } from '../models/invoice';
+import { Stream } from 'stream';
+import { Invoice } from '../models/invoice';
+import { pdfGenerator } from './pdf-generator';
+import path from 'path';
+import { Language, resources } from './resources';
+import { HtmlHelper } from './htmlHelper';
+import { supplier } from '../models/supplier';
 
-// export class InvoicePdfGenerator {
-//     public async generate(invoice: Invoice, templateName: string, templateParams: InvoiceTemplateParams): Promise<Stream> {
+class InvoicePdfGenerator {
+    public async generate(invoice: Invoice, templateDefinition: InvoiceTemplateDefinition): Promise<Stream> {
+        let viewModel = {
+            invoice,
+            supplier,
+            getTemplateResourcePath: (relativePath : string) => `file:///${path.resolve(path.join('templates', 'invoice', templateDefinition.templateName, relativePath))}`,
+            resources: resources.get(templateDefinition.templateParams.language),
+            helper: HtmlHelper
+        };
+        return await pdfGenerator.generate(path.join('invoice', templateDefinition.templateName, 'template.html'), viewModel);
+    }
+}
+
+interface InvoiceTemplateDefinition {
+    templateName: string;
+    templateParams: InvoiceTemplateParams;
+    displayName: string;
+}
+
+interface InvoiceTemplateParams {
+    language: Language;
+}
+
+export class InvoiceTemplateDefinitions {
+    public static defaultSK: InvoiceTemplateDefinition = {
+        templateName: 'default',
+        templateParams: {
+            language: Language.SK
+        },
+        displayName: 'SK'
+    };
+
+    public static defaultAT: InvoiceTemplateDefinition = {
+        templateName: 'default',
+        templateParams: {
+            language: Language.AT
+        },
+        displayName: 'AT'
+    };
+}
+
+export const invoicePdfGenerator = new InvoicePdfGenerator();
 
 
 
-//         return new Promise((resolve, reject) => {
-//             ejs.renderFile(templatePath, model, { cache: true }, (ejsError: Error, html?: string) => {
-//                 if (ejsError || !html) {
-//                     reject(ejsError || new Error('No result returned from the template engine.'));
-//                 } else {
-//                     wkhtmltopdf(html, { marginTop: 0, marginBottom: 0, marginLeft: 0, marginRight: 0 }, (wkError: Error, pdfStream: Stream) => {
-//                         if (wkError) {
-//                             reject(wkError);
-//                         } else {
-//                             //TODO: what to return?
-//                             // resolve(pdfStream);
-//                             pdfStream.pipe(fs.createWriteStream('out.pdf'));
-//                         }
-//                     });
-//                 }
-//             });
-//         });
-//     }
-// }
-
-// export interface InvoiceTemplateParams {
-//     language : 'SK' | 'AT';
-// }
 
 
-// // let invoice = {
-// //     sum: 2100,
-// //     client: 'some client',
-// //     test: 'ahoj'
-// // };
-// // new PdfGenerator().generate('templates/invoice-sk.html', invoice).then(stream => {
-// //     //  stream.pipe(fs.createWriteStream('out2.pdf'));
-// // }).catch(console.error);
+
+let dueDate = new Date();
+dueDate.setDate(dueDate.getDate() + 10);
+let invoice: Invoice = {
+    client: {
+        name: 'Super mega firma',
+        address: 'Super ulica 25\n85104 Bratislava',
+        businessId: '12345678',
+        taxId: '1234567890',
+        vatNumber: 'SK1234567890'
+    },
+    dueDate: dueDate,
+    issueDate: new Date(),
+    number: '2018005',
+    variableSymbol: '2018005',
+    items: [
+        { text: 'Prace za mesiac jun 2018', unitCount: 1, unitPrice: 10 },
+        { text: 'Nieco ine', unitCount: 2, unitPrice: 20 },
+        { text: 'Este daco', unitCount: 1, unitPrice: 10 }
+    ]
+};
+invoicePdfGenerator.generate(invoice, InvoiceTemplateDefinitions.defaultSK).then(stream => {
+    console.log('DONE');
+    // stream.pipe(fs.createWriteStream('out2.pdf'));
+}).catch(console.error);
