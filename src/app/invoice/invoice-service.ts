@@ -16,11 +16,11 @@ class InvoiceService {
         return db.invoices.update(invoice);
     }
 
-    public getSumPrice(invoice: Invoice): number {
+    getSumPrice(invoice: Invoice): number {
         return invoice.items.reduce((sum, item) => sum + this.getItemSumPrice(item), 0);
     }
 
-    public getItemSumPrice(invoiceItem: InvoiceItem): number {
+    getItemSumPrice(invoiceItem: InvoiceItem): number {
         return invoiceItem.unitPrice * invoiceItem.unitCount;
     }
 }
