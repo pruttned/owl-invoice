@@ -85,17 +85,20 @@ describe('DocumentFs', () => {
         });
     });
 
-    describe('createDocument', () => {
+    describe('writeDocument', () => {
         test('create specified document', async () => {
-            await documentFs.createDocument('col1', { id: 'newDoc' });
+            await documentFs.writeDocument('col1', { id: 'newDoc' });
             expect(await documentFs.getDocument('col1', 'newDoc')).toEqual({ id: 'newDoc' });
         });
         test('fail for missing id', async () => {
-            //  await expect(documentFs.getDocument('col1', 'c1f1')).toThrowError(/missing id/i);
-            await expect(documentFs.createDocument('col1', {} as Document)).rejects.toThrow(/missing id/i);
+            await expect(documentFs.writeDocument('col1', {} as Document)).rejects.toThrow(/missing id/i);
         });
-        test('fail for duplicate id', async () => {
-            await expect(documentFs.createDocument('col1', { id: 'c1f1' })).rejects.toThrow(/already exists/i);
+        test('fail for duplicate id if noOverride is specified', async () => {
+            await expect(documentFs.writeDocument('col1', { id: 'c1f1' }, { noOverride: true })).rejects.toThrow(/already exists/i);
+        });
+        test('update for duplicate id', async () => {
+            await documentFs.writeDocument('col1', { id: 'c1f1', title: 'newTitle' });
+            expect(await documentFs.getDocument('col1', 'c1f1')).toEqual({ id: 'c1f1', title: 'newTitle' });
         });
     });
 })

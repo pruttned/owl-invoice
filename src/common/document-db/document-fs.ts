@@ -17,7 +17,7 @@ export interface IDocumentFs { //TODO: remove interface
     close(): void;
     getDocument(collection: string, id: string): Promise<any>;
     getCollection(collection: string): Promise<string[]>;
-    createDocument(collection: string, document: Document): Promise<any>;
+    writeDocument(collection: string, document: Document, options?: WriteDocumentOptions): Promise<any>;
 }
 
 export class DocumentFs implements IDocumentFs {
@@ -47,19 +47,19 @@ export class DocumentFs implements IDocumentFs {
         return document;
     }
 
-    async createDocument(collection: string, document: Document): Promise<any> {
-        if(!document.id){
+    async writeDocument(collection: string, document: Document, options?: WriteDocumentOptions): Promise<any> {
+        if (!document.id) {
             throw new Error('missing id');
         }
 
-        this.invalidateDocumentInCache(collection, document.id);
-
         const file = this.getDocumentPath(collection, document.id);
-
-        if (fs.existsSync(file)) {
-            throw new Error(`document '${document.id}' already exists in collection '${collection}'`);
+        if (options && options.noOverride) {
+            if (fs.existsSync(file)) {
+                throw new Error(`document '${document.id}' already exists in collection '${collection}'`);
+            }
         }
 
+        this.invalidateDocumentInCache(collection, document.id);
         const fileContent = yaml.safeDump(this.excludeInternalProperties(document));
         await writeFile(file, fileContent, 'utf-8');
         return document;
@@ -106,4 +106,8 @@ export class DocumentFs implements IDocumentFs {
 interface IndexDocument {
     id: string;
     path: string;
+}
+
+interface WriteDocumentOptions {
+    noOverride?: boolean;
 }

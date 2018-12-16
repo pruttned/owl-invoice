@@ -29,6 +29,9 @@ export class DocumentCollection<T extends Document> {
     }
 
     create(client: T): Promise<T> {
-        return this.documentFs.createDocument(this.name, client);
+        return this.documentFs.writeDocument(this.name, client, { noOverride: true });
+    }
+    update(client: T): Promise<T> {
+        return this.documentFs.writeDocument(this.name, client);
     }
 }
