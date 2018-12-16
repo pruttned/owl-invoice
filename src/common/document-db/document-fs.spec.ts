@@ -1,6 +1,7 @@
 const { default: jestFs, mock: fs } = require('jest-plugin-fs');
 import { DocumentFs } from './document-fs';
 import { documentFsListener, IOnChangeArgs, IDocumentFsWatcher } from './document-fs-watcher';
+import { Document } from './document';
 
 jest.mock('fs', () => require('jest-plugin-fs/mock'));
 
@@ -82,5 +83,19 @@ describe('DocumentFs', () => {
             expect(await documentFs.getDocument('col1', 'c1f1')).toEqual({ id: 'c1f1', title: 'c1f1X' });
             expect(await documentFs.getDocument('col1', 'c1f2')).toEqual({ id: 'c1f2', title: 'c1f2' });
         });
-    })
+    });
+
+    describe('createDocument', () => {
+        test('create specified document', async () => {
+            await documentFs.createDocument('col1', { id: 'newDoc' });
+            expect(await documentFs.getDocument('col1', 'newDoc')).toEqual({ id: 'newDoc' });
+        });
+        test('fail for missing id', async () => {
+            //  await expect(documentFs.getDocument('col1', 'c1f1')).toThrowError(/missing id/i);
+            await expect(documentFs.createDocument('col1', {} as Document)).rejects.toThrow(/missing id/i);
+        });
+        test('fail for duplicate id', async () => {
+            await expect(documentFs.createDocument('col1', { id: 'c1f1' })).rejects.toThrow(/already exists/i);
+        });
+    });
 })
