@@ -1,14 +1,19 @@
 export interface Invoice {
-    number: number;
+    number: string;
+    variableSymbol: string;
     issueDate: Date;
-    dueDateOffset: Date;
+    dueDate: Date;
 
     client: Client;
     items: InvoiceItem[];
 }
 
 export interface Client {
-
+    name: string;
+    address: string;
+    taxId: string; //DIC
+    businessId: string; //ICO
+    vatNumber: string; //IC DPH    
 }
 
 export interface InvoiceItem {
