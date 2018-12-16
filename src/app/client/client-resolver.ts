@@ -9,6 +9,9 @@ export const clientResolver = {
     Mutation: {
         createClient(root: any, args: any): Promise<any> {
             return clientService.create(args.input);
+        },
+        updateClient(root: any, args: any): Promise<any> {
+            return clientService.update(args.input);
         }
     }
 }

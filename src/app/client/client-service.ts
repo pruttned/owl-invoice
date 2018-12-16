@@ -7,6 +7,9 @@ class ClientService {
     create(client: ClientDocument): Promise<ClientDocument> {
         return db.clients.create(client);
     }
+    update(client: ClientDocument): Promise<ClientDocument> {
+        return db.clients.update(client);
+    }
 }
 
 export const clientService = new ClientService();
