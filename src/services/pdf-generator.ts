@@ -2,11 +2,12 @@ const wkhtmltopdf: any = require('wkhtmltopdf');
 import ejs from 'ejs';
 import { Stream } from 'stream';
 import fs from 'fs';
+import path from 'path';
 
-export class PdfGenerator {
+class PdfGenerator {
     public generate(templatePath: string, model: any): Promise<Stream> {
         return new Promise((resolve, reject) => {
-            ejs.renderFile(templatePath, model, { cache: true }, (ejsError: Error, html?: string) => {
+            ejs.renderFile(path.join('templates', templatePath), model, { cache: true }, (ejsError: Error, html?: string) => {
                 if (ejsError || !html) {
                     reject(ejsError || new Error('No result returned from the template engine.'));
                 } else {
@@ -25,11 +26,13 @@ export class PdfGenerator {
     }
 }
 
-let invoice = {
-    sum: 2100,
-    client: 'some client',
-    test: 'ahoj'
-};
-new PdfGenerator().generate('templates/invoice-sk.html', invoice).then(stream => {
-    //  stream.pipe(fs.createWriteStream('out2.pdf'));
-}).catch(console.error);
+export const pdfGenerator = new PdfGenerator();
+
+// let invoice = {
+//     sum: 2100,
+//     client: 'some client',
+//     test: 'ahoj'
+// };
+// new PdfGenerator().generate('invoice-sk.html', invoice).then(stream => {
+//     //  stream.pipe(fs.createWriteStream('out2.pdf'));
+// }).catch(console.error);
