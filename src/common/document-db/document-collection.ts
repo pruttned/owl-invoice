@@ -6,6 +6,7 @@ import { isFunction } from 'lodash'
 import { Document } from './document';
 import { find } from 'lodash';
 import { Namespace } from 'protobufjs';
+import { isEmpty } from 'lodash';
 
 export class DocumentCollection<T extends Document> {
     constructor(private name: string, private documentFs: IDocumentFs) {
@@ -44,10 +45,10 @@ export class DocumentCollection<T extends Document> {
         return docs;
     }
 
-    create(client: T): Promise<T> {
-        return this.documentFs.writeDocument(this.name, client, { noOverride: true });
+    create(document: T): Promise<T> {
+        return this.documentFs.writeDocument(this.name, document, { noOverride: true });
     }
-    update(client: T): Promise<T> {
-        return this.documentFs.writeDocument(this.name, client);
+    update(document: T): Promise<T> {
+        return this.documentFs.writeDocument(this.name, document);
     }
 }

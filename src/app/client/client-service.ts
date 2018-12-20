@@ -1,5 +1,7 @@
 import { ClientDocument } from './client-document';
 import { db } from '../db';
+import { slugify } from '../../common/slugify';
+
 class ClientService {
     getAll(): Promise<ClientDocument[]> {
         return db.clients.getAll();
@@ -8,6 +10,8 @@ class ClientService {
         return db.clients.single(id);
     }
     create(client: ClientDocument): Promise<ClientDocument> {
+        client = { ...client, id: slugify(client.name) };
+        console.log(client);
         return db.clients.create(client);
     }
     update(client: ClientDocument): Promise<ClientDocument> {
