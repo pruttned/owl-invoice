@@ -10,7 +10,7 @@ export interface Invoice {
     items: InvoiceItem[];
 }
 
-export interface InvoiceItem {
+export interface InvoiceItem { //TODO: remove?
     text: string;
     unitCount: number;
     unitPrice: number;

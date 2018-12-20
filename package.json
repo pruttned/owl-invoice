@@ -19,6 +19,7 @@
     "chokidar": "^2.0.4",
     "dataloader": "^1.4.0",
     "dateformat": "^3.0.3",
+    "decimal.js": "^10.0.2",
     "dotenv": "^6.1.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",

@@ -1,5 +1,5 @@
 import micromatch from 'micromatch';
-import { IQuery } from "./query";
+import { Query, IdQuery } from "./query";
 import { IDocumentFs } from './document-fs';
 import sift from 'sift';
 import { isFunction } from 'lodash'
@@ -26,7 +26,16 @@ export class DocumentCollection<T extends Document> {
         }
     }
 
-    async getAll(query?: IQuery<T>): Promise<T[]> {
+    async getAllIds(query?: IdQuery): Promise<string[]> {
+        let collection = await this.documentFs.getCollection(this.name);
+        if (query && query.id) {
+            collection = collection.filter(d => micromatch.isMatch(d, query.id!!));
+        }
+
+        return collection;
+    }
+
+    async getAll(query?: Query<T>): Promise<T[]> {
         let collection = await this.documentFs.getCollection(this.name);
         if (query && query.id) {
             collection = collection.filter(d => micromatch.isMatch(d, query.id!!));

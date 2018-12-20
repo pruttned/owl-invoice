@@ -108,6 +108,6 @@ interface IndexDocument {
     path: string;
 }
 
-interface WriteDocumentOptions {
+export interface WriteDocumentOptions {
     noOverride?: boolean;
 }

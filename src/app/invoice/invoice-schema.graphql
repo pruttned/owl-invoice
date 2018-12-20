@@ -3,6 +3,11 @@ type InvoiceItem{
     unitCount: Int, #TODO: decimal
     unitPrice: Int,
 }
+input InvoiceItemInput{
+    text: String,
+    unitCount: Int, #TODO: decimal
+    unitPrice: Int,
+}
 
 type Invoice 
 { 
@@ -14,12 +19,20 @@ type Invoice
     items: [InvoiceItem]
 }
 
+input CreateInvoiceInput
+{ 
+    issueDate: Date!,
+    dueDate: Date!,
+    client: String!,
+    items: [InvoiceItemInput]
+}
+
 extend type Query { 
     invoices: [Invoice],
     invoice(id:String!): Client,
 }
 
-# extend type Mutation {
-#     createClient(input: CreateClientInput): Client,
-#     updateClient(input: CreateClientInput): Client
-# }
+extend type Mutation {
+    createInvoice(input: CreateInvoiceInput): Invoice,
+    # updateClient(input: CreateClientInput): Client
+}

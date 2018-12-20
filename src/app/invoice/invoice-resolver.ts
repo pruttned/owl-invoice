@@ -13,13 +13,13 @@ export const invoiceResolver = {
         client(invoice: any, args: any, context: any) {
             return clientService.getById(invoice.client);
         }
+    },
+    Mutation: {
+        createInvoice(root: any, args: any): Promise<any> {
+            return invoiceService.create(args.input);
+        },
+        //     updateInvoice(root: any, args: any): Promise<any> {
+        //         return invoiceService.update(args.input);
+        //     }
     }
-    // Mutation: {
-    //     createInvoice(root: any, args: any): Promise<any> {
-    //         return invoiceService.create(args.input);
-    //     },
-    //     updateInvoice(root: any, args: any): Promise<any> {
-    //         return invoiceService.update(args.input);
-    //     }
-    // }
 }
