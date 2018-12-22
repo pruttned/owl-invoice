@@ -45,6 +45,8 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app, path: '/graphql' });
 
+app.use('/generated', express.static('../generated'));
+
 app.get('*', function (req: any, res: Response) {
     //res.send('asdasd');
     res.sendFile(path.join(__dirname, '../public/index.html'));
