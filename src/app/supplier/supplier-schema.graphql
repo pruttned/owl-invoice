@@ -1,0 +1,34 @@
+type Supplier 
+{ 
+    name: String!,
+    address: String!,
+    taxId: String!, #DIC
+    businessId: String!, #ICO
+    vatNumber: String!, #IC DPH
+    register: String!,
+    iban: String!,
+    bank: String!,
+    phoneNumber: String,
+    email: String,
+}
+input UpdateSupplierInput
+{ 
+    name: String!,
+    address: String!,
+    taxId: String!, #DIC
+    businessId: String!, #ICO
+    vatNumber: String!, #IC DPH
+    register: String!,
+    iban: String!,
+    bank: String!,
+    phoneNumber: String,
+    email: String,
+}
+
+extend type Query { 
+    supplier: Supplier,
+}
+
+extend type Mutation {
+    updateSupplier(input: UpdateSupplierInput): Supplier
+}
