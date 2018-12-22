@@ -20,6 +20,9 @@ export const invoiceResolver = {
         },
         updateInvoice(root: any, args: any): Promise<any> {
             return invoiceService.update(args.input);
+        },
+        removeInvoice(root: any, args: any): Promise<any> {
+            return invoiceService.remove(args.id);
         }
     }
 }

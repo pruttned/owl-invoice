@@ -12,12 +12,14 @@ import { omit } from 'lodash';
 const glob = promisify(globP);
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
+const unlink = promisify(fs.unlink);
 
 export interface IDocumentFs { //TODO: remove interface
     close(): void;
     getDocument(collection: string, id: string): Promise<any>;
     getCollection(collection: string): Promise<string[]>;
     writeDocument(collection: string, document: Document, options?: WriteDocumentOptions): Promise<any>;
+    removeDocument(collection: string, id: string): Promise<boolean>;
 }
 
 export class DocumentFs implements IDocumentFs {
@@ -63,6 +65,25 @@ export class DocumentFs implements IDocumentFs {
         const fileContent = yaml.safeDump(this.excludeInternalProperties(document));
         await writeFile(file, fileContent, 'utf-8');
         return document;
+    }
+
+    async removeDocument(collection: string, id: string): Promise<boolean> {
+        if (!id) {
+            throw new Error('missing id');
+        }
+
+        const file = this.getDocumentPath(collection, id);
+        try {
+            await unlink(file);
+            this.invalidateDocumentInCache(collection, id);
+            return true;
+        } catch (err) {
+            console.log('err.code', err.code);
+            if (err.code !== 'ENOENT') {
+                throw err;
+            }
+            return false;
+        }
     }
 
     async getCollection(collection: string): Promise<string[]> {

@@ -24,6 +24,9 @@ class InvoiceService {
         invoiceDocument = { ...invoiceDocument, ...invoice };
         return db.invoices.update(invoiceDocument);
     }
+    async remove(id: string): Promise<boolean> {
+        return db.invoices.remove(id);
+    }
 
     getSumPrice(invoice: Invoice): number {
         return invoice.items.reduce((sum, item) => sum + this.getItemSumPrice(item), 0);
