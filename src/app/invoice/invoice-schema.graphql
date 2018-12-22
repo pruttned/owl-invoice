@@ -1,12 +1,12 @@
 type InvoiceItem{
     text: String,
-    unitCount: Int, #TODO: decimal
-    unitPrice: Int,
+    unitCount: Decimal, #TODO: decimal
+    unitPrice: Decimal,
 }
 input InvoiceItemInput{
     text: String,
-    unitCount: Int, #TODO: decimal
-    unitPrice: Int,
+    unitCount: Decimal, #TODO: decimal
+    unitPrice: Decimal,
 }
 
 type Invoice 
