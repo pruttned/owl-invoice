@@ -9,7 +9,7 @@ import { invoiceService } from './invoice-service';
 class InvoicePdfGenerator {
     private outDir = 'generated';
 
-    public async generate(invoice: Invoice, templateDefinition: InvoiceTemplateDefinition): Promise<object> {
+    public async generate(invoice: Invoice, templateDefinition: InvoiceTemplateDefinition): Promise<string> {
         let viewModel = {
             invoice,
             supplier,
@@ -23,7 +23,8 @@ class InvoicePdfGenerator {
         let templatePath = path.join('invoice', templateDefinition.templateName, 'template.html');
         let pdfPath = path.join(this.outDir, `${this.getInvoicePdfName(invoice)}.pdf`);
 
-        return await pdfGenerator.generate(templatePath, viewModel, pdfPath);
+        await pdfGenerator.generate(templatePath, viewModel, pdfPath);
+        return pdfPath;
     }
 
     private getInvoicePdfName(invoice: Invoice): string {
@@ -86,6 +87,6 @@ let invoice: Invoice = {
         { text: 'Este daco', unitCount: 1, unitPrice: 10 }
     ]
 };
-invoicePdfGenerator.generate(invoice, InvoiceTemplateDefinitions.defaultSK).then(stream => {
-    console.log('DONE');
+invoicePdfGenerator.generate(invoice, InvoiceTemplateDefinitions.defaultSK).then(pdfPath => {
+    console.log('DONE', pdfPath);
 }).catch(console.error);
