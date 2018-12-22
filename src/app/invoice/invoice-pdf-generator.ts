@@ -151,7 +151,7 @@ export const invoicePdfGenerator = new InvoicePdfGenerator();
 
 
 
-db.init('example/db1');
-invoicePdfGenerator.generate('201701', InvoiceTemplateDefinitions.defaultSK).then(pdfPath => {
-    console.log('DONE', pdfPath);
-}).catch(console.error);
+// db.init('example/db1');
+// invoicePdfGenerator.generate('201701', InvoiceTemplateDefinitions.defaultSK).then(pdfPath => {
+//     console.log('DONE', pdfPath);
+// }).catch(console.error);
