@@ -4,12 +4,13 @@ import { Language, resources } from '../resources';
 import { htmlHelper } from '../../common/htmlHelper';
 import { db } from '../db';
 import { InvoiceDocument } from './invoice-document';
+import Decimal from 'decimal.js';
 
 class InvoicePdfGenerator {
     private outDir = 'generated';
 
     public async generate(invoiceNumber: string, templateDefinition: InvoiceTemplateDefinition): Promise<string> {
-        let supplier = { //TODO: from service
+        let supplierViewModel = { //TODO: from service
             name: 'Janko Hrasko',
             address: 'Mrkvova 4\n85104 Bratislava',
             taxId: '123456',
@@ -23,12 +24,10 @@ class InvoicePdfGenerator {
         };
 
         let viewModel = {
-            invoice : this.createInvoiceViewModel(await db.invoices.single(invoiceNumber)),
-            supplier,
+            invoice: this.createInvoiceViewModel(await db.invoices.single(invoiceNumber)),
+            supplier: supplierViewModel,
             resources: resources.get(templateDefinition.templateParams.language),
             html: htmlHelper,
-            getItemSumPrice: this.getItemSumPrice,
-            getSumPrice: this.getSumPrice,
             getTemplateResourcePath: (relativePath: string) => `file:///${path.resolve(path.join('templates', 'invoice', templateDefinition.templateName, relativePath))}`,
         };
 
@@ -43,55 +42,57 @@ class InvoicePdfGenerator {
         return invoice.number;
     }
 
-    private getSumPrice(invoice: InvoiceViewModel): number {
-        return invoice.items.reduce((sum, item) => sum + this.getItemSumPrice(item), 0);
-    }
-
-    private getItemSumPrice(invoiceItem: InvoiceItemViewModel): number {
-        return invoiceItem.unitPrice * invoiceItem.unitCount;
-    }
-
-    private createInvoiceViewModel(document: InvoiceDocument) : InvoiceViewModel{
+    private createInvoiceViewModel(document: InvoiceDocument): InvoiceViewModel {
         //TODO
 
         let dueDate = new Date();
         dueDate.setDate(dueDate.getDate() + 10);
-
-        return {
-            client: {
+        return new InvoiceViewModel(
+            '2018005',
+            '2018005',
+            new Date(),
+            dueDate,
+            {
                 name: 'Super mega firma',
                 address: 'Super ulica 25\n85104 Bratislava',
                 businessId: '12345678',
                 taxId: '1234567890',
                 vatNumber: 'SK1234567890'
             },
-            dueDate: dueDate,
-            issueDate: new Date(),
-            number: '2018005',
-            variableSymbol: '2018005',
-            items: [
-                { text: 'Prace za mesiac jun 2018', unitCount: 1, unitPrice: 10 },
-                { text: 'Nieco ine', unitCount: 2, unitPrice: 20 },
-                { text: 'Este daco', unitCount: 1, unitPrice: 10 }
+            [
+                new InvoiceItemViewModel('Prace za mesiac jun 2018', new Decimal(1), new Decimal(10)),
+                new InvoiceItemViewModel('Prace za mesiac jun 2018', new Decimal(2), new Decimal(20)),
+                new InvoiceItemViewModel('Prace za mesiac jun 2018', new Decimal(1), new Decimal(10))
             ]
-        };
+        );
     }
 }
 
-export interface InvoiceViewModel {
-    number: string;
-    variableSymbol: string;
-    issueDate: Date;
-    dueDate: Date;
+class InvoiceViewModel {
+    constructor(
+        public number: string,
+        public variableSymbol: string,
+        public issueDate: Date,
+        public dueDate: Date,
+        public client: ClientViewModel,
+        public items: InvoiceItemViewModel[]
+    ) { }
 
-    client: ClientViewModel;
-    items: InvoiceItemViewModel[];
+    get sumPrice(): Decimal {
+        return this.items.reduce((sum, item) => sum.add(item.sumPrice), new Decimal(0));
+    }
 }
 
-interface InvoiceItemViewModel {
-    text: string;
-    unitCount: number;
-    unitPrice: number;
+class InvoiceItemViewModel {
+    constructor(
+        public text: string,
+        public unitCount: Decimal,
+        public unitPrice: Decimal
+    ) { }
+
+    get sumPrice(): Decimal {
+        return this.unitPrice.mul(this.unitCount);
+    }
 }
 
 interface ClientViewModel {
