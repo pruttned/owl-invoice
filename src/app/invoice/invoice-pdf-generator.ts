@@ -4,7 +4,7 @@ import path from 'path';
 import { Language, resources } from '../resources';
 import { htmlHelper } from '../../common/htmlHelper';
 import { supplier } from '../supplier/supplier';
-import { invoiceService } from './invoice-service';
+import { InvoiceItem } from './invoice-document';
 
 class InvoicePdfGenerator {
     private outDir = 'generated';
@@ -15,8 +15,8 @@ class InvoicePdfGenerator {
             supplier,
             resources: resources.get(templateDefinition.templateParams.language),
             html: htmlHelper,
-            getItemSumPrice: invoiceService.getItemSumPrice,
-            getSumPrice: invoiceService.getSumPrice,
+            getItemSumPrice: this.getItemSumPrice,
+            getSumPrice: this.getSumPrice,
             getTemplateResourcePath: (relativePath: string) => `file:///${path.resolve(path.join('templates', 'invoice', templateDefinition.templateName, relativePath))}`,
         };
 
@@ -29,6 +29,14 @@ class InvoicePdfGenerator {
 
     private getInvoicePdfName(invoice: Invoice): string {
         return invoice.number;
+    }
+
+    private getSumPrice(invoice: Invoice): number {
+        return invoice.items.reduce((sum, item) => sum + this.getItemSumPrice(item), 0);
+    }
+
+    private getItemSumPrice(invoiceItem: InvoiceItem): number {
+        return invoiceItem.unitPrice * invoiceItem.unitCount;
     }
 }
 

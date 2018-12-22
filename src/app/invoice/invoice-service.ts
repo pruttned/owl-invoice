@@ -24,15 +24,7 @@ class InvoiceService {
         invoiceDocument = { ...invoiceDocument, ...invoice };
         return db.invoices.update(invoiceDocument);
     }
-
-    getSumPrice(invoice: Invoice): number {
-        return invoice.items.reduce((sum, item) => sum + this.getItemSumPrice(item), 0);
-    }
-
-    getItemSumPrice(invoiceItem: InvoiceItem): number {
-        return invoiceItem.unitPrice * invoiceItem.unitCount;
-    }
-
+    
     async getNextNumberInYear(year: number): Promise<string> {
         const idsInYear = await db.invoices.getAllIds({ id: `${year}*` });
         if (!idsInYear.length) {
