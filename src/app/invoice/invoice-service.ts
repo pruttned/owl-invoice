@@ -1,6 +1,5 @@
 import { InvoiceDocument, InvoiceItem as InvoiceItemDoc } from './invoice-document';
 import { db } from '../db';
-import { Invoice, InvoiceItem } from "./invoice";
 import { max, padStart } from 'lodash';
 
 class InvoiceService {
@@ -24,7 +23,7 @@ class InvoiceService {
         invoiceDocument = { ...invoiceDocument, ...invoice };
         return db.invoices.update(invoiceDocument);
     }
-    
+
     async getNextNumberInYear(year: number): Promise<string> {
         const idsInYear = await db.invoices.getAllIds({ id: `${year}*` });
         if (!idsInYear.length) {
