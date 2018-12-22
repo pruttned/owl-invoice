@@ -3,8 +3,9 @@ import path from 'path';
 import { Language, resources } from '../resources';
 import { htmlHelper } from '../../common/htmlHelper';
 import { db } from '../db';
-import { InvoiceDocument } from './invoice-document';
+import { InvoiceDocument, InvoiceItem } from './invoice-document';
 import Decimal from 'decimal.js';
+import { ClientDocument } from '../client/client-document';
 
 class InvoicePdfGenerator {
     private outDir = 'generated';
@@ -24,7 +25,7 @@ class InvoicePdfGenerator {
         };
 
         let viewModel = {
-            invoice: this.createInvoiceViewModel(await db.invoices.single(invoiceNumber)),
+            invoice: await this.getInvoice(invoiceNumber),
             supplier: supplierViewModel,
             resources: resources.get(templateDefinition.templateParams.language),
             html: htmlHelper,
@@ -42,65 +43,65 @@ class InvoicePdfGenerator {
         return invoice.number;
     }
 
-    private createInvoiceViewModel(document: InvoiceDocument): InvoiceViewModel {
-        //TODO
-
-        let dueDate = new Date();
-        dueDate.setDate(dueDate.getDate() + 10);
-        return new InvoiceViewModel(
-            '2018005',
-            '2018005',
-            new Date(),
-            dueDate,
-            {
-                name: 'Super mega firma',
-                address: 'Super ulica 25\n85104 Bratislava',
-                businessId: '12345678',
-                taxId: '1234567890',
-                vatNumber: 'SK1234567890'
-            },
-            [
-                new InvoiceItemViewModel('Prace za mesiac jun 2018', new Decimal(1), new Decimal(10)),
-                new InvoiceItemViewModel('Prace za mesiac jun 2018', new Decimal(2), new Decimal(20)),
-                new InvoiceItemViewModel('Prace za mesiac jun 2018', new Decimal(1), new Decimal(10))
-            ]
-        );
+    private async getInvoice(number: string): Promise<InvoiceViewModel> {
+        let invoice = await db.invoices.single(number);
+        let client = await db.clients.single(invoice.client);
+        return new InvoiceViewModel(invoice, client);
     }
 }
 
 class InvoiceViewModel {
-    constructor(
-        public number: string,
-        public variableSymbol: string,
-        public issueDate: Date,
-        public dueDate: Date,
-        public client: ClientViewModel,
-        public items: InvoiceItemViewModel[]
-    ) { }
+    number: string;
+    variableSymbol: string;
+    issueDate: Date;
+    dueDate: Date;
+    client: ClientViewModel;
+    items: InvoiceItemViewModel[];
 
     get sumPrice(): Decimal {
         return this.items.reduce((sum, item) => sum.add(item.sumPrice), new Decimal(0));
     }
+
+    constructor(invoiceDocument: InvoiceDocument, clientDocument: ClientDocument) {
+        this.number = invoiceDocument.id;
+        this.variableSymbol = invoiceDocument.id;
+        this.issueDate = invoiceDocument.issueDate;
+        this.dueDate = invoiceDocument.dueDate;
+        this.client = new ClientViewModel(clientDocument);
+        this.items = invoiceDocument.items ? invoiceDocument.items.map(item => new InvoiceItemViewModel(item)) : []
+    }
 }
 
 class InvoiceItemViewModel {
-    constructor(
-        public text: string,
-        public unitCount: Decimal,
-        public unitPrice: Decimal
-    ) { }
+    text: string;
+    unitCount: Decimal;
+    unitPrice: Decimal;
 
     get sumPrice(): Decimal {
         return this.unitPrice.mul(this.unitCount);
     }
+
+    constructor(item: InvoiceItem) {
+        this.text = item.text;
+        this.unitCount = item.unitCount;
+        this.unitPrice = item.unitPrice;
+    }
 }
 
-interface ClientViewModel {
+class ClientViewModel {
     name: string;
     address: string;
     taxId: string; //DIC
     businessId: string; //ICO
     vatNumber: string; //IC DPH    
+
+    constructor(document: ClientDocument) {
+        this.name = document.name;
+        this.address = document.address;
+        this.taxId = document.taxId;
+        this.businessId = document.businessId;
+        this.vatNumber = document.vatNumber;
+    }
 }
 
 // interface Supplier {
