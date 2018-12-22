@@ -1,3 +1,4 @@
 type Query,
 type Mutation,
 scalar Date,
+scalar Decimal,

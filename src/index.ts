@@ -8,6 +8,7 @@ import { clientResolver } from './app/client/client-resolver';
 import { invoiceResolver } from './app/invoice/invoice-resolver';
 import glob from 'glob';
 import { GraphQLDate } from 'graphql-iso-date';
+import { GraphQLDecimal } from './common/graphql/decimal';
 
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || 'localhost';
@@ -18,7 +19,8 @@ const typeDefs = glob.sync(path.join(__dirname, '**/*.graphql'))
 db.init('e:\\work\\git\\owl-invoice\\example\\db1');
 
 const scalarResolver = {
-    Date: GraphQLDate
+    Date: GraphQLDate,
+    Decimal: GraphQLDecimal
 }
 const app = express();
 //https://www.apollographql.com/docs/apollo-server/essentials/data.html#context
