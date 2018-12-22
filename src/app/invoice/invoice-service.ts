@@ -23,6 +23,9 @@ class InvoiceService {
         invoiceDocument = { ...invoiceDocument, ...invoice };
         return db.invoices.update(invoiceDocument);
     }
+    async remove(id: string): Promise<boolean> {
+        return db.invoices.remove(id);
+    }
 
     async getNextNumberInYear(year: number): Promise<string> {
         const idsInYear = await db.invoices.getAllIds({ id: `${year}*` });

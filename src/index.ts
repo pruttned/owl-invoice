@@ -9,6 +9,7 @@ import { invoiceResolver } from './app/invoice/invoice-resolver';
 import glob from 'glob';
 import { GraphQLDate } from 'graphql-iso-date';
 import { GraphQLDecimal } from './common/graphql/decimal';
+import { supplierResolver } from './app/supplier/supplier-resolver';
 
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || 'localhost';
@@ -26,7 +27,11 @@ const app = express();
 //https://www.apollographql.com/docs/apollo-server/essentials/data.html#context
 const server = new ApolloServer({
     typeDefs,
-    resolvers: merge(scalarResolver, clientResolver, invoiceResolver),
+    resolvers: merge(
+        scalarResolver,
+        clientResolver,
+        invoiceResolver,
+        supplierResolver),
     context: async () => ({
         // someNumber: await Promise.resolve(123),
         // loaders: {

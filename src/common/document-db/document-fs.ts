@@ -8,16 +8,20 @@ import NodeCache from 'node-cache';
 import { DOC_FILE_GLOB, DOC_FILE_EXT, getCollectionFromPath, getIdFromPath } from './document-path';
 import { Document } from './document';
 import { omit } from 'lodash';
+import mkdirpP from 'mkdirp';
 
 const glob = promisify(globP);
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
+const unlink = promisify(fs.unlink);
+const mkdirp = promisify(mkdirpP);
 
 export interface IDocumentFs { //TODO: remove interface
     close(): void;
     getDocument(collection: string, id: string): Promise<any>;
     getCollection(collection: string): Promise<string[]>;
     writeDocument(collection: string, document: Document, options?: WriteDocumentOptions): Promise<any>;
+    removeDocument(collection: string, id: string): Promise<boolean>;
 }
 
 export class DocumentFs implements IDocumentFs {
@@ -61,8 +65,30 @@ export class DocumentFs implements IDocumentFs {
 
         this.invalidateDocumentInCache(collection, document.id);
         const fileContent = yaml.safeDump(this.excludeInternalProperties(document));
+        
+        await mkdirp(path.dirname(file));
         await writeFile(file, fileContent, 'utf-8');
+        
         return document;
+    }
+
+    async removeDocument(collection: string, id: string): Promise<boolean> {
+        if (!id) {
+            throw new Error('missing id');
+        }
+
+        const file = this.getDocumentPath(collection, id);
+        try {
+            await unlink(file);
+            this.invalidateDocumentInCache(collection, id);
+            return true;
+        } catch (err) {
+            console.log('err.code', err.code);
+            if (err.code !== 'ENOENT') {
+                throw err;
+            }
+            return false;
+        }
     }
 
     async getCollection(collection: string): Promise<string[]> {

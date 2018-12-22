@@ -62,6 +62,9 @@ export class DocumentCollection<T extends Document> {
     update(document: T): Promise<T> {
         return this.documentFs.writeDocument(this.name, document);
     }
+    remove(id: string): Promise<boolean> {
+        return this.documentFs.removeDocument(this.name, id);
+    }
 
     private fromDb(document: T): T {
         return this.documentProcessor ? this.documentProcessor.fromDb(document) : document;

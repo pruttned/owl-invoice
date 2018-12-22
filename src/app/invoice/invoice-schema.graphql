@@ -38,10 +38,11 @@ input UpdateInvoiceInput
 
 extend type Query { 
     invoices: [Invoice],
-    invoice(id:String!): Client,
+    invoice(id:String!): Invoice,
 }
 
 extend type Mutation {
     createInvoice(input: CreateInvoiceInput): Invoice,
     updateInvoice(input: UpdateInvoiceInput): Invoice
+    removeInvoice(id:String): Boolean
 }
