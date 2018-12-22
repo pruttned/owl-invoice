@@ -2,11 +2,13 @@ import { pdfGenerator } from '../../common/pdf-generator';
 import path from 'path';
 import { Language, resources } from '../resources';
 import { htmlHelper } from '../../common/htmlHelper';
+import { db } from '../db';
+import { InvoiceDocument } from './invoice-document';
 
 class InvoicePdfGenerator {
     private outDir = 'generated';
 
-    public async generate(invoice: Invoice, templateDefinition: InvoiceTemplateDefinition): Promise<string> {
+    public async generate(invoiceNumber: string, templateDefinition: InvoiceTemplateDefinition): Promise<string> {
         let supplier = { //TODO: from service
             name: 'Janko Hrasko',
             address: 'Mrkvova 4\n85104 Bratislava',
@@ -21,7 +23,7 @@ class InvoicePdfGenerator {
         };
 
         let viewModel = {
-            invoice,
+            invoice : this.createInvoiceViewModel(await db.invoices.single(invoiceNumber)),
             supplier,
             resources: resources.get(templateDefinition.templateParams.language),
             html: htmlHelper,
@@ -31,42 +33,68 @@ class InvoicePdfGenerator {
         };
 
         let templatePath = path.join('invoice', templateDefinition.templateName, 'template.html');
-        let pdfPath = path.join(this.outDir, `${this.getInvoicePdfName(invoice)}.pdf`);
+        let pdfPath = path.join(this.outDir, `${this.getInvoicePdfName(viewModel.invoice)}.pdf`);
 
         await pdfGenerator.generate(templatePath, viewModel, pdfPath);
         return pdfPath;
     }
 
-    private getInvoicePdfName(invoice: Invoice): string {
+    private getInvoicePdfName(invoice: InvoiceViewModel): string {
         return invoice.number;
     }
 
-    private getSumPrice(invoice: Invoice): number {
+    private getSumPrice(invoice: InvoiceViewModel): number {
         return invoice.items.reduce((sum, item) => sum + this.getItemSumPrice(item), 0);
     }
 
-    private getItemSumPrice(invoiceItem: InvoiceItem): number {
+    private getItemSumPrice(invoiceItem: InvoiceItemViewModel): number {
         return invoiceItem.unitPrice * invoiceItem.unitCount;
+    }
+
+    private createInvoiceViewModel(document: InvoiceDocument) : InvoiceViewModel{
+        //TODO
+
+        let dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + 10);
+
+        return {
+            client: {
+                name: 'Super mega firma',
+                address: 'Super ulica 25\n85104 Bratislava',
+                businessId: '12345678',
+                taxId: '1234567890',
+                vatNumber: 'SK1234567890'
+            },
+            dueDate: dueDate,
+            issueDate: new Date(),
+            number: '2018005',
+            variableSymbol: '2018005',
+            items: [
+                { text: 'Prace za mesiac jun 2018', unitCount: 1, unitPrice: 10 },
+                { text: 'Nieco ine', unitCount: 2, unitPrice: 20 },
+                { text: 'Este daco', unitCount: 1, unitPrice: 10 }
+            ]
+        };
     }
 }
 
-export interface Invoice {
+export interface InvoiceViewModel {
     number: string;
     variableSymbol: string;
     issueDate: Date;
     dueDate: Date;
 
-    client: Client;
-    items: InvoiceItem[];
+    client: ClientViewModel;
+    items: InvoiceItemViewModel[];
 }
 
-interface InvoiceItem {
+interface InvoiceItemViewModel {
     text: string;
     unitCount: number;
     unitPrice: number;
 }
 
-interface Client {
+interface ClientViewModel {
     name: string;
     address: string;
     taxId: string; //DIC
@@ -122,26 +150,7 @@ export const invoicePdfGenerator = new InvoicePdfGenerator();
 
 
 
-let dueDate = new Date();
-dueDate.setDate(dueDate.getDate() + 10);
-let invoice: Invoice = {
-    client: {
-        name: 'Super mega firma',
-        address: 'Super ulica 25\n85104 Bratislava',
-        businessId: '12345678',
-        taxId: '1234567890',
-        vatNumber: 'SK1234567890'
-    },
-    dueDate: dueDate,
-    issueDate: new Date(),
-    number: '2018005',
-    variableSymbol: '2018005',
-    items: [
-        { text: 'Prace za mesiac jun 2018', unitCount: 1, unitPrice: 10 },
-        { text: 'Nieco ine', unitCount: 2, unitPrice: 20 },
-        { text: 'Este daco', unitCount: 1, unitPrice: 10 }
-    ]
-};
-invoicePdfGenerator.generate(invoice, InvoiceTemplateDefinitions.defaultSK).then(pdfPath => {
+db.init('example/db1');
+invoicePdfGenerator.generate('201701', InvoiceTemplateDefinitions.defaultSK).then(pdfPath => {
     console.log('DONE', pdfPath);
 }).catch(console.error);
