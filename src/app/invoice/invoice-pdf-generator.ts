@@ -1,4 +1,3 @@
-import { Stream } from 'stream';
 import { Invoice } from './invoice';
 import { pdfGenerator } from '../../common/pdf-generator';
 import path from 'path';
@@ -8,7 +7,9 @@ import { supplier } from '../supplier/supplier';
 import { invoiceService } from './invoice-service';
 
 class InvoicePdfGenerator {
-    public async generate(invoice: Invoice, templateDefinition: InvoiceTemplateDefinition): Promise<Stream> {
+    private outDir = 'generated';
+
+    public async generate(invoice: Invoice, templateDefinition: InvoiceTemplateDefinition): Promise<object> {
         let viewModel = {
             invoice,
             supplier,
@@ -18,7 +19,15 @@ class InvoicePdfGenerator {
             getSumPrice: invoiceService.getSumPrice,
             getTemplateResourcePath: (relativePath: string) => `file:///${path.resolve(path.join('templates', 'invoice', templateDefinition.templateName, relativePath))}`,
         };
-        return await pdfGenerator.generate(path.join('invoice', templateDefinition.templateName, 'template.html'), viewModel);
+
+        let templatePath = path.join('invoice', templateDefinition.templateName, 'template.html');
+        let pdfPath = path.join(this.outDir, `${this.getInvoicePdfName(invoice)}.pdf`);
+
+        return await pdfGenerator.generate(templatePath, viewModel, pdfPath);
+    }
+
+    private getInvoicePdfName(invoice: Invoice): string {
+        return invoice.number;
     }
 }
 
@@ -79,5 +88,4 @@ let invoice: Invoice = {
 };
 invoicePdfGenerator.generate(invoice, InvoiceTemplateDefinitions.defaultSK).then(stream => {
     console.log('DONE');
-    // stream.pipe(fs.createWriteStream('out2.pdf'));
 }).catch(console.error);
