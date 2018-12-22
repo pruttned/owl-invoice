@@ -18,8 +18,8 @@ export const invoiceResolver = {
         createInvoice(root: any, args: any): Promise<any> {
             return invoiceService.create(args.input);
         },
-        //     updateInvoice(root: any, args: any): Promise<any> {
-        //         return invoiceService.update(args.input);
-        //     }
+        updateInvoice(root: any, args: any): Promise<any> {
+            return invoiceService.update(args.input);
+        }
     }
 }

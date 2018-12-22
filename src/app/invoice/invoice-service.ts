@@ -19,8 +19,10 @@ class InvoiceService {
         };
         return db.invoices.create(invoiceDocument);
     }
-    update(invoice: InvoiceDocument): Promise<InvoiceDocument> {
-        return db.invoices.update(invoice);
+    async update(invoice: InvoiceUpdateModel): Promise<InvoiceDocument> {
+        let invoiceDocument = await db.invoices.single(invoice.id);
+        invoiceDocument = { ...invoiceDocument, ...invoice };
+        return db.invoices.update(invoiceDocument);
     }
 
     getSumPrice(invoice: Invoice): number {
@@ -45,6 +47,14 @@ class InvoiceService {
 export const invoiceService = new InvoiceService();
 
 interface InvoiceCreateModel {
+    issueDate: Date,
+    dueDate: Date,
+    client: string,
+    items: InvoiceItemDoc[]
+}
+
+interface InvoiceUpdateModel {
+    id: string,
     issueDate: Date,
     dueDate: Date,
     client: string,

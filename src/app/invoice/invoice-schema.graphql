@@ -27,6 +27,15 @@ input CreateInvoiceInput
     items: [InvoiceItemInput]
 }
 
+input UpdateInvoiceInput
+{ 
+    id: String!,
+    issueDate: Date!,
+    dueDate: Date!,
+    client: String!,
+    items: [InvoiceItemInput]
+}
+
 extend type Query { 
     invoices: [Invoice],
     invoice(id:String!): Client,
@@ -34,5 +43,5 @@ extend type Query {
 
 extend type Mutation {
     createInvoice(input: CreateInvoiceInput): Invoice,
-    # updateClient(input: CreateClientInput): Client
+    updateInvoice(input: UpdateInvoiceInput): Invoice
 }
