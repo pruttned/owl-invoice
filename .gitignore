@@ -81,4 +81,4 @@ typings/
 .dynamodb/ 
 
 dist/
-
+generated/

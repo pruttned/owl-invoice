@@ -1,6 +1,5 @@
 import { InvoiceDocument, InvoiceItem as InvoiceItemDoc } from './invoice-document';
 import { db } from '../db';
-import { Invoice, InvoiceItem } from "./invoice";
 import { max, padStart } from 'lodash';
 
 class InvoiceService {
@@ -26,14 +25,6 @@ class InvoiceService {
     }
     async remove(id: string): Promise<boolean> {
         return db.invoices.remove(id);
-    }
-
-    getSumPrice(invoice: Invoice): number {
-        return invoice.items.reduce((sum, item) => sum + this.getItemSumPrice(item), 0);
-    }
-
-    getItemSumPrice(invoiceItem: InvoiceItem): number {
-        return invoiceItem.unitPrice * invoiceItem.unitCount;
     }
 
     async getNextNumberInYear(year: number): Promise<string> {

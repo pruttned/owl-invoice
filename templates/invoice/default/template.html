@@ -242,7 +242,7 @@
                     <%= item.text %>
                 </div>
                 <div>
-                    <%= getItemSumPrice(item) %> €
+                    <%= item.sumPrice %> €
                 </div>
             </div>
             <% }); %>
@@ -252,7 +252,7 @@
                     <%= html.capitalizeFirstLetter(resources.invoicePrice) %>
                 </div>
                 <div class="item strong item-sum-price-value">
-                    <%= getSumPrice(invoice) %> €
+                    <%= invoice.sumPrice %> €
                 </div>
             </div>
         </div>
@@ -265,7 +265,7 @@
                         <%= html.capitalizeFirstLetter(resources.invoicePrice) %>:
                     </td>
                     <td class="payment-info-price-value strong payment-info-value">
-                        <%= getSumPrice(invoice) %> €
+                        <%= invoice.sumPrice %> €
                     </td>
                 </tr>
                 <tr>
