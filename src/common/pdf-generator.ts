@@ -5,9 +5,11 @@ import fs from 'fs';
 import path from 'path';
 
 class PdfGenerator {
-    public generate(templatePath: string, model: any): Promise<Stream> {
+    private templatesDir = 'templates';
+
+    public generate(templatePath: string, model: any, pdfPath: string): Promise<object> {
         return new Promise((resolve, reject) => {
-            ejs.renderFile(path.join('templates', templatePath), model, { cache: true }, (ejsError: Error, html?: string) => {
+            ejs.renderFile(path.join(this.templatesDir, templatePath), model, { cache: true }, (ejsError: Error, html?: string) => {
                 if (ejsError || !html) {
                     reject(ejsError || new Error('No result returned from the template engine.'));
                 } else {
@@ -15,24 +17,23 @@ class PdfGenerator {
                         if (wkError) {
                             reject(wkError);
                         } else {
-                            //TODO: what to return?
-                            // resolve(pdfStream);
-                            pdfStream.pipe(fs.createWriteStream('out.pdf'));
+                            this.ensureDir(pdfPath);
+                            pdfStream.pipe(fs.createWriteStream(pdfPath)).on('close', () => {
+                                resolve();
+                            });
                         }
                     });
                 }
             });
         });
     }
+
+    private ensureDir(pdfPath: string) {
+        let pdfDir = path.dirname(pdfPath);
+        if (!fs.existsSync(pdfDir)) {
+            fs.mkdirSync(pdfDir);
+        }
+    }
 }
 
 export const pdfGenerator = new PdfGenerator();
-
-// let invoice = {
-//     sum: 2100,
-//     client: 'some client',
-//     test: 'ahoj'
-// };
-// new PdfGenerator().generate('invoice-sk.html', invoice).then(stream => {
-//     //  stream.pipe(fs.createWriteStream('out2.pdf'));
-// }).catch(console.error);
