@@ -1,5 +1,5 @@
 import { ClientDocument } from './client/client-document';
-import { InvoiceDocument } from './invoice/invoice-document';
+import { InvoiceDocument, InvoiceDocumentProcessor } from './invoice/invoice-document';
 import { DocumentCollection } from './../common/document-db/document-collection';
 import { DocumentFsWatcher } from './../common/document-db/document-fs-watcher';
 import { DocumentFs } from './../common/document-db/document-fs';
@@ -26,7 +26,7 @@ class Db {
         this.documentFsWatcher = new DocumentFsWatcher(dir);
         this.documentFs = new DocumentFs(dir, this.documentFsWatcher);
 
-        this._invoices = new DocumentCollection<InvoiceDocument>('invoice', this.documentFs);
+        this._invoices = new DocumentCollection<InvoiceDocument>('invoice', this.documentFs, new InvoiceDocumentProcessor());
         this._clients = new DocumentCollection<ClientDocument>('client', this.documentFs);
     }
 

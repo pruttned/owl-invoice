@@ -7,9 +7,10 @@ import { Document } from './document';
 import { find } from 'lodash';
 import { Namespace } from 'protobufjs';
 import { isEmpty } from 'lodash';
+import { DocumentProcessor } from './document-processor';
 
 export class DocumentCollection<T extends Document> {
-    constructor(private name: string, private documentFs: IDocumentFs) {
+    constructor(private name: string, private documentFs: IDocumentFs, private documentProcessor?: DocumentProcessor<T>) {
     }
 
     async single(id: string): Promise<T> {
@@ -22,7 +23,8 @@ export class DocumentCollection<T extends Document> {
     async singleOrDefault(id: string): Promise<T | undefined> {
         let collection = await this.documentFs.getCollection(this.name);
         if (collection.indexOf(id) >= 0) {
-            return await this.documentFs.getDocument(this.name, id);
+            let document = await this.documentFs.getDocument(this.name, id);
+            return document && this.fromDb(document);
         }
     }
 
@@ -51,7 +53,7 @@ export class DocumentCollection<T extends Document> {
             }
         }
 
-        return docs;
+        return docs.map(this.fromDb);
     }
 
     create(document: T): Promise<T> {
@@ -59,5 +61,9 @@ export class DocumentCollection<T extends Document> {
     }
     update(document: T): Promise<T> {
         return this.documentFs.writeDocument(this.name, document);
+    }
+
+    private fromDb(document: T): T {
+        return this.documentProcessor ? this.documentProcessor.fromDb(document) : document;
     }
 }
