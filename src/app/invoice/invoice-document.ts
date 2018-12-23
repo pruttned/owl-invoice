@@ -3,7 +3,6 @@ import { DocumentProcessor } from '../../common/document-db/document-processor';
 
 export interface InvoiceDocument {
     id: string;
-    number: string, //TODO: remove?
     client: string,
     issueDate: Date,
     dueDate: Date,
