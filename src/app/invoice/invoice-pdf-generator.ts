@@ -6,27 +6,16 @@ import { db } from '../db';
 import { InvoiceDocument, InvoiceItem } from './invoice-document';
 import Decimal from 'decimal.js';
 import { ClientDocument } from '../client/client-document';
+import { supplierService } from '../supplier/supplier-service';
+import { SupplierDocument } from '../supplier/supplier-document';
 
 class InvoicePdfGenerator {
     private outDir = 'generated';
 
     public async generate(invoiceNumber: string, templateDefinition: InvoiceTemplateDefinition): Promise<string> {
-        let supplierViewModel = { //TODO: from service
-            name: 'Janko Hrasko',
-            address: 'Mrkvova 4\n85104 Bratislava',
-            taxId: '123456',
-            businessId: '12345678',
-            vatNumber: 'SK12345678',
-            register: 'zivnostensky register 110-259059',
-            iban: 'SK77 0900 0000 0051 0826 7519',
-            bank: 'Slovenská sporiteľna, as (GIBASKBX)',
-            phoneNumber: '0904 221 445',
-            email: 'hrasko@gmail.com'
-        };
-
         let viewModel = {
             invoice: await this.getInvoice(invoiceNumber),
-            supplier: supplierViewModel,
+            supplier: await this.getSupplier(),
             resources: resources.get(templateDefinition.templateParams.language),
             html: htmlHelper,
             getTemplateResourcePath: (relativePath: string) => `file:///${path.resolve(path.join('templates', 'invoice', templateDefinition.templateName, relativePath))}`,
@@ -44,9 +33,15 @@ class InvoicePdfGenerator {
     }
 
     private async getInvoice(number: string): Promise<InvoiceViewModel> {
-        let invoice = await db.invoices.single(number);
-        let client = await db.clients.single(invoice.client);
+        let invoice = await db.invoices.single(number); //TODO: use serviec
+        let client = await db.clients.single(invoice.client); //TODO: use service
         return new InvoiceViewModel(invoice, client);
+    }
+
+    private async getSupplier(): Promise<SupplierViewModel> {
+        let supplier = await supplierService.get();
+        if (!supplier) throw new Error('no supplier');
+        return new SupplierViewModel(supplier);
     }
 }
 
@@ -104,18 +99,31 @@ class ClientViewModel {
     }
 }
 
-// interface Supplier {
-//     name: string;
-//     address: string;
-//     taxId: string; //DIC
-//     businessId: string; //ICO
-//     vatNumber: string; //IC DPH
-//     register: string;
-//     iban: string;
-//     bank: string;
-//     phoneNumber: string;
-//     email: string;
-// }
+class SupplierViewModel {
+    name: string;
+    address: string;
+    taxId: string; //DIC
+    businessId: string; //ICO
+    vatNumber: string; //IC DPH
+    register: string;
+    iban: string;
+    bank: string;
+    phoneNumber: string;
+    email: string;
+
+    constructor(document: SupplierDocument) {
+        this.name = document.name;
+        this.address = document.address;
+        this.taxId = document.taxId;
+        this.businessId = document.businessId;
+        this.vatNumber = document.vatNumber;
+        this.register = document.register;
+        this.iban = document.iban;
+        this.bank = document.bank;
+        this.phoneNumber = document.phoneNumber;
+        this.email = document.email;
+    }
+}
 
 interface InvoiceTemplateDefinition {
     templateName: string;
