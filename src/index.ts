@@ -1,4 +1,5 @@
-import express, { Response } from 'express';
+import express, { Response, Request } from 'express';
+import bodyParser from 'body-parser';
 import { ApolloServer, gql } from 'apollo-server-express';
 import path from 'path';
 import fs from 'fs';
@@ -10,6 +11,7 @@ import glob from 'glob';
 import { GraphQLDate } from 'graphql-iso-date';
 import { GraphQLDecimal } from './common/graphql/decimal';
 import { supplierResolver } from './app/supplier/supplier-resolver';
+import { invoicePdfGenerator } from './app/invoice/invoice-pdf-generator';
 
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || 'localhost';
@@ -49,13 +51,21 @@ const server = new ApolloServer({
 });
 
 server.applyMiddleware({ app, path: '/graphql' });
+app.use(bodyParser.json());
 
-app.use('/generated', express.static('../generated'));
+// app.get('*', function (req: any, res: Response) {
+//     //res.send('asdasd');
+//     res.sendFile(path.join(__dirname, '../public/index.html'));
+// });
 
-app.get('*', function (req: any, res: Response) {
+app.post('/generateInvoicePdf', async function (req: Request, res: Response) {
+    let pdfPath = await invoicePdfGenerator.generate(req.body.invoiceId, req.body.templateDefinitionId);
+    res.send(pdfPath);
     //res.send('asdasd');
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+    // res.sendFile(path.join(__dirname, '../public/index.html'));
 });
+
+// app.use('/generated', express.static(path.join(__dirname, '../generated')));
 
 app.listen(PORT, () => {
     console.log(`Go to http://${HOST}:${PORT}${server.graphqlPath} to run queries!`)

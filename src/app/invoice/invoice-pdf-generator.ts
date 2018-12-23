@@ -9,13 +9,16 @@ import { supplierService } from '../supplier/supplier-service';
 import { SupplierDocument } from '../supplier/supplier-document';
 import { invoiceService } from './invoice-service';
 import { clientService } from '../client/client-service';
+import { invoiceTemplateDefinitionService } from './invoice-template-definition-service';
+import { db } from '../db';
 
 class InvoicePdfGenerator {
     private outDir = 'generated';
 
-    public async generate(invoiceNumber: string, templateDefinition: InvoiceTemplateDefinition): Promise<string> {
+    public async generate(invoiceId: string, templateDefinitionId: string): Promise<string> {
+        let templateDefinition = invoiceTemplateDefinitionService.getById(templateDefinitionId);
         let viewModel = {
-            invoice: await this.getInvoice(invoiceNumber),
+            invoice: await this.getInvoice(invoiceId),
             supplier: await this.getSupplier(),
             resources: resources.get(templateDefinition.templateParams.language),
             html: htmlHelper,
@@ -126,34 +129,6 @@ class SupplierViewModel {
     }
 }
 
-interface InvoiceTemplateDefinition {
-    templateName: string;
-    templateParams: InvoiceTemplateParams;
-    displayName: string;
-}
-
-interface InvoiceTemplateParams {
-    language: Language;
-}
-
-export class InvoiceTemplateDefinitions {
-    public static defaultSK: InvoiceTemplateDefinition = {
-        templateName: 'default',
-        templateParams: {
-            language: Language.SK
-        },
-        displayName: 'SK'
-    };
-
-    public static defaultAT: InvoiceTemplateDefinition = {
-        templateName: 'default',
-        templateParams: {
-            language: Language.AT
-        },
-        displayName: 'AT'
-    };
-}
-
 export const invoicePdfGenerator = new InvoicePdfGenerator();
 
 
@@ -162,6 +137,6 @@ export const invoicePdfGenerator = new InvoicePdfGenerator();
 
 
 // db.init('example/db1');
-// invoicePdfGenerator.generate('201701', InvoiceTemplateDefinitions.defaultSK).then(pdfPath => {
+// invoicePdfGenerator.generate('201701', 'defaultSK').then(pdfPath => {
 //     console.log('DONE', pdfPath);
 // }).catch(console.error);
