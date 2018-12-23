@@ -2,12 +2,13 @@ import { pdfGenerator } from '../../common/pdf-generator';
 import path from 'path';
 import { Language, resources } from '../resources';
 import { htmlHelper } from '../../common/htmlHelper';
-import { db } from '../db';
 import { InvoiceDocument, InvoiceItem } from './invoice-document';
 import Decimal from 'decimal.js';
 import { ClientDocument } from '../client/client-document';
 import { supplierService } from '../supplier/supplier-service';
 import { SupplierDocument } from '../supplier/supplier-document';
+import { invoiceService } from './invoice-service';
+import { clientService } from '../client/client-service';
 
 class InvoicePdfGenerator {
     private outDir = 'generated';
@@ -33,8 +34,8 @@ class InvoicePdfGenerator {
     }
 
     private async getInvoice(number: string): Promise<InvoiceViewModel> {
-        let invoice = await db.invoices.single(number); //TODO: use serviec
-        let client = await db.clients.single(invoice.client); //TODO: use service
+        let invoice = await invoiceService.getById(number);
+        let client = await clientService.getById(invoice.client);
         return new InvoiceViewModel(invoice, client);
     }
 
