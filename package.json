@@ -10,7 +10,8 @@
     "start": "concurrently --kill-others-on-fail \"npm run watch-server\" \"gulp watch\" \"npm run server\" \"npm run client\"",
     "start-server": "concurrently --kill-others-on-fail \"npm run watch-server\" \"npm run server\" \"gulp watch\"",
     "build-ts": "tsc",
-    "watch-server": "tsc -w"
+    "watch-server": "tsc -w",
+    "postinstall": "cd client && npm i"
   },
   "author": "",
   "license": "ISC",

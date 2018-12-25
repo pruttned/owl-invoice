@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.scss';
+import Button from '@material-ui/core/Button';
+import ItemList from './common/item-list';
+import { MenuItem } from '@material-ui/core';
+import InvoiceList from './app/invoice/invoice-list';
+
+const items = [
+  { id: '1', date: 'n1', amount:'10' },
+  { id: '2', date: 'n2', amount:'10' },
+]
 
 class App extends Component {
   render() {
@@ -17,10 +26,14 @@ class App extends Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            Learn ReactXX
           </a>
         </header>
+        <div>
+          <InvoiceList items={items} />
+        </div>
       </div>
+
     );
   }
 }
