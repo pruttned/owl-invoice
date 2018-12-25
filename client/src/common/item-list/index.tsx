@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, MenuItem, Button, ListItemIcon, IconButton } from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
+import { MoreVert as MoreVertIcon } from '@material-ui/icons';
 import styles from './item-list.module.scss';
-
-interface ItemListMenuItem {
-
-}
 
 interface ItemListProps {
     items: any[],
@@ -17,14 +13,13 @@ interface ItemListState {
     menuActiveForItem: any
 }
 
-
 interface MenuButtonProps {
     item: any,
     onClick: (event: React.MouseEvent<HTMLElement, MouseEvent>, item: any) => void
 }
 
 class MenuButton extends Component<MenuButtonProps> {
-    handleClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         this.props.onClick(event, this.props.item);
     };
 
@@ -34,9 +29,9 @@ class MenuButton extends Component<MenuButtonProps> {
                 aria-label="More"
                 aria-owns={open ? 'long-menu' : undefined}
                 aria-haspopup="true"
-                onClick={this.handleClick}
+                onClick={this.onButtonClick}
             >
-                <MoreVert />
+                <MoreVertIcon />
             </IconButton>
         );
     }
@@ -46,9 +41,6 @@ class ItemList extends Component<ItemListProps, ItemListState> {
     state = {
         anchorEl: null,
         menuActiveForItem: null
-    };
-    handleClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        this.setState({ anchorEl: event.currentTarget });
     };
 
     onMenuClick = (event: React.MouseEvent<HTMLElement, MouseEvent>, item: any) => {
