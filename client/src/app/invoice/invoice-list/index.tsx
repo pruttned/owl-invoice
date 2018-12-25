@@ -2,30 +2,55 @@ import React, { Component } from 'react';
 import ItemList from '../../../common/item-list';
 import { MenuItem } from '@material-ui/core';
 import styles from './invoice-list.module.scss';
+import moment from 'moment';
+import { Invoice, invoiceService } from '../invoice-service';
 
-const items = [
-    { id: 1, amount: '22', date: 'd1' },
-    { id: 2, amount: '33', date: 'd2' },
-]
 
-interface InvoiceItem {
-    id: string;
-    date: string;
-    amount: string;
-}
 interface InvoiceListProps {
-    items: InvoiceItem[]
+    items: Invoice[]
 }
+
+const DateColumn = ({ date }: { date: Date }) => {
+    let momentDate = moment(date);
+    let day = momentDate.format('DD');
+    let month = momentDate.format('MMM');
+    return (
+        <div className={styles.dateCol}>
+            <div>
+                {day}
+            </div>
+            <div>
+                {month}
+            </div>
+        </div>
+    );
+};
+
+const ClientColumn = ({ invoice }: { invoice: Invoice }) => {
+    let numberYear = invoice.number.substring(0, 4);
+    let numberOrder = invoice.number.substring(4);
+    return (
+        <div className={styles.dateCol}>
+            <div>
+                {numberYear}<em>{numberOrder}</em>
+            </div>
+            <div>
+                {invoice.client.name}
+            </div>
+        </div>
+    );
+};
 
 class InvoiceList extends Component<InvoiceListProps> {
 
     render() {
         return (
-            <ItemList items={items}
-                itemRender={(item: InvoiceItem) => (
+            <ItemList items={this.props.items}
+                itemRender={(item: Invoice) => (
                     <div className={styles.item}>
-                        <div className={styles.itemCol}>{item.date}</div>
-                        <div className={styles.itemCol}>{item.amount}</div>
+                        <div className={styles.itemCol}><DateColumn date={item.issueDate} /></div>
+                        <div className={styles.itemCol}><ClientColumn invoice={item} /></div>
+                        <div className={styles.itemCol}>{invoiceService.getSumPrice(item).toString()}</div>
                     </div>
                 )}
                 menuRender={(item: any, closeMenu: () => void) => [

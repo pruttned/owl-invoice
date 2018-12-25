@@ -2,6 +2,11 @@
     display: flex;
 }
 
-.itemCol {
-    
+.itemCol {}
+
+.dateCol {
+    em {
+        font-weight: bold;
+        font-style: normal;
+    }
 }

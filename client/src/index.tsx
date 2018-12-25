@@ -65,7 +65,7 @@ const Character = withCharacter(z => {
 ReactDOM.render(
     <ApolloProvider client={client}>
         <App />
-        <Character />
+        {/* <Character /> */}
     </ApolloProvider>,
     document.getElementById('root'));
 
