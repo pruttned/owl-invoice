@@ -36,9 +36,16 @@ input UpdateInvoiceInput
     items: [InvoiceItemInput]
 }
 
+type InvoiceTemplateDefinition 
+{ 
+    id: String!,
+    displayName: String!,
+}
+
 extend type Query { 
     invoices: [Invoice],
     invoice(id:String!): Invoice,
+    invoiceTemplateDefinitions: [InvoiceTemplateDefinition]
 }
 
 extend type Mutation {

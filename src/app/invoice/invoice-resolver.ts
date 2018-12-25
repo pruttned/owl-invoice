@@ -1,5 +1,6 @@
 import { invoiceService } from './invoice-service';
 import { clientService } from '../client/client-service';
+import { invoiceTemplateDefinitionService } from './invoice-template-definition-service';
 export const invoiceResolver = {
     Query: {
         invoices(object: any, args: any) {
@@ -7,7 +8,10 @@ export const invoiceResolver = {
         },
         invoice(object: any, args: any) {
             return invoiceService.getById(args.id);
-        }
+        },
+        invoiceTemplateDefinitions(object: any, args: any) {
+            return invoiceTemplateDefinitionService.getAllForList();
+        },
     },
     Invoice: {
         client(invoice: any, args: any, context: any) {
