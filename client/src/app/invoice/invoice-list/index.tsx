@@ -55,8 +55,8 @@ class InvoiceList extends Component<InvoiceListProps> {
                     </div>
                 )}
                 menuRender={(item: any, closeMenu: () => void) => [
-                    <MenuItem onClick={() => { console.log(item); closeMenu(); }}>action1 {item.name}</MenuItem>,
-                    <MenuItem onClick={() => { console.log(item); closeMenu(); }}>action2 {item.name}</MenuItem>,
+                    <MenuItem key="m1" onClick={() => { console.log(item); closeMenu(); }}>action1 {item.name}</MenuItem>,
+                    <MenuItem key="m2" onClick={() => { console.log(item); closeMenu(); }}>action2 {item.name}</MenuItem>,
                 ]}
             />
         );
