@@ -3,7 +3,8 @@ import ItemList from '../../../common/item-list';
 import { MenuItem } from '@material-ui/core';
 import styles from './invoice-list.module.scss';
 import moment from 'moment';
-import { Invoice, invoiceService } from '../invoice-service';
+import { invoiceService } from '../invoice-service';
+import { Invoice } from '../invoice';
 
 
 interface InvoiceListProps {
@@ -45,7 +46,7 @@ class InvoiceList extends Component<InvoiceListProps> {
 
     render() {
         return (
-            <ItemList items={this.props.items}
+            <ItemList<Invoice> items={this.props.items}
                 itemRender={(item: Invoice) => (
                     <div className={styles.item}>
                         <div className={styles.itemCol}><DateColumn date={item.issueDate} /></div>

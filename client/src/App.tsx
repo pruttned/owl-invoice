@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import ItemList from './common/item-list';
 import { MenuItem } from '@material-ui/core';
 import InvoiceList from './app/invoice/invoice-list';
-import { Invoice } from './app/invoice/invoice-service';
+import { Invoice } from './app/invoice/invoice';
 import Decimal from 'decimal.js';
 
 const items: Invoice[] = [

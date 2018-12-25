@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
-import { Menu, MenuItem, Button, ListItemIcon, IconButton } from '@material-ui/core';
+import { Menu, IconButton, } from '@material-ui/core';
 import { MoreVert as MoreVertIcon } from '@material-ui/icons';
 import styles from './item-list.module.scss';
 
-interface ItemListProps {
-    items: any[],
-    itemRender: (item: any) => JSX.Element,
-    menuRender: (item: any, closeMenu: () => void) => JSX.Element[],
+interface Item {
+    id: string;
 }
-interface ItemListState {
-    anchorEl: any,
-    menuActiveForItem: any
+interface ItemListProps<T extends Item> {
+    items: T[];
+    itemRender: (item: T) => JSX.Element;
+    menuRender: (item: T, closeMenu: () => void) => JSX.Element[];
 }
-
-interface MenuButtonProps {
-    item: any,
-    onClick: (event: React.MouseEvent<HTMLElement, MouseEvent>, item: any) => void
+interface ItemListState<T extends Item> {
+    anchorEl: any;
+    menuActiveForItem: T | null;
 }
 
-class MenuButton extends Component<MenuButtonProps> {
+interface MenuButtonProps<T extends Item> {
+    item: T;
+    onClick: (event: React.MouseEvent<HTMLElement, MouseEvent>, item: T) => void;
+}
+
+class MenuButton<T extends Item> extends Component<MenuButtonProps<T>> {
     onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         this.props.onClick(event, this.props.item);
     };
@@ -37,13 +40,13 @@ class MenuButton extends Component<MenuButtonProps> {
     }
 }
 
-class ItemList extends Component<ItemListProps, ItemListState> {
+class ItemList<T extends Item> extends Component<ItemListProps<T>, ItemListState<T>> {
     state = {
         anchorEl: null,
         menuActiveForItem: null
     };
 
-    onMenuClick = (event: React.MouseEvent<HTMLElement, MouseEvent>, item: any) => {
+    onMenuClick = (event: React.MouseEvent<HTMLElement, MouseEvent>, item: T) => {
         this.setState({
             anchorEl: event.currentTarget,
             menuActiveForItem: item
@@ -58,9 +61,8 @@ class ItemList extends Component<ItemListProps, ItemListState> {
             <div className={styles.root}>
                 {
                     this.props.items.map(item => (
-                        <div className={styles.item}>
+                        <div key={item.id} className={styles.item}>
                             <div className={styles.itemContent}>
-
                                 {this.props.itemRender(item)}
                             </div>
 
@@ -68,7 +70,7 @@ class ItemList extends Component<ItemListProps, ItemListState> {
                         </div>))
                 }
                 <Menu open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={this.closeMenu}>
-                    {this.state.menuActiveForItem && this.props.menuRender(this.state.menuActiveForItem, this.closeMenu)}
+                    {this.state.menuActiveForItem && this.props.menuRender(this.state.menuActiveForItem!, this.closeMenu)}
                 </Menu>
             </div>
         );
