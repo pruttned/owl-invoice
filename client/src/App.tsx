@@ -8,6 +8,8 @@ import InvoiceList from './app/invoice/invoice-list';
 import { Invoice } from './app/invoice/invoice';
 import Decimal from 'decimal.js';
 
+const nextMonth = new Date();
+nextMonth.setMonth(nextMonth.getMonth() + 1);
 const items: Invoice[] = [
   {
     id: '1', issueDate: new Date(), dueDate: new Date(), number: '2018001', client:
@@ -40,6 +42,20 @@ const items: Invoice[] = [
       unitCount: new Decimal(2),
       unitPrice: new Decimal(1),
     }]
+  },
+  {
+    id: '3', issueDate: nextMonth, dueDate: new Date(), number: '2018003',
+    client: {
+      name: 'client 2',
+      color: 'red',
+      initials: 'C2'
+    },
+    items: [{
+      text: 't',
+      unitCount: new Decimal(1),
+      unitPrice: new Decimal(10),
+    },
+    ]
   },
 ]
 

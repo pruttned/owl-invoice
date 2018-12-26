@@ -50,6 +50,12 @@
     font-size: $font-size-large;
 }
 
-.invoiceNumber {}
-
 .clientName {}
+
+.groupHeader {
+    background: $back-sec-color;
+    padding: 8px 93px 8px 30px;
+    display: flex;
+    justify-content: space-between;
+    border-top: $border;
+}
