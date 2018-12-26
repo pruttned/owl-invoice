@@ -1,3 +1,5 @@
+@import '../../../variables';
+
 .item {
     display: flex;
     width: 100%;
@@ -7,11 +9,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 10px;
+    padding: 0 15px;
 }
 
 .dateCol {
-    flex: 0 0 50px;
+    flex: 0 0 0;
     em {
         font-weight: bold;
         font-style: normal;
@@ -19,7 +21,11 @@
 }
 
 .day {
-    font-size: 1.5rem;
+    font-size: $font-size-large;
+}
+
+.month {
+    color: $sec-color;
 }
 
 .clientCol {
@@ -28,14 +34,20 @@
         font-weight: bold;
         font-style: normal;
     }
+    line-height: 1.3rem;
+}
+
+.invoiceNumber {
+    color: $sec-color;
 }
 
 .avatarCol {
-    flex: 0 0 50px;
+    flex: 0 0 0;
 }
 
 .priceCol {
     margin-left: auto;
+    font-size: $font-size-large;
 }
 
 .invoiceNumber {}

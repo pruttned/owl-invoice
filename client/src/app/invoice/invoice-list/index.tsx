@@ -22,7 +22,7 @@ const IssueDateColumn = ({ invoice }: { invoice: Invoice }) => {
             <div className={styles.day}>
                 {day}
             </div>
-            <div>
+            <div className={styles.month}>
                 {month}
             </div>
         </div>

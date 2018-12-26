@@ -1,5 +1,6 @@
+@import '../../variables';
+
 .root {
-    border: solid 1px red;
 }
 
 .menuButtonCol {
@@ -11,10 +12,12 @@
 
 .item {
     display: flex;
+    border-top: $border;
 }
 
 .itemContent {
     flex: 1;
     display: flex;
     flex-direction: row;
+    padding: 10px 15px;
 }

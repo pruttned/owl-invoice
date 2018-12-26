@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+@import 'variables';
 
 body {
   margin: 0;
@@ -6,6 +7,9 @@ body {
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: $font-size;
+  color: $main-color;
+  background-color: $back-color;
 }
 
 code {
