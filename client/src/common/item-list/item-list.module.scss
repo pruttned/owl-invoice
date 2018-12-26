@@ -1,5 +1,7 @@
+@import '../../variables';
+
 .root {
-    border: solid 1px red;
+    border-bottom: $border;
 }
 
 .menuButtonCol {
@@ -7,14 +9,21 @@
     margin-left: auto;
     flex-direction: column;
     justify-content: center;
+    margin-right: 15px;
 }
 
 .item {
     display: flex;
+    border-top: $border;
+    cursor: pointer;
+}
+.item:hover{
+    background: $back-sec-color;
 }
 
 .itemContent {
     flex: 1;
     display: flex;
     flex-direction: row;
+    padding: 12px 15px;
 }

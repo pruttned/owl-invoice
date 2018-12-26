@@ -7,6 +7,12 @@ import { AppBar, List, ListItem, ListItemText, Drawer, Toolbar, IconButton, Typo
 import { Menu as MenuIcon } from '@material-ui/icons';
 import styles from './App.module.scss';
 
+
+interface AppState {
+  mobileOpen: boolean;
+}
+
+//TODO: extract
 const drawer = (
   <List>
     <Link to="/">
@@ -21,10 +27,6 @@ const drawer = (
     </Link>
   </List>
 );
-
-interface AppState {
-  mobileOpen: boolean;
-}
 
 class App extends Component<any, AppState> {
   state = {
@@ -81,6 +83,7 @@ class App extends Component<any, AppState> {
             </div>
           </nav>
           <div className={styles.mainContent}>
+            {/* TODO: extract */}
             <Route path="/" exact component={InvoiceListPage} />
             <Route path="/clients/" component={ClientListPage} />
           </div>

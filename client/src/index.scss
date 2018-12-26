@@ -6,6 +6,7 @@ $mq-breakpoints: (
     wide:    1280px
 );
 @import '../node_modules/sass-mq/mq';
+@import 'variables';
 
 body {
   margin: 0;
@@ -13,6 +14,9 @@ body {
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: $font-size;
+  color: $main-color;
+  background-color: $back-color;
 }
 
 code {

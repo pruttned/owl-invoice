@@ -7,7 +7,8 @@ import { invoiceService } from '../invoice-service';
 import { Invoice } from '../invoice';
 import Avatar from '../../../common/avatar/avatar';
 import { CURRENCY } from '../../constants';
-
+import { groupBy, map } from 'lodash';
+import Decimal from 'decimal.js';
 
 interface InvoiceListProps {
     items: Invoice[]
@@ -22,7 +23,7 @@ const IssueDateColumn = ({ invoice }: { invoice: Invoice }) => {
             <div className={styles.day}>
                 {day}
             </div>
-            <div>
+            <div className={styles.month}>
                 {month}
             </div>
         </div>
@@ -58,25 +59,50 @@ const PriceColumn = ({ invoice }: { invoice: Invoice }) => {
     );
 };
 
+const GroupHeader = ({ group }: { group: { title: string, value: Decimal } }) => {
+    return (
+        <div className={styles.groupHeader}>
+            <span>{group.title}</span>
+            <span>{group.value.toString() + CURRENCY}</span>
+        </div>
+    );
+};
 
 class InvoiceList extends Component<InvoiceListProps> {
 
     render() {
+        let invoicesByMonth = groupBy(this.props.items, (item: Invoice) => item.issueDate.getMonth());
+        let groups = map(invoicesByMonth, invoices => ({
+            title: moment(invoices[0].issueDate).format('MMMM YYYY'),
+            value: invoiceService.getSumPrice(invoices),
+            items: invoices
+        }));
+
         return (
-            <ItemList<Invoice> items={this.props.items}
-                itemRender={(item: Invoice) => (
-                    <div className={styles.item}>
-                        <IssueDateColumn invoice={item} />
-                        <AvatarColumn invoice={item} />
-                        <ClientColumn invoice={item} />
-                        <PriceColumn invoice={item} />
-                    </div>
-                )}
-                menuRender={(item: any, closeMenu: () => void) => [
-                    <MenuItem key="m1" onClick={() => { console.log(item); closeMenu(); }}>action1 {item.name}</MenuItem>,
-                    <MenuItem key="m2" onClick={() => { console.log(item); closeMenu(); }}>action2 {item.name}</MenuItem>,
-                ]}
-            />
+            <div className={styles.root}>
+                {
+                    groups.map(group => (
+                        <div>
+                            <GroupHeader key={group.title} group={group} />
+
+                            <ItemList<Invoice> items={group.items}
+                                itemRender={(item: Invoice) => (
+                                    <div className={styles.item}>
+                                        <IssueDateColumn invoice={item} />
+                                        <AvatarColumn invoice={item} />
+                                        <ClientColumn invoice={item} />
+                                        <PriceColumn invoice={item} />
+                                    </div>
+                                )}
+                                menuRender={(item: any, closeMenu: () => void) => [
+                                    <MenuItem key="m1" onClick={() => { console.log(item); closeMenu(); }}>action1 {item.name}</MenuItem>,
+                                    <MenuItem key="m2" onClick={() => { console.log(item); closeMenu(); }}>action2 {item.name}</MenuItem>,
+                                ]}
+                            />
+                        </div>
+                    ))
+                }
+            </div>
         );
     }
 }
