@@ -15,6 +15,10 @@
 .item {
     display: flex;
     border-top: $border;
+    cursor: pointer;
+}
+.item:hover{
+    background: $back-sec-color;
 }
 
 .itemContent {
