@@ -1,10 +1,4 @@
 @import './breakpoints';
-// body {
-//     @include mq($from: mobile, $until: tablet) {
-//     }
-//     @include mq($from: tablet) {
-//     }
-// }
 $drawerWidth: 240px;
 .root {
     display: flex;
@@ -27,6 +21,10 @@ $drawerWidth: 240px;
     }
     .mainContent {
         flex-grow: 1;
+        padding-top: 48px;
+        @include mq($from: sm) {
+            padding-top: 64px;
+        }
     }
 }
 
