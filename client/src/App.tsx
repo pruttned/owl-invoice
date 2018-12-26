@@ -44,6 +44,7 @@ class App extends Component<any, AppState> {
           <AppBar position="fixed" className={styles.appBar}>
             <Toolbar>
               <IconButton
+                className={styles.menuButton}
                 color="inherit"
                 aria-label="Open drawer"
                 onClick={this.toggleDrawer}

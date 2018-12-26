@@ -29,6 +29,11 @@ $drawerWidth: 240px;
             padding-top: 64px;
         }
     }
+    .menuButton {
+        @include mq($from: sm) {
+            display: none;
+        }
+    }
 }
 
 .drawerPaper {
