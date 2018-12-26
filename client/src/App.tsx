@@ -61,11 +61,7 @@ const invoices: Invoice[] = [
   },
   {
     id: '3', issueDate: nextMonth, dueDate: new Date(), number: '2018003',
-    client: {
-      name: 'client 2',
-      color: 'red',
-      initials: 'C2'
-    },
+    client: clients[1],
     items: [{
       text: 't',
       unitCount: new Decimal(1),
