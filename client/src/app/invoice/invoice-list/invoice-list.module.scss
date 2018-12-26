@@ -1,12 +1,43 @@
 .item {
     display: flex;
+    width: 100%;
 }
 
-.itemCol {}
+.col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+}
 
 .dateCol {
+    flex: 0 0 50px;
     em {
         font-weight: bold;
         font-style: normal;
     }
 }
+
+.day {
+    font-size: 1.5rem;
+}
+
+.clientCol {
+    text-align: left;
+    em {
+        font-weight: bold;
+        font-style: normal;
+    }
+}
+
+.avatarCol {
+    flex: 0 0 50px;
+}
+
+.priceCol {
+    margin-left: auto;
+}
+
+.invoiceNumber {}
+
+.clientName {}

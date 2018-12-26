@@ -5,19 +5,21 @@ import styles from './invoice-list.module.scss';
 import moment from 'moment';
 import { invoiceService } from '../invoice-service';
 import { Invoice } from '../invoice';
+import Avatar from '../../../common/avatar/avatar';
+import { CURRENCY } from '../../constants';
 
 
 interface InvoiceListProps {
     items: Invoice[]
 }
 
-const DateColumn = ({ date }: { date: Date }) => {
-    let momentDate = moment(date);
+const IssueDateColumn = ({ invoice }: { invoice: Invoice }) => {
+    let momentDate = moment(invoice.issueDate);
     let day = momentDate.format('DD');
     let month = momentDate.format('MMM');
     return (
-        <div className={styles.dateCol}>
-            <div>
+        <div className={`${styles.col} ${styles.dateCol}`}>
+            <div className={styles.day}>
                 {day}
             </div>
             <div>
@@ -31,16 +33,31 @@ const ClientColumn = ({ invoice }: { invoice: Invoice }) => {
     let numberYear = invoice.number.substring(0, 4);
     let numberOrder = invoice.number.substring(4);
     return (
-        <div className={styles.dateCol}>
-            <div>
-                {numberYear}<em>{numberOrder}</em>
-            </div>
-            <div>
+        <div className={`${styles.col} ${styles.clientCol}`}>
+            <div className={styles.clientName}>
                 {invoice.client.name}
+            </div>
+            <div className={styles.invoiceNumber}>
+                {numberYear}<em>{numberOrder}</em>
             </div>
         </div>
     );
 };
+
+
+const AvatarColumn = ({ invoice }: { invoice: Invoice }) => {
+    return (
+        <div className={`${styles.col} ${styles.avatarCol}`}>
+            <div><Avatar {...invoice.client} /></div>
+        </div>
+    );
+};
+const PriceColumn = ({ invoice }: { invoice: Invoice }) => {
+    return (
+        <div className={`${styles.col} ${styles.priceCol}`}>{invoiceService.getSumPrice(invoice).toString() + CURRENCY}</div>
+    );
+};
+
 
 class InvoiceList extends Component<InvoiceListProps> {
 
@@ -49,9 +66,10 @@ class InvoiceList extends Component<InvoiceListProps> {
             <ItemList<Invoice> items={this.props.items}
                 itemRender={(item: Invoice) => (
                     <div className={styles.item}>
-                        <div className={styles.itemCol}><DateColumn date={item.issueDate} /></div>
-                        <div className={styles.itemCol}><ClientColumn invoice={item} /></div>
-                        <div className={styles.itemCol}>{invoiceService.getSumPrice(item).toString()}</div>
+                        <IssueDateColumn invoice={item} />
+                        <AvatarColumn invoice={item} />
+                        <ClientColumn invoice={item} />
+                        <PriceColumn invoice={item} />
                     </div>
                 )}
                 menuRender={(item: any, closeMenu: () => void) => [

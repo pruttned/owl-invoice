@@ -2,8 +2,11 @@
     border: solid 1px red;
 }
 
-.menuButton {
+.menuButtonCol {
+    display: flex;
     margin-left: auto;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .item {

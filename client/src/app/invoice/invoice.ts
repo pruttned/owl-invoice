@@ -6,7 +6,9 @@ export interface Invoice {
     dueDate: Date,
     number: string;
     client: {
-        name: string
+        name: string,
+        color: string,
+        initials: string
     },
     items: InvoiceItem[]
 }

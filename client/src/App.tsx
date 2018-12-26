@@ -10,7 +10,12 @@ import Decimal from 'decimal.js';
 
 const items: Invoice[] = [
   {
-    id: '1', issueDate: new Date(), dueDate: new Date(), number: '2018001', client: { name: 'client 1' },
+    id: '1', issueDate: new Date(), dueDate: new Date(), number: '2018001', client:
+    {
+      name: 'client 1',
+      color: '#00d8ff',
+      initials: 'C1'
+    },
     items: [{
       text: 't',
       unitCount: new Decimal(2),
@@ -19,7 +24,12 @@ const items: Invoice[] = [
     }]
   },
   {
-    id: '2', issueDate: new Date(), dueDate: new Date(), number: '2018002', client: { name: 'client 1' },
+    id: '2', issueDate: new Date(), dueDate: new Date(), number: '2018002',
+    client: {
+      name: 'client 2',
+      color: 'red',
+      initials: 'C2'
+    },
     items: [{
       text: 't',
       unitCount: new Decimal(1),

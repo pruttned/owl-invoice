@@ -28,7 +28,7 @@ class MenuButton<T extends Item> extends Component<MenuButtonProps<T>> {
 
     render() {
         return (
-            <IconButton className={styles.menuButton}
+            <IconButton
                 aria-label="More"
                 aria-owns={open ? 'long-menu' : undefined}
                 aria-haspopup="true"
@@ -66,7 +66,9 @@ class ItemList<T extends Item> extends Component<ItemListProps<T>, ItemListState
                                 {this.props.itemRender(item)}
                             </div>
 
-                            <MenuButton onClick={this.onMenuClick} item={item} />
+                            <div className={styles.menuButtonCol}>
+                                <MenuButton onClick={this.onMenuClick} item={item} />
+                            </div>
                         </div>))
                 }
                 <Menu open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={this.closeMenu}>
