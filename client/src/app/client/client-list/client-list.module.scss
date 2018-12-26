@@ -1,0 +1,23 @@
+.item {
+    display: flex;
+    width: 100%;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+}
+
+.clientCol {
+    text-align: left;
+    em {
+        font-weight: bold;
+        font-style: normal;
+    }
+}
+
+.avatarCol {
+    flex: 0 0 50px;
+}
