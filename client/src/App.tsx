@@ -7,15 +7,36 @@ import { MenuItem } from '@material-ui/core';
 import InvoiceList from './app/invoice/invoice-list';
 import { Invoice } from './app/invoice/invoice';
 import Decimal from 'decimal.js';
+import { Client } from './app/client/client';
+import ClientList from './app/client/client-list';
 
-const items: Invoice[] = [
+const clients: Client[] = [
   {
-    id: '1', issueDate: new Date(), dueDate: new Date(), number: '2018001', client:
-    {
-      name: 'client 1',
-      color: '#00d8ff',
-      initials: 'C1'
-    },
+    id: 'c1',
+    name: 'client 1',
+    color: '#00d8ff',
+    initials: 'C1',
+    address: 'address xxx',
+    taxId: 'dic1',
+    businessId: 'ico1',
+    vatNumber: 'icdph1'
+  },
+  {
+    id: 'c2',
+    name: 'client 2',
+    color: 'red',
+    initials: 'C2',
+    address: 'address xxx2',
+    taxId: 'dic2',
+    businessId: 'ico2',
+    vatNumber: 'icdph2'
+  }
+]
+
+
+const invoices: Invoice[] = [
+  {
+    id: '1', issueDate: new Date(), dueDate: new Date(), number: '2018001', client: clients[0],
     items: [{
       text: 't',
       unitCount: new Decimal(2),
@@ -25,11 +46,7 @@ const items: Invoice[] = [
   },
   {
     id: '2', issueDate: new Date(), dueDate: new Date(), number: '2018002',
-    client: {
-      name: 'client 2',
-      color: 'red',
-      initials: 'C2'
-    },
+    client: clients[1],
     items: [{
       text: 't',
       unitCount: new Decimal(1),
@@ -48,7 +65,9 @@ class App extends Component {
     return (
       <div className="App">
         <div>
-          <InvoiceList items={items} />
+          <InvoiceList items={invoices} />
+          <br /><br />
+          <ClientList items={clients} />
         </div>
       </div>
 
