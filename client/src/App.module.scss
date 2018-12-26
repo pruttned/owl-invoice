@@ -21,7 +21,10 @@ $drawerWidth: 240px;
     }
     .mainContent {
         flex-grow: 1;
-        padding-top: 48px;
+        padding-top: 56px;
+        @include mq($until: sm, $and: '(orientation: landscape)') {
+            padding-top: 48px;
+        }
         @include mq($from: sm) {
             padding-top: 64px;
         }
