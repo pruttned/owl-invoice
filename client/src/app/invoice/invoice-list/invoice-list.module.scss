@@ -1,5 +1,9 @@
 @import '../../../variables';
 
+.root {
+    border-top: $border;
+}
+
 .item {
     display: flex;
     width: 100%;
@@ -57,5 +61,4 @@
     padding: 8px 93px 8px 30px;
     display: flex;
     justify-content: space-between;
-    border-top: $border;
 }

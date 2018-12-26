@@ -79,7 +79,7 @@ class InvoiceList extends Component<InvoiceListProps> {
         }));
 
         return (
-            <div>
+            <div className={styles.root}>
                 {
                     groups.map(group => (
                         <div>
