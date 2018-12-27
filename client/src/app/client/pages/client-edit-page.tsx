@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Client } from '../client';
-import ClientList from '../client-list';
-import ClientForm from '../client-form';
+import ClientList from '../client-list/client-list';
+import ClientForm from '../client-form/client-form';
 
 const client: Client =
 {

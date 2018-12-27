@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Client } from '../../client/client';
 import { Invoice } from '../invoice';
 import Decimal from 'decimal.js';
-import InvoiceList from '../invoice-list';
+import InvoiceList from '../invoice-list/invoice-list';
 
 const clients: Client[] = [
     {

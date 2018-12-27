@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Client } from '../client';
-import ClientList from '../client-list';
+import ClientList from '../client-list/client-list';
 
 const clients: Client[] = [
     {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ItemList from '../../../common/item-list';
+import ItemList from '../../../common/item-list/item-list';
 import { MenuItem } from '@material-ui/core';
 import styles from './client-list.module.scss';
 import { Client } from '../client';
