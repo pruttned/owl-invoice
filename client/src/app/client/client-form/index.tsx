@@ -4,6 +4,7 @@ import { Client } from '../client';
 import { object as yupObject, string as yupString } from 'yup';
 import FormTextField from '../../../common/form/form-text-field';
 import Form from '../../../common/form/form';
+import FormRow from '../../../common/form/form-row';
 
 interface ClientFormProps {
     client: any
@@ -36,8 +37,12 @@ class ClientForm extends Component<ClientFormProps, Client> {
             >
                 {() => (
                     <React.Fragment>
-                        <FormTextField name="name" label="Name" />
-                        <FormTextField name="address" label="Address" />
+                        <FormRow>
+                            <FormTextField name="name" label="Name" />
+                        </FormRow>
+                        <FormRow>
+                            <FormTextField name="address" label="Address" />
+                        </FormRow>
                     </React.Fragment>
                 )}
             </Form>
