@@ -53,7 +53,7 @@ export class DocumentCollection<T extends Document> {
             }
         }
 
-        return docs.map(this.fromDb);
+        return docs.map(item => this.fromDb(item));
     }
 
     create(document: T): Promise<T> {
