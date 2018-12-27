@@ -8,6 +8,7 @@ import { find } from 'lodash';
 import { Namespace } from 'protobufjs';
 import { isEmpty } from 'lodash';
 import { DocumentProcessor } from './document-processor';
+import { orderBy } from 'lodash';
 
 export class DocumentCollection<T extends Document> {
     constructor(private name: string, private documentFs: IDocumentFs, private documentProcessor?: DocumentProcessor<T>) {
@@ -34,7 +35,7 @@ export class DocumentCollection<T extends Document> {
             collection = collection.filter(d => micromatch.isMatch(d, query.id!!));
         }
 
-        return collection;
+        return orderBy(collection, 'id');
     }
 
     async getAll(query?: Query<T>): Promise<T[]> {
@@ -53,7 +54,7 @@ export class DocumentCollection<T extends Document> {
             }
         }
 
-        return docs.map(item => this.fromDb(item));
+        return orderBy(docs.map(item => this.fromDb(item)), 'id');
     }
 
     create(document: T): Promise<T> {
