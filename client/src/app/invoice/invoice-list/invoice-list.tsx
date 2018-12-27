@@ -31,8 +31,8 @@ const IssueDateColumn = ({ invoice }: { invoice: Invoice }) => {
 };
 
 const ClientColumn = ({ invoice }: { invoice: Invoice }) => {
-    let numberYear = invoice.number.substring(0, 4);
-    let numberOrder = invoice.number.substring(4);
+    let numberYear = invoice.id.substring(0, 4);
+    let numberOrder = invoice.id.substring(4);
     return (
         <div className={`${styles.col} ${styles.clientCol}`}>
             <div className={styles.clientName}>

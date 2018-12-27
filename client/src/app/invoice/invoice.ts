@@ -5,7 +5,6 @@ export interface Invoice {
     id: string;
     issueDate: Date;
     dueDate: Date;
-    number: string;
     client: Client;
     items: InvoiceItem[];
 }
