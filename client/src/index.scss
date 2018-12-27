@@ -1,4 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+$mq-breakpoints: (
+    mobile:  320px,
+    tablet:  600px,
+    desktop: 960px,
+    wide:    1280px
+);
+@import '../node_modules/sass-mq/mq';
 @import 'variables';
 
 body {

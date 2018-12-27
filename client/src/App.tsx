@@ -1,90 +1,107 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.scss';
-import Button from '@material-ui/core/Button';
-import ItemList from './common/item-list';
-import { MenuItem } from '@material-ui/core';
-import InvoiceList from './app/invoice/invoice-list';
-import { Invoice } from './app/invoice/invoice';
-import Decimal from 'decimal.js';
-import { Client } from './app/client/client';
-import ClientList from './app/client/client-list';
-import ClientForm from './app/client/client-form';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import InvoiceListPage from './app/invoice/pages/invoice-list-page';
+import ClientListPage from './app/client/pages/client-list-page';
+import { AppBar, List, ListItem, ListItemText, Drawer, Toolbar, IconButton, Typography, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { Menu as MenuIcon } from '@material-ui/icons';
+import styles from './App.module.scss';
 
-const clients: Client[] = [
-  {
-    id: 'c1',
-    name: 'client 1',
-    color: '#00d8ff',
-    initials: 'C1',
-    address: 'address xxx',
-    taxId: 'dic1',
-    businessId: 'ico1',
-    vatNumber: 'icdph1'
-  },
-  {
-    id: 'c2',
-    name: 'client 2',
-    color: 'red',
-    initials: 'C2',
-    address: 'address xxx2',
-    taxId: 'dic2',
-    businessId: 'ico2',
-    vatNumber: 'icdph2'
-  }
-]
-
-const nextMonth = new Date();
-nextMonth.setMonth(nextMonth.getMonth() + 1);
-const invoices: Invoice[] = [
-  {
-    id: '1', issueDate: new Date(), dueDate: new Date(), number: '2018001', client: clients[0],
-    items: [{
-      text: 't',
-      unitCount: new Decimal(2),
-      unitPrice: new Decimal(3),
-
-    }]
-  },
-  {
-    id: '2', issueDate: new Date(), dueDate: new Date(), number: '2018002',
-    client: clients[1],
-    items: [{
-      text: 't',
-      unitCount: new Decimal(1),
-      unitPrice: new Decimal(10),
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#00897b',
     },
-    {
-      text: 't2',
-      unitCount: new Decimal(2),
-      unitPrice: new Decimal(1),
-    }]
-  },
-  {
-    id: '3', issueDate: nextMonth, dueDate: new Date(), number: '2018003',
-    client: clients[1],
-    items: [{
-      text: 't',
-      unitCount: new Decimal(1),
-      unitPrice: new Decimal(10),
+    secondary: {
+      main: '#ffa726',
     },
-    ]
   },
-]
+});
 
-class App extends Component {
+//TODO: extract
+const drawer = (
+  <List>
+    <Link to="/">
+      <ListItem button>
+        <ListItemText primary="Invoices" />
+      </ListItem>
+    </Link>
+    <Link to="/clients">
+      <ListItem button>
+        <ListItemText primary="Clients" />
+      </ListItem>
+    </Link>
+  </List>
+);
+
+interface AppState {
+  mobileOpen: boolean;
+}
+
+class App extends Component<any, AppState> {
+  state = {
+    mobileOpen: false,
+  };
+
+  toggleDrawer = () => {
+    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+  };
+
   render() {
     return (
-      <div className="App">
-        <div>
-          <InvoiceList items={invoices} />
-          <br /><br />
-          <ClientList items={clients} />
-          <br /><br />
-          <ClientForm client={clients[0]} />
-        </div>
-      </div>
-
+      <MuiThemeProvider theme={theme}>
+        <Router>
+          <div className={styles.root}>
+            <AppBar position="fixed" className={styles.appBar}>
+              <Toolbar>
+                <IconButton
+                  className={styles.menuButton}
+                  color="inherit"
+                  aria-label="Open drawer"
+                  onClick={this.toggleDrawer}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" color="inherit" noWrap>
+                  Owl Invoice
+              </Typography>
+              </Toolbar>
+            </AppBar>
+            <nav>
+              <div className={styles.drawerMobile}>
+                <Drawer
+                  className={styles.drawer}
+                  variant="temporary"
+                  anchor="left"
+                  open={this.state.mobileOpen}
+                  onClose={this.toggleDrawer}
+                  classes={{
+                    paper: styles.drawerPaper,
+                  }}
+                >
+                  {drawer}
+                </Drawer>
+              </div>
+              <div className={styles.drawerDesktop}>
+                <Drawer
+                  className={styles.drawer}
+                  classes={{
+                    paper: styles.drawerPaper,
+                  }}
+                  variant="permanent"
+                  open>
+                  {drawer}
+                </Drawer>
+              </div>
+            </nav>
+            <div className={styles.mainContent}>
+              {/* TODO: extract */}
+              <Route path="/" exact component={InvoiceListPage} />
+              <Route path="/clients/" component={ClientListPage} />
+            </div>
+          </div>
+        </Router >
+      </MuiThemeProvider>
     );
   }
 }

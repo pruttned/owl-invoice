@@ -1,0 +1,45 @@
+@import './breakpoints';
+$drawerWidth: 240px;
+.root {
+    display: flex;
+    width: 100%;
+    .drawerMobile {
+        @include mq($from: sm) {
+            display: none;
+        }
+    }
+    .drawerDesktop {
+        @include mq($until: sm) {
+            display: none;
+        }
+    }
+    .appBar {
+        @include mq($from: sm) {
+            margin-left: $drawerWidth;
+            width: calc(100% - #{$drawerWidth});
+        }
+    }
+    .mainContent {
+        flex-grow: 1;
+        padding-top: 56px;
+        @include mq($until: sm, $and: '(orientation: landscape)') {
+            padding-top: 48px;
+        }
+        @include mq($from: sm) {
+            padding-top: 64px;
+        }
+    }
+    .menuButton {
+        @include mq($from: sm) {
+            display: none;
+        }
+    }
+}
+
+.drawerPaper {
+    width: $drawerWidth;
+}
+
+.drawer {
+    width: $drawerWidth;
+}
