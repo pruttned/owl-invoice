@@ -6,6 +6,7 @@ import ClientListPage from './app/client/pages/client-list-page';
 import { AppBar, List, ListItem, ListItemText, Drawer, Toolbar, IconButton, Typography, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { Menu as MenuIcon } from '@material-ui/icons';
 import styles from './App.module.scss';
+import AppRoutes from './app-routes';
 
 const theme = createMuiTheme({
   palette: {
@@ -95,9 +96,7 @@ class App extends Component<any, AppState> {
               </div>
             </nav>
             <div className={styles.mainContent}>
-              {/* TODO: extract */}
-              <Route path="/" exact component={InvoiceListPage} />
-              <Route path="/clients/" component={ClientListPage} />
+              <AppRoutes />
             </div>
           </div>
         </Router >
