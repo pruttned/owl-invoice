@@ -9,6 +9,7 @@ import { Invoice } from './app/invoice/invoice';
 import Decimal from 'decimal.js';
 import { Client } from './app/client/client';
 import ClientList from './app/client/client-list';
+import ClientForm from './app/client/client-form';
 
 const clients: Client[] = [
   {
@@ -79,6 +80,8 @@ class App extends Component {
           <InvoiceList items={invoices} />
           <br /><br />
           <ClientList items={clients} />
+          <br /><br />
+          <ClientForm client={clients[0]} />
         </div>
       </div>
 
