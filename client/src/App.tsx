@@ -9,6 +9,9 @@ import styles from './App.module.scss';
 import AppRoutes from './app-routes';
 
 const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+  },
   palette: {
     primary: {
       main: '#00897b',
