@@ -12,7 +12,6 @@ import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { CssBaseline } from '@material-ui/core';
 
 const link = createHttpLink({
     uri: 'http://localhost:3001/graphql'

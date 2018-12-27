@@ -4,7 +4,9 @@ type Client {
     address: String!,
     taxId: String, #DIC
     businessId: String, #ICO
-    vatNumber: String #IC DPH
+    vatNumber: String, #IC DPH
+    color: String!,
+    initials: String!,
 }
 
 input CreateClientInput {
@@ -13,6 +15,8 @@ input CreateClientInput {
     taxId: String, #DIC
     businessId: String, #ICO
     vatNumber: String #IC DPH
+    color: String!,
+    initials: String!,
 }
 
 input UpdateClientInput {
@@ -22,6 +26,8 @@ input UpdateClientInput {
     taxId: String, #DIC
     businessId: String, #ICO
     vatNumber: String #IC DPH
+    color: String!,
+    initials: String!,
 }
 
 

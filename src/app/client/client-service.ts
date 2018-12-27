@@ -11,7 +11,6 @@ class ClientService {
     }
     create(client: ClientDocument): Promise<ClientDocument> {
         client = { ...client, id: slugify(client.name) };
-        console.log(client);
         return db.clients.create(client);
     }
     update(client: ClientDocument): Promise<ClientDocument> {
