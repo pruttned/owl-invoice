@@ -86,6 +86,7 @@ class InvoiceList extends Component<InvoiceListProps> {
                             <GroupHeader group={group} />
 
                             <ItemList<Invoice> items={group.items}
+                                itemUrl={(item: Invoice) => `/invoices/${encodeURIComponent(item.id)}`}
                                 itemRender={(item: Invoice) => (
                                     <div className={styles.item}>
                                         <IssueDateColumn invoice={item} />
