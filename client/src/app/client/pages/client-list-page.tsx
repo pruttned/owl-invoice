@@ -19,10 +19,12 @@ interface Response {
     clients: Client[];
 };
 
-export default () => (
+const ClientListPage = () => (
     <QueryPanel<Response> query={CLIENT_LIST_QUERY}>
         {(data) => {
             return <ClientList items={data.clients} />
         }}
     </QueryPanel>
 )
+
+export default ClientListPage;
