@@ -82,8 +82,8 @@ class InvoiceList extends Component<InvoiceListProps> {
             <div className={styles.root}>
                 {
                     groups.map(group => (
-                        <div>
-                            <GroupHeader key={group.title} group={group} />
+                        <React.Fragment key={group.title}>
+                            <GroupHeader group={group} />
 
                             <ItemList<Invoice> items={group.items}
                                 itemRender={(item: Invoice) => (
@@ -99,7 +99,7 @@ class InvoiceList extends Component<InvoiceListProps> {
                                     <MenuItem key="m2" onClick={() => { console.log(item); closeMenu(); }}>action2 {item.name}</MenuItem>,
                                 ]}
                             />
-                        </div>
+                        </React.Fragment>
                     ))
                 }
             </div>
