@@ -4,6 +4,7 @@ import { MenuItem } from '@material-ui/core';
 import styles from './client-list.module.scss';
 import { Client } from '../client';
 import Avatar from '../../../common/avatar/avatar';
+import { Link } from 'react-router-dom';
 
 interface ClientListProps {
     items: Client[]
@@ -30,10 +31,12 @@ class ClientList extends Component<ClientListProps> {
         return (
             <ItemList<Client> items={this.props.items}
                 itemRender={(item: Client) => (
-                    <div className={styles.item}>
-                        <AvatarColumn client={item} />
-                        <ClientColumn client={item} />
-                    </div>
+                    <Link to={`/clients/${encodeURIComponent(item.id)}`}>
+                        <div className={styles.item}>
+                            <AvatarColumn client={item} />
+                            <ClientColumn client={item} />
+                        </div>
+                    </Link>
                 )}
                 menuRender={(item: any, closeMenu: () => void) => [
                     <MenuItem key="m1" onClick={() => { console.log(item); closeMenu(); }}>action1 {item.name}</MenuItem>,
