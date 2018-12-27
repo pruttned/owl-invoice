@@ -27,9 +27,9 @@ class ClientForm extends Component<ClientFormProps, Client> {
               const value = target.value;
               const name = target.name;
 
-              this.setState({
-                [name]: value
-              });
+            //   this.setState({
+            //     [name]: value
+            //   });
     }
 
     render() {
