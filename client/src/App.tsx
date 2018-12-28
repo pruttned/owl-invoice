@@ -7,6 +7,8 @@ import { AppBar, List, ListItem, ListItemText, Drawer, Toolbar, IconButton, Typo
 import { Menu as MenuIcon } from '@material-ui/icons';
 import styles from './App.module.scss';
 import AppRoutes from './app-routes';
+import MuiPickersUtilsProvider from 'material-ui-pickers/MuiPickersUtilsProvider';
+import MomentUtils from '@date-io/moment';
 
 const theme = createMuiTheme({
   typography: {
@@ -53,57 +55,60 @@ class App extends Component<any, AppState> {
 
   render() {
     return (
-      <MuiThemeProvider theme={theme}>
-        <Router>
-          <div className={styles.root}>
-            <AppBar position="fixed" className={styles.appBar}>
-              <Toolbar>
-                <IconButton
-                  className={styles.menuButton}
-                  color="inherit"
-                  aria-label="Open drawer"
-                  onClick={this.toggleDrawer}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" color="inherit" noWrap>
-                  Owl Invoice
+      <MuiPickersUtilsProvider utils={MomentUtils}>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
+        <MuiThemeProvider theme={theme}>
+          <Router>
+            <div className={styles.root}>
+              <AppBar position="fixed" className={styles.appBar}>
+                <Toolbar>
+                  <IconButton
+                    className={styles.menuButton}
+                    color="inherit"
+                    aria-label="Open drawer"
+                    onClick={this.toggleDrawer}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                  <Typography variant="h6" color="inherit" noWrap>
+                    Owl Invoice
               </Typography>
-              </Toolbar>
-            </AppBar>
-            <nav>
-              <div className={styles.drawerMobile}>
-                <Drawer
-                  className={styles.drawer}
-                  variant="temporary"
-                  anchor="left"
-                  open={this.state.mobileOpen}
-                  onClose={this.toggleDrawer}
-                  classes={{
-                    paper: styles.drawerPaper,
-                  }}
-                >
-                  {drawer}
-                </Drawer>
+                </Toolbar>
+              </AppBar>
+              <nav>
+                <div className={styles.drawerMobile}>
+                  <Drawer
+                    className={styles.drawer}
+                    variant="temporary"
+                    anchor="left"
+                    open={this.state.mobileOpen}
+                    onClose={this.toggleDrawer}
+                    classes={{
+                      paper: styles.drawerPaper,
+                    }}
+                  >
+                    {drawer}
+                  </Drawer>
+                </div>
+                <div className={styles.drawerDesktop}>
+                  <Drawer
+                    className={styles.drawer}
+                    classes={{
+                      paper: styles.drawerPaper,
+                    }}
+                    variant="permanent"
+                    open>
+                    {drawer}
+                  </Drawer>
+                </div>
+              </nav>
+              <div className={styles.mainContent}>
+                <AppRoutes />
               </div>
-              <div className={styles.drawerDesktop}>
-                <Drawer
-                  className={styles.drawer}
-                  classes={{
-                    paper: styles.drawerPaper,
-                  }}
-                  variant="permanent"
-                  open>
-                  {drawer}
-                </Drawer>
-              </div>
-            </nav>
-            <div className={styles.mainContent}>
-              <AppRoutes />
             </div>
-          </div>
-        </Router >
-      </MuiThemeProvider>
+          </Router >
+        </MuiThemeProvider>
+      </MuiPickersUtilsProvider>
     );
   }
 }
