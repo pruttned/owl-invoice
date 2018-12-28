@@ -1,27 +1,34 @@
 import React, { Component } from 'react';
 import { Client } from '../client';
-import ClientList from '../client-list/client-list';
 import ClientForm from '../client-form/client-form';
+import gql from 'graphql-tag';
+import QueryPanel from '../../../common/query/query-panel';
 
-const client: Client =
-{
-    id: 'c1',
-    name: 'client 1',
-    color: '#00d8ff',
-    initials: 'C1',
-    address: 'address xxx',
-    taxId: 'dic1',
-    businessId: 'ico1',
-    vatNumber: 'icdph1'
+const CLIENT_GET_QUERY = gql`
+    query getClient($id: String!) {
+        client(id: $id) {
+            id
+            name
+            color
+            initials
+            address
+            taxId
+            businessId
+            vatNumber
+        }
+    } 
+`;
+
+interface Response {
+    client: Client;
 };
 
-
-class ClientEditPage extends Component {
-    render() {
-        return (
-            <ClientForm client={client} />
-        );
-    }
-}
+const ClientEditPage = ({ match }: { match: any }) => (
+    <QueryPanel<Response> query={CLIENT_GET_QUERY} variables={{ id: match.params.id }}>
+        {(data) => {
+            return <ClientForm client={data.client} />
+        }}
+    </QueryPanel>
+)
 
 export default ClientEditPage;
