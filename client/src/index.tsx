@@ -30,7 +30,7 @@ ReactDOM.render(
                 horizontal: 'center',
             }}
                 action={[
-                    <Button size="small">
+                    <Button key="dismiss" size="small">
                         Dismiss
                     </Button>
                 ]}>
