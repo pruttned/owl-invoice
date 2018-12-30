@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { TextField } from '@material-ui/core';
 import { Client } from '../client';
 import { object as yupObject, string as yupString } from 'yup';
 import FormTextField from '../../../common/form/form-text-field';
 import Form from '../../../common/form/form';
 import FormRow from '../../../common/form/form-row';
 import FormPage from '../../../common/page/form-page';
+import { DocumentNode } from 'graphql';
+import { pick } from 'lodash';
 
 interface ClientFormProps {
-    client: any
+    client: any,
+    mutation: DocumentNode
 }
 
 const validationSchema = yupObject().shape({
@@ -26,6 +28,17 @@ class ClientForm extends Component<ClientFormProps, Client> {
                     initialValues={this.props.client}
                     validationSchema={validationSchema}
                     submitText="Save"
+                    mutation={this.props.mutation}
+                    formToModel={(form: Client) => pick(form, [
+                        'id',
+                        'name',
+                        'address',
+                        'taxId',
+                        'businessId',
+                        'vatNumber',
+                        'color',
+                        'initials',
+                    ])}
                 >
                     {() => (
                         <React.Fragment>
