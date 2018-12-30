@@ -45,7 +45,7 @@ interface Response {
 const ClientEditPage = ({ match }: { match: any }) => (
     <QueryPanel<Response> query={CLIENT_GET_QUERY} variables={{ id: match.params.id }}>
         {(data) => {
-            return <ClientForm client={data.client} mutation={CLIENT_UPDATE_QUERY} />
+            return <ClientForm client={data.client} mutation={CLIENT_UPDATE_QUERY} successMessage = "Client has been sucesfully updated"/>
         }}
     </QueryPanel>
 )

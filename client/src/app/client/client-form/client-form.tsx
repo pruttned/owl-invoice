@@ -9,8 +9,9 @@ import { DocumentNode } from 'graphql';
 import { pick } from 'lodash';
 
 interface ClientFormProps {
-    client: any,
-    mutation: DocumentNode
+    client: any;
+    mutation: DocumentNode;
+    successMessage: string;
 }
 
 const validationSchema = yupObject().shape({
@@ -39,6 +40,7 @@ class ClientForm extends Component<ClientFormProps, Client> {
                         'color',
                         'initials',
                     ])}
+                    successMessage={this.props.successMessage}
                 >
                     {() => (
                         <React.Fragment>

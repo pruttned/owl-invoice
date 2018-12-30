@@ -14,6 +14,7 @@ interface Props extends InjectedNotistackProps {
     children: (props: FormikProps<any>) => React.ReactNode,
     mutation: DocumentNode,
     formToModel: (form: any) => any
+    successMessage: string
 }
 const Form = (props: Props) => {
     return (
@@ -28,7 +29,12 @@ const Form = (props: Props) => {
                                 let model = props.formToModel(values);
 
                                 postMutation({ variables: { model } })
-                                    .then(() => setSubmitting(false))
+                                    .then(() => {
+                                        setSubmitting(false);
+                                        props.enqueueSnackbar(props.successMessage, {
+                                            variant: 'success',
+                                        });
+                                    })
                                     .catch(() => {
                                         setSubmitting(false);
                                         props.enqueueSnackbar('Failed to process request', {
