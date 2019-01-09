@@ -12,6 +12,8 @@ import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { SnackbarProvider } from 'notistack';
 import { Button } from '@material-ui/core';
+import { AppContext } from './app/app-store/app-context';
+import { AppStore } from './app/app-store/app-store';
 
 const link = createHttpLink({
     uri: 'http://localhost:3001/graphql'
@@ -25,17 +27,19 @@ const client = new ApolloClient({
 ReactDOM.render(
     <React.Fragment>
         <ApolloProvider client={client}>
-            <SnackbarProvider maxSnack={3} anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-                action={[
-                    <Button key="dismiss" size="small">
-                        Dismiss
+            <AppContext.Provider value={{ appStore: new AppStore(client) }}>
+                <SnackbarProvider maxSnack={3} anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                    action={[
+                        <Button key="dismiss" size="small">
+                            Dismiss
                     </Button>
-                ]}>
-                <App />
-            </SnackbarProvider>
+                    ]}>
+                    <App />
+                </SnackbarProvider>
+            </AppContext.Provider>
         </ApolloProvider>
     </React.Fragment>
     ,

@@ -12,13 +12,25 @@ interface ClientFormProps {
     client: any;
     mutation: DocumentNode;
     successMessage: string;
+    onSuccess?: (resp: any) => void;
+    invalidateQueryCache?: boolean;
 }
 
 const validationSchema = yupObject().shape({
     name: yupString()
         .required('name is required!'),
+    color: yupString()
+        .required('color is required!'),
+    initials: yupString()
+        .required('initials is required!'),
     address: yupString()
         .required('address is required!'),
+    taxId: yupString()
+        .required('taxId is required!'),
+    businessId: yupString()
+        .required('businessId is required!'),
+    vatNumber: yupString()
+        .required('vatNumber is required!'),
 })
 
 class ClientForm extends Component<ClientFormProps, Client> {
@@ -33,14 +45,16 @@ class ClientForm extends Component<ClientFormProps, Client> {
                     formToModel={(form: Client) => pick(form, [
                         'id',
                         'name',
+                        'color',
+                        'initials',
                         'address',
                         'taxId',
                         'businessId',
                         'vatNumber',
-                        'color',
-                        'initials',
                     ])}
                     successMessage={this.props.successMessage}
+                    onSuccess={this.props.onSuccess}
+                    invalidateQueryCache={this.props.invalidateQueryCache}
                 >
                     {() => (
                         <React.Fragment>
@@ -48,7 +62,22 @@ class ClientForm extends Component<ClientFormProps, Client> {
                                 <FormTextField name="name" label="Name" />
                             </FormRow>
                             <FormRow>
+                                <FormTextField name="color" label="Color" />
+                            </FormRow>
+                            <FormRow>
+                                <FormTextField name="initials" label="Initials" />
+                            </FormRow>
+                            <FormRow>
                                 <FormTextField name="address" label="Address" />
+                            </FormRow>
+                            <FormRow>
+                                <FormTextField name="taxId" label="Tax Id" />
+                            </FormRow>
+                            <FormRow>
+                                <FormTextField name="businessId" label="Business Id" />
+                            </FormRow>
+                            <FormRow>
+                                <FormTextField name="vatNumber" label="Vat Number" />
                             </FormRow>
                         </React.Fragment>
                     )}
@@ -57,5 +86,4 @@ class ClientForm extends Component<ClientFormProps, Client> {
         );
     }
 }
-
 export default ClientForm;

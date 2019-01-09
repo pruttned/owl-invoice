@@ -3,8 +3,6 @@ import { Client } from '../client';
 import ClientForm from '../client-form/client-form';
 import gql from 'graphql-tag';
 import QueryPanel from '../../../common/query/query-panel';
-import { Mutation } from 'react-apollo';
-import { pick } from 'lodash';
 
 const CLIENT_GET_QUERY = gql`
     query getClient($id: String!) {
@@ -45,7 +43,7 @@ interface Response {
 const ClientEditPage = ({ match }: { match: any }) => (
     <QueryPanel<Response> query={CLIENT_GET_QUERY} variables={{ id: match.params.id }}>
         {(data) => {
-            return <ClientForm client={data.client} mutation={CLIENT_UPDATE_QUERY} successMessage = "Client has been sucesfully updated"/>
+            return <ClientForm client={data.client} mutation={CLIENT_UPDATE_QUERY} successMessage = "Client has been successfully updated"/>
         }}
     </QueryPanel>
 )
