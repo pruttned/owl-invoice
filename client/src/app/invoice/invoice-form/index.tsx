@@ -9,9 +9,15 @@ import FormDateField from '../../../common/form/form-date-field';
 import FormTextField from '../../../common/form/form-text-field';
 import FormNumberField from '../../../common/form/form-number-field';
 import { FieldArray } from 'formik';
+import { DocumentNode } from 'graphql';
+import Decimal from 'decimal.js';
 
 interface InvoiceFormProps {
     invoice: Invoice;
+    mutation: DocumentNode;
+    successMessage: string;
+    onSuccess?: (resp: any) => void;
+    invalidateQueryCache?: boolean;
 }
 
 const validationSchema = yup.object().shape({
@@ -37,6 +43,17 @@ class InvoiceForm extends Component<InvoiceFormProps> {
         };
     }
 
+    private fromViewModel(formValues: any): Invoice {
+        return {
+            ...formValues,
+            items: formValues.items.map((item: { unitPrice: number, unitCount: number }) => ({
+                ...item,
+                unitPrice: new Decimal(item.unitPrice),
+                unitCount: new Decimal(item.unitCount)
+            }))
+        };
+    }
+
     render() {
         return (
             <FormPage>
@@ -44,6 +61,11 @@ class InvoiceForm extends Component<InvoiceFormProps> {
                     initialValues={this.toViewModel(this.props.invoice)}
                     validationSchema={validationSchema}
                     submitText="Save"
+                    formToModel={this.fromViewModel}
+                    mutation={this.props.mutation}
+                    successMessage={this.props.successMessage}
+                    onSuccess={this.props.onSuccess}
+                    invalidateQueryCache={this.props.invalidateQueryCache}
                 >
                     {(formikProps: any) => (
                         <React.Fragment>
