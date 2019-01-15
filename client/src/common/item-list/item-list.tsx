@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Menu, IconButton, } from '@material-ui/core';
 import { MoreVert as MoreVertIcon } from '@material-ui/icons';
 import styles from './item-list.module.scss';
+import { Link } from 'react-router-dom';
 
 interface Item {
     id: string;
 }
 interface ItemListProps<T extends Item> {
     items: T[];
+    itemUrl: (item: T) => string;
     itemRender: (item: T) => JSX.Element;
     menuRender: (item: T, closeMenu: () => void) => JSX.Element[];
 }
@@ -62,9 +64,9 @@ class ItemList<T extends Item> extends Component<ItemListProps<T>, ItemListState
                 {
                     this.props.items.map(item => (
                         <div key={item.id} className={styles.item}>
-                            <div className={styles.itemContent}>
+                            <Link to={this.props.itemUrl(item)} className={styles.itemContent}>
                                 {this.props.itemRender(item)}
-                            </div>
+                            </Link>
 
                             <div className={styles.menuButtonCol}>
                                 <MenuButton onClick={this.onMenuClick} item={item} />
@@ -74,7 +76,7 @@ class ItemList<T extends Item> extends Component<ItemListProps<T>, ItemListState
                 <Menu open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={this.closeMenu}>
                     {this.state.menuActiveForItem && this.props.menuRender(this.state.menuActiveForItem!, this.closeMenu)}
                 </Menu>
-            </div>
+            </div >
         );
     }
 }

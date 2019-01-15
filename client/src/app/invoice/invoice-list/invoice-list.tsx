@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ItemList from '../../../common/item-list';
+import ItemList from '../../../common/item-list/item-list';
 import { MenuItem } from '@material-ui/core';
 import styles from './invoice-list.module.scss';
 import moment from 'moment';
@@ -31,8 +31,8 @@ const IssueDateColumn = ({ invoice }: { invoice: Invoice }) => {
 };
 
 const ClientColumn = ({ invoice }: { invoice: Invoice }) => {
-    let numberYear = invoice.number.substring(0, 4);
-    let numberOrder = invoice.number.substring(4);
+    let numberYear = invoice.id.substring(0, 4);
+    let numberOrder = invoice.id.substring(4);
     return (
         <div className={`${styles.col} ${styles.clientCol}`}>
             <div className={styles.clientName}>
@@ -86,6 +86,7 @@ class InvoiceList extends Component<InvoiceListProps> {
                             <GroupHeader group={group} />
 
                             <ItemList<Invoice> items={group.items}
+                                itemUrl={(item: Invoice) => `/invoices/${encodeURIComponent(item.id)}`}
                                 itemRender={(item: Invoice) => (
                                     <div className={styles.item}>
                                         <IssueDateColumn invoice={item} />

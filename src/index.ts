@@ -19,7 +19,7 @@ const HOST = process.env.HOST || 'localhost';
 const typeDefs = glob.sync(path.join(__dirname, '**/*.graphql'))
     .map(f => gql(fs.readFileSync(f, 'utf8')));
 
-db.init('e:\\work\\git\\owl-invoice\\example\\db1');
+db.init('.\\example\\db1');
 
 const scalarResolver = {
     Date: GraphQLDate,

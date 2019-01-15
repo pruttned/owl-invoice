@@ -1,6 +1,5 @@
 import { DocumentCollection } from './document-collection';
 import { IDocumentFs } from './document-fs';
-import sift, { SiftQuery } from 'sift';
 import { includes } from 'lodash';
 
 describe('DocumentCollection', () => {

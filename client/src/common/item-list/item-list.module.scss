@@ -1,7 +1,13 @@
 @import '../../variables';
-
 .root {
     border-bottom: $border;
+    a,
+    a:active,
+    a:focus,
+    a:hover {
+        text-decoration: none;
+        color: $main-color;
+    }
 }
 
 .menuButtonCol {
@@ -17,7 +23,8 @@
     border-top: $border;
     cursor: pointer;
 }
-.item:hover{
+
+.item:hover {
     background: $back-sec-color;
 }
 

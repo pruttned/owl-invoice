@@ -18,7 +18,7 @@ export interface InvoiceItem {
 
 export class InvoiceDocumentProcessor implements DocumentProcessor<InvoiceDocument>{
     fromDb(document: InvoiceDocument): InvoiceDocument {
-        document.items.forEach(item => {
+        document.items && document.items.forEach(item => {
             item.unitCount = new Decimal(item.unitCount);
             item.unitPrice = new Decimal(item.unitPrice);
         });

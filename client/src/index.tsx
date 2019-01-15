@@ -10,9 +10,10 @@ import { ApolloProvider } from 'react-apollo'
 import ApolloClient from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
-import { CssBaseline } from '@material-ui/core';
+import { SnackbarProvider } from 'notistack';
+import { Button } from '@material-ui/core';
+import { AppContext } from './app/app-store/app-context';
+import { AppStore } from './app/app-store/app-store';
 
 const link = createHttpLink({
     uri: 'http://localhost:3001/graphql'
@@ -23,54 +24,22 @@ const client = new ApolloClient({
     link
 });
 
-
-const SUPPLIER_QUERY = gql`
-    query getSupplier {
-        supplier {
-            name
-        }
-    }
-`;
-
-interface Supplier {
-    name: string,
-    address: string,
-    taxId: string,
-    businessId: string,
-    vatNumber: string,
-    register: string,
-    iban: string,
-    bank: string,
-    phoneNumber: string,
-    email: string,
-}
-
-interface Variables {
-};
-
-interface Response {
-    supplier: Supplier;
-};
-
-
-const withCharacter = graphql<{}, Response, Variables>(SUPPLIER_QUERY, {
-    options: () => ({
-    })
-});
-
-const Character = withCharacter(z => {
-    if (z.data!.loading) return <div>Loading</div>;
-    if (z.data!.error) return <h1>ERROR</h1>;
-    return <div>{z.data!.supplier!.name}</div>;
-});
-
-
-
 ReactDOM.render(
     <React.Fragment>
         <ApolloProvider client={client}>
-            <App />
-            {/* <Character /> */}
+            <AppContext.Provider value={{ appStore: new AppStore(client) }}>
+                <SnackbarProvider maxSnack={3} anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                    action={[
+                        <Button key="dismiss" size="small">
+                            Dismiss
+                    </Button>
+                    ]}>
+                    <App />
+                </SnackbarProvider>
+            </AppContext.Provider>
         </ApolloProvider>
     </React.Fragment>
     ,

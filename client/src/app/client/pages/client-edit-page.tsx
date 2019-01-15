@@ -1,27 +1,72 @@
 import React, { Component } from 'react';
 import { Client } from '../client';
-import ClientList from '../client-list';
-import ClientForm from '../client-form';
+import ClientForm from '../client-form/client-form';
+import gql from 'graphql-tag';
+import QueryPanel from '../../../common/query/query-panel';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-const client: Client =
-{
-    id: 'c1',
-    name: 'client 1',
-    color: '#00d8ff',
-    initials: 'C1',
-    address: 'address xxx',
-    taxId: 'dic1',
-    businessId: 'ico1',
-    vatNumber: 'icdph1'
+const CLIENT_GET_QUERY = gql`
+    query getClient($id: String!) {
+        client(id: $id) {
+            id
+            name
+            color
+            initials
+            address
+            taxId
+            businessId
+            vatNumber
+        }
+    } 
+`;
+
+const CLIENT_UPDATE_QUERY = gql`
+mutation updateClient($model:UpdateClientInput!) {
+    updateClient(input: $model) {
+        id
+        name
+        color
+        initials
+        address
+        taxId
+        businessId
+        vatNumber
+    }
+  } 
+`;
+
+
+
+interface Response {
+    client: Client;
 };
 
-
-class ClientEditPage extends Component {
-    render() {
-        return (
-            <ClientForm client={client} />
-        );
-    }
+interface ClientCreatePageProps extends RouteComponentProps<any> {
 }
 
-export default ClientEditPage;
+
+class ClientEditPage extends Component<ClientCreatePageProps> {
+
+    onSuccess = (resp: any) => {
+        this.props.history.push('/clients');
+    };
+
+    render() {
+        return (
+            <QueryPanel<Response> query={CLIENT_GET_QUERY} variables={{ id: this.props.match.params.id }}>
+                {(data) =>
+                    (
+                        <ClientForm
+                            client={data.client}
+                            mutation={CLIENT_UPDATE_QUERY}
+                            successMessage="Client has been successfully updated"
+                            onSuccess={this.onSuccess}
+                        />
+                    )
+                }
+            </QueryPanel>
+        );
+    }
+};
+
+export default withRouter(ClientEditPage);

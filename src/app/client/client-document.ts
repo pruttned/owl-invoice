@@ -5,4 +5,6 @@ export interface ClientDocument {
     taxId: string; //DIC
     businessId: string; //ICO
     vatNumber: string; //IC DPH
+    color: string;
+    initials: string;
 }

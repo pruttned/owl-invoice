@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import ItemList from '../../../common/item-list';
-import { MenuItem } from '@material-ui/core';
+import ItemList from '../../../common/item-list/item-list';
+import { MenuItem} from '@material-ui/core';
 import styles from './client-list.module.scss';
 import { Client } from '../client';
 import Avatar from '../../../common/avatar/avatar';
-import { Link } from 'react-router-dom';
 
 interface ClientListProps {
     items: Client[]
@@ -30,13 +29,12 @@ class ClientList extends Component<ClientListProps> {
     render() {
         return (
             <ItemList<Client> items={this.props.items}
+                itemUrl={(item: Client) => `/clients/${encodeURIComponent(item.id)}`}
                 itemRender={(item: Client) => (
-                    <Link to={`/clients/${encodeURIComponent(item.id)}`}>
-                        <div className={styles.item}>
-                            <AvatarColumn client={item} />
-                            <ClientColumn client={item} />
-                        </div>
-                    </Link>
+                    <div className={styles.item}>
+                        <AvatarColumn client={item} />
+                        <ClientColumn client={item} />
+                    </div>
                 )}
                 menuRender={(item: any, closeMenu: () => void) => [
                     <MenuItem key="m1" onClick={() => { console.log(item); closeMenu(); }}>action1 {item.name}</MenuItem>,

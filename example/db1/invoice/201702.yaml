@@ -1,3 +1,11 @@
 ---
-client: cust2
-dueDate: 2007-12-03
+client: cust1
+dueDate: 2017-04-03
+issueDate: 2017-02-01
+items:
+    - text: 'Práce na za mesiac jún 2018'
+      unitCount: '100'
+      unitPrice: '10.5'
+    - text: 'Nejaká fuška'
+      unitCount: '1'
+      unitPrice: '100'

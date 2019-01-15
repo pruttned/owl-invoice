@@ -1,25 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
-$mq-breakpoints: (
-    mobile:  320px,
-    tablet:  600px,
-    desktop: 960px,
-    wide:    1280px
-);
-@import '../node_modules/sass-mq/mq';
 @import 'variables';
-
 body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: $font-size;
-  color: $main-color;
-  background-color: $back-color;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: $font-size;
+    color: $main-color;
+    background-color: $back-color;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+a {
+    text-decoration: none;
 }
