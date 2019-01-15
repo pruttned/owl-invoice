@@ -11,7 +11,8 @@ import { AppContext, AppContextValue } from '../../app/app-store/app-context';
 
 interface Props extends InjectedNotistackProps {
     submitText: string;
-    initialValues: any, validationSchema?: any;
+    initialValues: any;
+    validationSchema?: any;
     children: (props: FormikProps<any>) => React.ReactNode;
     mutation: DocumentNode;
     formToModel: (form: any) => any;
