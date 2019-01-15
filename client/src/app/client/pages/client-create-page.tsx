@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 
-const CLIENT_CREATE_QUERY = gql`
+const CLIENT_CREATE_MUTATION = gql`
 mutation createClient($model:CreateClientInput!) {
     createClient(input: $model) {
         name
@@ -40,7 +40,7 @@ class ClientCreatePage extends Component<ClientCreatePageProps> {
                 businessId: '',
                 vatNumber: '',
             }}
-                mutation={CLIENT_CREATE_QUERY}
+                mutation={CLIENT_CREATE_MUTATION}
                 successMessage="Client has been successfully created"
                 onSuccess={this.onSuccess}
                 invalidateQueryCache={true}

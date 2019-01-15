@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import ItemList from '../../../common/item-list/item-list';
-import { MenuItem} from '@material-ui/core';
 import styles from './client-list.module.scss';
 import { Client } from '../client';
 import Avatar from '../../../common/avatar/avatar';
 
 interface ClientListProps {
-    items: Client[]
+    items: Client[],
+    menuRender: (item: Client, closeMenu: () => void) => JSX.Element[];
 }
 
 const ClientColumn = ({ client }: { client: Client }) => {
@@ -25,24 +25,19 @@ const AvatarColumn = ({ client }: { client: Client }) => {
     );
 };
 
-class ClientList extends Component<ClientListProps> {
-    render() {
-        return (
-            <ItemList<Client> items={this.props.items}
-                itemUrl={(item: Client) => `/clients/${encodeURIComponent(item.id)}`}
-                itemRender={(item: Client) => (
-                    <div className={styles.item}>
-                        <AvatarColumn client={item} />
-                        <ClientColumn client={item} />
-                    </div>
-                )}
-                menuRender={(item: any, closeMenu: () => void) => [
-                    <MenuItem key="m1" onClick={() => { console.log(item); closeMenu(); }}>action1 {item.name}</MenuItem>,
-                    <MenuItem key="m2" onClick={() => { console.log(item); closeMenu(); }}>action2 {item.name}</MenuItem>,
-                ]}
-            />
-        );
-    }
-}
+const ClientList = (props: ClientListProps) =>
+    (
+        <ItemList<Client> items={props.items}
+            itemUrl={(item: Client) => `/clients/${encodeURIComponent(item.id)}`}
+            itemRender={(item: Client) => (
+                <div className={styles.item}>
+                    <AvatarColumn client={item} />
+                    <ClientColumn client={item} />
+                </div>
+            )}
+            menuRender={props.menuRender}
+        />
+    );
+
 
 export default ClientList;

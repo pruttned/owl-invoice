@@ -20,7 +20,7 @@ const CLIENT_GET_QUERY = gql`
     } 
 `;
 
-const CLIENT_UPDATE_QUERY = gql`
+const CLIENT_UPDATE_MUTATION = gql`
 mutation updateClient($model:UpdateClientInput!) {
     updateClient(input: $model) {
         id
@@ -58,7 +58,7 @@ class ClientEditPage extends Component<ClientCreatePageProps> {
                     (
                         <ClientForm
                             client={data.client}
-                            mutation={CLIENT_UPDATE_QUERY}
+                            mutation={CLIENT_UPDATE_MUTATION}
                             successMessage="Client has been successfully updated"
                             onSuccess={this.onSuccess}
                         />
