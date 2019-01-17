@@ -1,3 +1,4 @@
+import { ConflictError } from './../../common/errors/conflict-error';
 import { InvoiceDocument } from './../invoice/invoice-document';
 import { ClientDocument } from './client-document';
 import { db } from '../db';
@@ -25,7 +26,7 @@ class ClientService {
             }
         })
         if (clientInvoices.length) {
-            throw new Error('It is not allowed to remove client with existing invoices');
+            throw new ConflictError('It is not allowed to remove client with existing invoices');
         }
         return db.clients.remove(id);
     }

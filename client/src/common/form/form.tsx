@@ -6,6 +6,7 @@ import { Mutation } from 'react-apollo';
 import { DocumentNode } from 'graphql';
 import { withSnackbar, InjectedNotistackProps } from 'notistack';
 import { AppContext, AppContextValue } from '../../app/app-store/app-context';
+import { notification } from '../notification/notification';
 
 //todo: cache refresh https://www.apollographql.com/docs/react/essentials/mutations.html - only for add - update is handled thanks to return of all fields
 
@@ -47,9 +48,9 @@ const Form = (props: Props) => {
                                                     props.onSuccess(resp);
                                                 }
                                             })
-                                            .catch(() => {
+                                            .catch(err => {
                                                 setSubmitting(false);
-                                                props.enqueueSnackbar('Failed to process request', {
+                                                props.enqueueSnackbar(notification.toErrorMessage(err), {
                                                     variant: 'error',
                                                 });
                                             });

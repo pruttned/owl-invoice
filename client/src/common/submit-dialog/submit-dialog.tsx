@@ -5,6 +5,7 @@ import { Mutation, MutationFn } from 'react-apollo';
 import { DocumentNode } from 'graphql';
 import { withSnackbar, InjectedNotistackProps } from 'notistack';
 import { AppContext, AppContextValue } from '../../app/app-store/app-context';
+import { notification } from '../notification/notification';
 
 interface SubmitDialogProps extends InjectedNotistackProps {
     submitText: string;
@@ -55,8 +56,8 @@ class SubmitDialog extends Component<SubmitDialogProps, SubmitDialogState>{
                 this.setState({ isSubmiting: false });
                 this.close();
             })
-            .catch(() => {
-                this.props.enqueueSnackbar('Failed to process request', {
+            .catch(err => {
+                this.props.enqueueSnackbar(notification.toErrorMessage(err), {
                     variant: 'error',
                 });
                 setSubmitting(false);
