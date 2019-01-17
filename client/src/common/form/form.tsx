@@ -40,10 +40,10 @@ const Form = (props: Props) => {
                                                 props.enqueueSnackbar(props.successMessage, {
                                                     variant: 'success',
                                                 });
+                                                if (props.invalidateQueryCache) {
+                                                    context.appStore.invalidateQueryCache();
+                                                }
                                                 if (props.onSuccess) {
-                                                    if (props.invalidateQueryCache) {
-                                                        context.appStore.invalidateQueryCache();
-                                                    }
                                                     props.onSuccess(resp);
                                                 }
                                             })
