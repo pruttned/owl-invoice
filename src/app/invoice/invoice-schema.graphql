@@ -51,5 +51,5 @@ extend type Query {
 extend type Mutation {
     createInvoice(input: CreateInvoiceInput): Invoice,
     updateInvoice(input: UpdateInvoiceInput): Invoice
-    removeInvoice(id:String): Boolean
+    removeInvoice(id: String): Boolean
 }

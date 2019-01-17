@@ -39,4 +39,5 @@ extend type Query {
 extend type Mutation {
     createClient(input: CreateClientInput): Client,
     updateClient(input: UpdateClientInput): Client
+    removeClient(id: String): Boolean
 }

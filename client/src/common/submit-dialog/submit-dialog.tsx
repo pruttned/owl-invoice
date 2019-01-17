@@ -1,7 +1,6 @@
 import React, { Component, ReactEventHandler } from 'react';
 import { Form as FormikForm, Formik, FormikProps } from 'formik';
 import { Button, Snackbar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
-import styles from './form.module.scss';
 import { Mutation, MutationFn } from 'react-apollo';
 import { DocumentNode } from 'graphql';
 import { withSnackbar, InjectedNotistackProps } from 'notistack';
@@ -46,14 +45,15 @@ class SubmitDialog extends Component<SubmitDialogProps, SubmitDialogState>{
                 this.props.enqueueSnackbar(this.props.successMessage, {
                     variant: 'success',
                 });
+                if (this.props.invalidateQueryCache) {
+                    context.appStore.invalidateQueryCache();
+                }
                 if (this.props.onSuccess) {
-                    if (this.props.invalidateQueryCache) {
-                        context.appStore.invalidateQueryCache();
-                    }
                     this.props.onSuccess(resp);
                 }
                 setSubmitting(false);
                 this.setState({ isSubmiting: false });
+                this.close();
             })
             .catch(() => {
                 this.props.enqueueSnackbar('Failed to process request', {
@@ -102,76 +102,3 @@ class SubmitDialog extends Component<SubmitDialogProps, SubmitDialogState>{
 }
 
 export default withSnackbar(SubmitDialog);
-
-
-
-// import React, { Component } from 'react';
-// import { Button, Snackbar, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
-// import styles from './mutation-dialog.module.scss';
-// import { Mutation } from 'react-apollo';
-// import { DocumentNode } from 'graphql';
-// import { withSnackbar, InjectedNotistackProps } from 'notistack';
-// import { ModalProps } from '@material-ui/core/Modal';
-// import { AppContext, AppContextValue } from '../../app/app-store/app-context';
-
-// export interface MutationDialogChildrenProps {
-//     postMutation: (model: any) => Promise<any>;
-//     loading: boolean;
-// }
-// interface MutationDialogProps extends InjectedNotistackProps, ModalProps {
-//     mutation: DocumentNode;
-//     successMessage: string;
-//     onSuccess?: (resp: any) => void;
-//     invalidateQueryCache?: boolean;
-//     dialogTitle: JSX.Element[] | JSX.Element;
-//     children: (props: MutationDialogChildrenProps) => React.ReactNode;
-// }
-
-// const MutationDialog = (props: MutationDialogProps) => {
-//     const { dialogTitle, successMessage, onSuccess, invalidateQueryCache, mutation, onPresentSnackbar, enqueueSnackbar, ...rest } = props;
-//     return (
-//         <div className={styles.root}>
-//             <AppContext.Consumer>
-//                 {(context: AppContextValue) => (
-//                     <Mutation mutation={mutation}>
-//                         {(postMutation, { loading, error }) => (
-//                             <Dialog  {...rest, open:loading||res.open}> nejak treba zabranit zavretiu pokial je loading
-//                                 <DialogTitle>{dialogTitle}</DialogTitle>
-//                                 <Mutation mutation={mutation}>
-//                                     {(postMutation, { loading, error }) => {
-//                                         let postMutationWrapped = (model: any) => {
-//                                             return postMutation({ variables: { model } })
-//                                                 .then(resp => {
-//                                                     this.props.enqueueSnackbar(successMessage, {
-//                                                         variant: 'success',
-//                                                     });
-//                                                     if (onSuccess) {
-//                                                         if (invalidateQueryCache) {
-//                                                             context.appStore.invalidateQueryCache();
-//                                                         }
-//                                                         onSuccess(resp);
-//                                                     }
-//                                                 })
-//                                                 .catch(() => {
-//                                                     this.props.enqueueSnackbar('Failed to process request', {
-//                                                         variant: 'error',
-//                                                     });
-//                                                 });
-//                                         }
-//                                         return (
-//                                             <React.Fragment>
-//                                                 {this.props.children({ postMutation: postMutationWrapped, loading })}
-//                                             </React.Fragment>
-//                                         )
-//                                     }}
-//                                 </Mutation>
-//                             </Dialog>
-//                         )}
-//                     </Mutation>
-//                 )}
-//             </AppContext.Consumer>
-//         </div>
-//     );
-// };
-
-// export default withSnackbar(MutationDialog);

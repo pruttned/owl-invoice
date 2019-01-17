@@ -23,10 +23,8 @@ const CLIENT_LIST_QUERY = gql`
 `;
 
 const CLIENT_REMOVE_MUTATION = gql`
-    mutation removeClient($id:String!) {
-        removeClient(id: $id) {
-            id
-        }
+    mutation removeClient($model:String!) {
+        removeClient(id: $model)
     } 
 `;
 
@@ -95,13 +93,12 @@ class ClientListPage extends Component<ClientListPageProps, ClientListState>{
                         open={this.state.isRemoveDialogOpen}
                         submitText="remove"
                         mutation={CLIENT_REMOVE_MUTATION}
-                        formToModel={(form: Client) => pick(form, [
-                            'id',
-                        ])}
+                        formToModel={(form: Client) => form.id}
                         successMessage={`${this.state.itemToRemove!.name} was be removed`}
                         initialValues={{ id: this.state.itemToRemove!.id }}
                         title={`Do you really want to remove ${this.state.itemToRemove!.name}`}
                         onClose={this.closeRemoveDialog}
+                        invalidateQueryCache={true}
                     >
                         {() => (
                             <DialogContentText id="remove-dialog-description">
