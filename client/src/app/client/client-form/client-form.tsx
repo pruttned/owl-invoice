@@ -59,25 +59,25 @@ class ClientForm extends Component<ClientFormProps, Client> {
                     {() => (
                         <React.Fragment>
                             <FormRow>
-                                <FormTextField name="name" label="Name" />
+                                <FormTextField name="name" label="Name" fullWidth />
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="color" label="Color" />
+                                <FormTextField name="color" label="Color" fullWidth/>
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="initials" label="Initials" />
+                                <FormTextField name="initials" label="Initials" fullWidth/>
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="address" label="Address" multiline={true} rows="4"/>
+                                <FormTextField name="address" label="Address" fullWidth multiline rows="4" />
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="taxId" label="Tax Id" />
+                                <FormTextField name="taxId" label="Tax Id" fullWidth/>
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="businessId" label="Business Id" />
+                                <FormTextField name="businessId" label="Business Id" fullWidth/>
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="vatNumber" label="Vat Number" />
+                                <FormTextField name="vatNumber" label="Vat Number" fullWidth/>
                             </FormRow>
                         </React.Fragment>
                     )}

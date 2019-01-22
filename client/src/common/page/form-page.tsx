@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './form-page.module.scss';
+import classNames from 'classnames';
 
-const FormPage = ({ children }: { children: JSX.Element[] | JSX.Element }) => {
+const FormPage = ({ children, fullWidth }: { children: JSX.Element[] | JSX.Element, fullWidth?: boolean }) => {
     return (
-        <div className={styles.root}>{children}</div>
+        <div className={classNames(styles.root, { [styles.fullWidth]: fullWidth })}>{children}</div>
     );
 };
 
