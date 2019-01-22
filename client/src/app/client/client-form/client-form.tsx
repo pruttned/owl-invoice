@@ -68,7 +68,7 @@ class ClientForm extends Component<ClientFormProps, Client> {
                                 <FormTextField name="initials" label="Initials" />
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="address" label="Address" />
+                                <FormTextField name="address" label="Address" multiline={true} rows="4"/>
                             </FormRow>
                             <FormRow>
                                 <FormTextField name="taxId" label="Tax Id" />

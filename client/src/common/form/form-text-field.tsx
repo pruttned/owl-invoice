@@ -2,7 +2,7 @@ import React from 'react';
 import { TextField } from '@material-ui/core';
 import { Field } from 'formik';
 
-const FormTextField = ({ name, label }: { name: string, label: string }) => {
+const FormTextField = ({ name, label, multiline, rows }: { name: string, label: string, multiline?: boolean, rows?: string | number }) => {
     return (
         <Field
             validateOnBlur
@@ -13,6 +13,8 @@ const FormTextField = ({ name, label }: { name: string, label: string }) => {
                     {...field}
                     label={label}
                     variant="outlined"
+                    multiline={multiline}
+                    rows={rows}
                     error={
                         Boolean(form.errors[name] && form.touched[name])
                     }
