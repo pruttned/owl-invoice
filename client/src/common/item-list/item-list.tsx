@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Menu, IconButton, } from '@material-ui/core';
-import { MoreVert as MoreVertIcon } from '@material-ui/icons';
+import { Menu, } from '@material-ui/core';
 import styles from './item-list.module.scss';
 import { Link } from 'react-router-dom';
+import { MenuButton } from '../button/menu-button';
 
-interface Item {
+export interface Item {
     id: string;
 }
 interface ItemListProps<T extends Item> {
@@ -18,40 +18,16 @@ interface ItemListState<T extends Item> {
     menuActiveForItem: T | null;
 }
 
-interface MenuButtonProps<T extends Item> {
-    item: T;
-    onClick: (event: React.MouseEvent<HTMLElement, MouseEvent>, item: T) => void;
-}
-
-class MenuButton<T extends Item> extends Component<MenuButtonProps<T>> {
-    onButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        this.props.onClick(event, this.props.item);
-    };
-
-    render() {
-        return (
-            <IconButton
-                aria-label="More"
-                aria-owns={open ? 'long-menu' : undefined}
-                aria-haspopup="true"
-                onClick={this.onButtonClick}
-            >
-                <MoreVertIcon />
-            </IconButton>
-        );
-    }
-}
-
 class ItemList<T extends Item> extends Component<ItemListProps<T>, ItemListState<T>> {
     state = {
         anchorEl: null,
         menuActiveForItem: null
     };
 
-    onMenuClick = (event: React.MouseEvent<HTMLElement, MouseEvent>, item: T) => {
+    openMenu = (event: React.MouseEvent<HTMLElement, MouseEvent>, target?: T) => {
         this.setState({
             anchorEl: event.currentTarget,
-            menuActiveForItem: item
+            menuActiveForItem: target!
         });
     }
     closeMenu = () => {
@@ -69,7 +45,7 @@ class ItemList<T extends Item> extends Component<ItemListProps<T>, ItemListState
                             </Link>
 
                             <div className={styles.menuButtonCol}>
-                                <MenuButton onClick={this.onMenuClick} item={item} />
+                                <MenuButton onClick={this.openMenu} target={item} />
                             </div>
                         </div>))
                 }

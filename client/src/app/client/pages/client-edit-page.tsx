@@ -4,6 +4,8 @@ import ClientForm from '../client-form/client-form';
 import gql from 'graphql-tag';
 import QueryPanel from '../../../common/query/query-panel';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { MenuItem } from '@material-ui/core';
+import ClientRemoveDialog from '../client-remove-dialog/client-remove-dialog';
 
 const CLIENT_GET_QUERY = gql`
     query getClient($id: String!) {
@@ -41,13 +43,30 @@ interface Response {
     client: Client;
 };
 
-interface ClientCreatePageProps extends RouteComponentProps<any> {
+interface ClientEditPageProps extends RouteComponentProps<any> {
 }
 
+interface ClientEditPageState {
+    isRemoveDialogOpen: boolean;
+}
 
-class ClientEditPage extends Component<ClientCreatePageProps> {
+class ClientEditPage extends Component<ClientEditPageProps, ClientEditPageState> {
+    state: ClientEditPageState = {
+        isRemoveDialogOpen: false
+    };
 
-    onSuccess = (resp: any) => {
+    showRemoveItemDialog = () => {
+        this.setState({
+            isRemoveDialogOpen: true
+        });
+    };
+
+    closeRemoveDialog = () => {
+        this.setState({
+            isRemoveDialogOpen: false
+        });
+    };
+    redirectToList = (resp: any) => {
         this.props.history.push('/clients');
     };
 
@@ -56,12 +75,23 @@ class ClientEditPage extends Component<ClientCreatePageProps> {
             <QueryPanel<Response> query={CLIENT_GET_QUERY} variables={{ id: this.props.match.params.id }}>
                 {(data) =>
                     (
-                        <ClientForm
-                            client={data.client}
-                            mutation={CLIENT_UPDATE_MUTATION}
-                            successMessage="Client has been successfully updated"
-                            onSuccess={this.onSuccess}
-                        />
+                        <React.Fragment>
+                            <ClientForm
+                                client={data.client}
+                                mutation={CLIENT_UPDATE_MUTATION}
+                                successMessage="Client has been successfully updated"
+                                onSuccess={this.redirectToList}
+                                menuRender={(closeMenu: () => void) => [
+                                    <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(); closeMenu(); }}>Remove {data.client.name}</MenuItem>,
+                                ]}
+                            />
+                            <ClientRemoveDialog
+                                open={this.state.isRemoveDialogOpen}
+                                item={data.client}
+                                onClose={this.closeRemoveDialog}
+                                onSuccess={this.redirectToList}
+                            />
+                        </React.Fragment>
                     )
                 }
             </QueryPanel>

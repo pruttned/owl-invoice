@@ -14,6 +14,7 @@ interface ClientFormProps {
     successMessage: string;
     onSuccess?: (resp: any) => void;
     invalidateQueryCache?: boolean;
+    menuRender?: (closeMenu: () => void) => JSX.Element[];
 }
 
 const validationSchema = yupObject().shape({
@@ -36,7 +37,7 @@ const validationSchema = yupObject().shape({
 class ClientForm extends Component<ClientFormProps, Client> {
     render() {
         return (
-            <FormPage>
+            <FormPage menuRender={this.props.menuRender}>
                 <Form
                     initialValues={this.props.client}
                     validationSchema={validationSchema}
@@ -62,22 +63,22 @@ class ClientForm extends Component<ClientFormProps, Client> {
                                 <FormTextField name="name" label="Name" fullWidth />
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="color" label="Color" fullWidth/>
+                                <FormTextField name="color" label="Color" fullWidth />
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="initials" label="Initials" fullWidth/>
+                                <FormTextField name="initials" label="Initials" fullWidth />
                             </FormRow>
                             <FormRow>
                                 <FormTextField name="address" label="Address" fullWidth multiline rows="4" />
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="taxId" label="Tax Id" fullWidth/>
+                                <FormTextField name="taxId" label="Tax Id" fullWidth />
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="businessId" label="Business Id" fullWidth/>
+                                <FormTextField name="businessId" label="Business Id" fullWidth />
                             </FormRow>
                             <FormRow>
-                                <FormTextField name="vatNumber" label="Vat Number" fullWidth/>
+                                <FormTextField name="vatNumber" label="Vat Number" fullWidth />
                             </FormRow>
                         </React.Fragment>
                     )}

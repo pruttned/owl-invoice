@@ -49,12 +49,12 @@ class SubmitDialog extends Component<SubmitDialogProps, SubmitDialogState>{
                 if (this.props.invalidateQueryCache) {
                     context.appStore.invalidateQueryCache();
                 }
-                if (this.props.onSuccess) {
-                    this.props.onSuccess(resp);
-                }
                 setSubmitting(false);
                 this.setState({ isSubmiting: false });
                 this.close();
+                if (this.props.onSuccess) {
+                    this.props.onSuccess(resp);
+                }
             })
             .catch(err => {
                 this.props.enqueueSnackbar(notification.toErrorMessage(err), {

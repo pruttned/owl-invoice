@@ -1,102 +1,59 @@
 import React, { Component } from 'react';
 import { Client } from '../client';
-import ClientList from '../client-list/client-list';
 import gql from 'graphql-tag';
-import QueryPanel from '../../../common/query/query-panel';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Add as AddIcon } from '@material-ui/icons';
-import PageFab from '../../../common/page-fab/page-fab';
-import { MenuItem, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions, Button } from '@material-ui/core';
+import { DialogContentText } from '@material-ui/core';
 import SubmitDialog from '../../../common/submit-dialog/submit-dialog';
-import { pick } from 'lodash';
 import { Field } from 'formik';
-import ClientRemoveDialog from '../client-remove-dialog/client-remove-dialog';
 
-const CLIENT_LIST_QUERY = gql`
-    query listClients {
-        clients {
-            id
-            name
-            color
-            initials
-        }
-    }
+const CLIENT_REMOVE_MUTATION = gql`
+    mutation removeClient($model:String!) {
+        removeClient(id: $model)
+    } 
 `;
 
-interface Response {
-    clients: Client[];
-};
-
-interface ClientListPageProps extends RouteComponentProps<any> {
+interface ClientRemoveDialogProps {
+    item: Client;
+    onClose: () => void;
+    open: boolean;
+    onSuccess?: (resp: any) => void;
 }
 
-interface ClientListState {
-    itemToRemove: Client | null;
-    isRemoveDialogOpen: boolean;
-}
 
-class ClientListPage extends Component<ClientListPageProps, ClientListState>{
-    state: ClientListState = {
-        itemToRemove: null,
-        isRemoveDialogOpen: false
-    };
-
-    navigateToAdd = () => {
-        this.props.history.push('/clients/new');
-    };
-    showRemoveItemDialog = (item: Client) => {
-        this.setState({
-            itemToRemove: item,
-            isRemoveDialogOpen: true
-        });
-    };
-
-    closeRemoveDialog = () => {
-        this.setState({
-            itemToRemove: null,
-            isRemoveDialogOpen: false
-        });
-    };
+class ClientRemoveDialog extends Component<ClientRemoveDialogProps>{
 
     confirmRemoveDialog = (postMutation: (model: any) => Promise<any>) => {
-        postMutation({ id: '123' }).then(() => {
-            this.closeRemoveDialog();
+        postMutation({ id: module.id }).then(() => {
+            this.props && this.props.onClose();
         });
     }
 
     render() {
-        let removeDialogTitle = (
-            <DialogTitle id="remove-dialog-title">Do you really want to remove {this.state.itemToRemove && this.state.itemToRemove.name}</DialogTitle>
-        );
         return (
-            <React.Fragment>
-                <QueryPanel<Response> query={CLIENT_LIST_QUERY}>
-                    {(data) => {
-                        return <ClientList
-                            items={data.clients}
-                            menuRender={(item: Client, closeMenu: () => void) => [
-                                <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(item); closeMenu(); }}>Remove {item.name}</MenuItem>,
-                            ]}
-                        />
-                    }}
-                </QueryPanel>
-                <PageFab onClick={this.navigateToAdd}>
-                    <AddIcon />
-                </PageFab>
-                {this.state.itemToRemove && (
-                    <ClientRemoveDialog
-                        open={this.state.isRemoveDialogOpen}
-                        item={this.state.itemToRemove}
-                        onClose={this.closeRemoveDialog}
-                    />
+            <SubmitDialog
+                open={this.props.open}
+                submitText="remove"
+                mutation={CLIENT_REMOVE_MUTATION}
+                formToModel={(form: Client) => form.id}
+                successMessage={`${this.props.item!.name} was be removed`}
+                initialValues={{ id: this.props.item!.id }}
+                title={`Do you really want to remove ${this.props.item!.name}`}
+                onClose={this.props.onClose}
+                invalidateQueryCache={true}
+                onSuccess={this.props.onSuccess}
+            >
+                {() => (
+                    <DialogContentText id="remove-dialog-description">
+                        <span><strong>{this.props.item!.name}</strong> will be permanently removed from the system</span>
+                        <Field type="hidden" name="id" />
+                    </DialogContentText>
                 )}
-            </React.Fragment>
+            </SubmitDialog>
         );
     }
 
 }
 
-export default withRouter(ClientListPage);
+export default ClientRemoveDialog;
 
 
 
@@ -188,7 +145,7 @@ export default withRouter(ClientListPage);
 
 //     render() {
 //         let removeDialogTitle = (
-//             <DialogTitle id="remove-dialog-title">Do you really want to remove {this.state.itemToRemove && this.state.itemToRemove.name}</DialogTitle>
+//             <DialogTitle id="remove-dialog-title">Do you really want to remove {this.props.item && this.props.item.name}</DialogTitle>
 //         );
 //         return (
 //             <React.Fragment>
@@ -210,13 +167,13 @@ export default withRouter(ClientListPage);
 //                     onClose={this.closeRemoveDialog}
 //                     mutation={CLIENT_REMOVE_MUTATION}
 //                     dialogTitle={removeDialogTitle}
-//                     successMessage={`${this.state.itemToRemove && this.state.itemToRemove.name} was be removed`}
+//                     successMessage={`${this.props.item && this.props.item.name} was be removed`}
 //                 >
 //                     {({ loading, postMutation }: MutationDialogChildrenProps) => (
 //                         <React.Fragment>
 //                             <DialogContent>
 //                                 <DialogContentText id="remove-dialog-description">
-//                                     <strong>{this.state.itemToRemove && this.state.itemToRemove.name}</strong> will be permanently removed from the system
+//                                     <strong>{this.props.item && this.props.item.name}</strong> will be permanently removed from the system
 //                                     </DialogContentText>
 //                             </DialogContent>
 //                             <DialogActions>

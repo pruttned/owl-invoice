@@ -75,7 +75,11 @@ class App extends Component<any, AppState> {
                   </IconButton>
                   <Typography variant="h6" color="inherit" noWrap>
                     Owl Invoice
-              </Typography>
+                  </Typography>
+                  <div className={styles.menuRight}>
+                    <div id="appBarMenu">
+                    </div>
+                  </div>
                 </Toolbar>
               </AppBar>
               <nav>
