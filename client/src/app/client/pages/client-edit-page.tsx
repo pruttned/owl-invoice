@@ -6,6 +6,7 @@ import QueryPanel from '../../../common/query/query-panel';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { MenuItem } from '@material-ui/core';
 import ClientRemoveDialog from '../client-remove-dialog/client-remove-dialog';
+import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 
 const CLIENT_GET_QUERY = gql`
     query getClient($id: String!) {
@@ -76,6 +77,7 @@ class ClientEditPage extends Component<ClientEditPageProps, ClientEditPageState>
                 {(data) =>
                     (
                         <React.Fragment>
+                            <BreadcrumbsItem to={`/clients/${encodeURIComponent(data.client.id)}`}>{data.client.name}</BreadcrumbsItem>
                             <ClientForm
                                 client={data.client}
                                 mutation={CLIENT_UPDATE_MUTATION}
@@ -95,6 +97,7 @@ class ClientEditPage extends Component<ClientEditPageProps, ClientEditPageState>
                     )
                 }
             </QueryPanel>
+
         );
     }
 };

@@ -9,6 +9,8 @@ import styles from './App.module.scss';
 import AppRoutes from './app-routes';
 import MuiPickersUtilsProvider from 'material-ui-pickers/MuiPickersUtilsProvider';
 import MomentUtils from '@date-io/moment';
+import { BreadcrumbsProvider } from 'react-breadcrumbs-dynamic';
+import Breadcrumbs from './common/breadcrumbs/breadcrumbs';
 
 const theme = createMuiTheme({
   typography: {
@@ -58,64 +60,66 @@ class App extends Component<any, AppState> {
 
   render() {
     return (
-      <MuiPickersUtilsProvider utils={MomentUtils}>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
-        <MuiThemeProvider theme={theme}>
-          <Router>
-            <div className={styles.root}>
-              <AppBar position="fixed" className={styles.appBar}>
-                <Toolbar>
-                  <IconButton
-                    className={styles.menuButton}
-                    color="inherit"
-                    aria-label="Open drawer"
-                    onClick={this.toggleDrawer}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                  <Typography variant="h6" color="inherit" noWrap>
-                    Owl Invoice
-                  </Typography>
-                  <div className={styles.menuRight}>
-                    <div id="appBarMenu">
+      <BreadcrumbsProvider>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
+          <MuiThemeProvider theme={theme}>
+            <Router>
+              <div className={styles.root}>
+                <AppBar position="fixed" className={styles.appBar}>
+                  <Toolbar>
+                    <IconButton
+                      className={styles.menuButton}
+                      color="inherit"
+                      aria-label="Open drawer"
+                      onClick={this.toggleDrawer}
+                    >
+                      <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" color="inherit" noWrap>
+                      <Breadcrumbs />
+                    </Typography>
+                    <div className={styles.menuRight}>
+                      <div id="appBarMenu">
+                      </div>
                     </div>
+                  </Toolbar>
+                </AppBar>
+                <nav>
+                  <div className={styles.drawerMobile}>
+                    <Drawer
+                      className={styles.drawer}
+                      variant="temporary"
+                      anchor="left"
+                      open={this.state.mobileOpen}
+                      onClose={this.toggleDrawer}
+                      classes={{
+                        paper: styles.drawerPaper,
+                      }}
+                    >
+                      {drawer}
+                    </Drawer>
                   </div>
-                </Toolbar>
-              </AppBar>
-              <nav>
-                <div className={styles.drawerMobile}>
-                  <Drawer
-                    className={styles.drawer}
-                    variant="temporary"
-                    anchor="left"
-                    open={this.state.mobileOpen}
-                    onClose={this.toggleDrawer}
-                    classes={{
-                      paper: styles.drawerPaper,
-                    }}
-                  >
-                    {drawer}
-                  </Drawer>
+                  <div className={styles.drawerDesktop}>
+                    <Drawer
+                      className={styles.drawer}
+                      classes={{
+                        paper: styles.drawerPaper,
+                      }}
+                      variant="permanent"
+                      open>
+                      {drawer}
+                    </Drawer>
+                  </div>
+                </nav>
+                <div className={styles.mainContent}>
+                  <AppRoutes />
                 </div>
-                <div className={styles.drawerDesktop}>
-                  <Drawer
-                    className={styles.drawer}
-                    classes={{
-                      paper: styles.drawerPaper,
-                    }}
-                    variant="permanent"
-                    open>
-                    {drawer}
-                  </Drawer>
-                </div>
-              </nav>
-              <div className={styles.mainContent}>
-                <AppRoutes />
               </div>
-            </div>
-          </Router >
-        </MuiThemeProvider>
-      </MuiPickersUtilsProvider>
+            </Router >
+          </MuiThemeProvider>
+        </MuiPickersUtilsProvider>
+      </BreadcrumbsProvider>
     );
   }
 }
