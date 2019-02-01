@@ -29,13 +29,14 @@ const theme = createMuiTheme({
 
 const drawerItems = [
   { to: '/invoices', label: 'Invoices' },
-  { to: '/clients', label: 'Clients' }
+  { to: '/clients', label: 'Clients' },
+  { to: '/supplier', label: 'Supplier' } //tmp
 ]
 
 const drawer = (
   <List>
     {drawerItems.map(item => (
-      <NavLink to={item.to} activeClassName={styles.drawerItemActive}>
+      <NavLink key={item.to} to={item.to} activeClassName={styles.drawerItemActive}>
         <ListItem button>
           <ListItemText primary={<div className={styles.drawerItemLabel}>{item.label}</div>} />
         </ListItem>
