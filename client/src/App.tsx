@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import InvoiceListPage from './app/invoice/pages/invoice-list-page';
-import ClientListPage from './app/client/pages/client-list-page';
+import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom';
 import { AppBar, List, ListItem, ListItemText, Drawer, Toolbar, IconButton, Typography, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { Menu as MenuIcon } from '@material-ui/icons';
 import styles from './App.module.scss';
@@ -29,19 +27,20 @@ const theme = createMuiTheme({
   },
 });
 
-//TODO: extract
+const drawerItems = [
+  { to: '/invoices', label: 'Invoices' },
+  { to: '/clients', label: 'Clients' }
+]
+
 const drawer = (
   <List>
-    <Link to="/">
-      <ListItem button>
-        <ListItemText primary="Invoices" />
-      </ListItem>
-    </Link>
-    <Link to="/clients">
-      <ListItem button>
-        <ListItemText primary="Clients" />
-      </ListItem>
-    </Link>
+    {drawerItems.map(item => (
+      <NavLink to={item.to} activeClassName={styles.drawerItemActive}>
+        <ListItem button>
+          <ListItemText primary={<div className={styles.drawerItemLabel}>{item.label}</div>} />
+        </ListItem>
+      </NavLink >
+    ))}
   </List>
 );
 

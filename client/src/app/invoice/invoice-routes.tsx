@@ -5,7 +5,7 @@ import InvoiceListPage from './pages/invoice-list-page';
 const ClientRoutes = () => (
     <React.Fragment>
         <Switch>
-            <Route path="/" exact component={InvoiceListPage} />
+            <Route path="/invoices" exact component={InvoiceListPage} />
         </Switch>
     </React.Fragment>
 );

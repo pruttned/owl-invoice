@@ -5,7 +5,7 @@ import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 const ClientPage = () =>
     (
         <React.Fragment>
-            <BreadcrumbsItem to="/">Invoices</BreadcrumbsItem>
+            <BreadcrumbsItem to="/invoices">Invoices</BreadcrumbsItem>
             <InvoiceRoutes></InvoiceRoutes>
         </React.Fragment>
     );
