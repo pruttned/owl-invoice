@@ -1,5 +1,6 @@
 import { ClientDocument } from './client/client-document';
-import { InvoiceDocument, InvoiceDocumentProcessor } from './invoice/invoice-document';
+import { InvoiceDocument } from './invoice/invoice-document';
+import { InvoiceDocumentProcessor } from "./invoice/invoice-document-processor";
 import { DocumentCollection } from './../common/document-db/document-collection';
 import { DocumentFsWatcher } from './../common/document-db/document-fs-watcher';
 import { DocumentFs } from './../common/document-db/document-fs';

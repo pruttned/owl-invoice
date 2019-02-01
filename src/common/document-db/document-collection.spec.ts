@@ -1,6 +1,7 @@
 import { DocumentCollection } from './document-collection';
 import { IDocumentFs } from './document-fs';
 import { includes } from 'lodash';
+import { DocumentProcessor } from './document-processor';
 
 describe('DocumentCollection', () => {
 
@@ -8,12 +9,24 @@ describe('DocumentCollection', () => {
         getCollection: jest.fn(() => Promise.resolve(['ab', 'abc', 'abcd', 'abcde'])),
         getDocument: jest.fn((_, doc) => Promise.resolve({
             tags: [doc]
-        }))
+        })),
+        writeDocument: jest.fn((_, doc) => false),
     }));
 
     interface IDoc {
         id: string;
         tags: string[];
+    }
+
+    class TestDocumentProcessor implements DocumentProcessor<IDoc>{
+        toDbDocument = 'changed!';
+
+        fromDb(document: IDoc): IDoc {
+            return document;
+        }
+        toDb(document: IDoc): any {
+            return this.toDbDocument;
+        }
     }
 
     let documentFsMock: IDocumentFs;
@@ -82,6 +95,50 @@ describe('DocumentCollection', () => {
         });
         test('throw for nonexisting id', async () => {
             await expect(documentCollection.single('abxcxc')).rejects.toThrow(/not found/i);
+        });
+    });
+
+    describe('create', () => {
+        test('call writeDocument - no processor', async () => {
+            let document: IDoc = {
+                id: '1',
+                tags: ['one', 'two']
+            };
+            await documentCollection.create(document);
+            expect(await documentFsMock.writeDocument).toHaveBeenCalledWith('col1', document, expect.anything());
+        });
+        test('call writeDocument - with processor', async () => {
+            let processor = new TestDocumentProcessor();
+            documentCollection = new DocumentCollection('col1', documentFsMock, processor);
+
+            let document: IDoc = {
+                id: '1',
+                tags: ['one', 'two']
+            };
+            await documentCollection.create(document);
+            expect(await documentFsMock.writeDocument).toHaveBeenCalledWith('col1', processor.toDbDocument, expect.anything());
+        });
+    });
+
+    describe('update', () => {
+        test('call writeDocument - no processor', async () => {
+            let document: IDoc = {
+                id: '1',
+                tags: ['one', 'two']
+            };
+            await documentCollection.update(document);
+            expect(await documentFsMock.writeDocument).toHaveBeenCalledWith('col1', document);
+        });
+        test('call writeDocument - with processor', async () => {
+            let processor = new TestDocumentProcessor();
+            documentCollection = new DocumentCollection('col1', documentFsMock, processor);
+
+            let document: IDoc = {
+                id: '1',
+                tags: ['one', 'two']
+            };
+            await documentCollection.update(document);
+            expect(await documentFsMock.writeDocument).toHaveBeenCalledWith('col1', processor.toDbDocument);
         });
     });
 })

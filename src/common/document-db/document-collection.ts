@@ -58,10 +58,10 @@ export class DocumentCollection<T extends Document> {
     }
 
     create(document: T): Promise<T> {
-        return this.documentFs.writeDocument(this.name, document, { noOverride: true });
+        return this.documentFs.writeDocument(this.name, this.toDb(document), { noOverride: true });
     }
     update(document: T): Promise<T> {
-        return this.documentFs.writeDocument(this.name, document);
+        return this.documentFs.writeDocument(this.name, this.toDb(document));
     }
     remove(id: string): Promise<boolean> {
         return this.documentFs.removeDocument(this.name, id);
@@ -69,5 +69,9 @@ export class DocumentCollection<T extends Document> {
 
     private fromDb(document: T): T {
         return this.documentProcessor ? this.documentProcessor.fromDb(document) : document;
+    }
+
+    private toDb(document: T): any {
+        return this.documentProcessor ? this.documentProcessor.toDb(document) : document;
     }
 }
