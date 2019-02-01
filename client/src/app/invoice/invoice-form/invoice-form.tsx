@@ -4,16 +4,36 @@ import * as yup from 'yup';
 import Form from '../../../common/form/form';
 import FormRow from '../../../common/form/form-row';
 import FormPage from '../../../common/page/form-page';
-import { Invoice } from '../invoice';
 import FormDateField from '../../../common/form/form-date-field';
 import FormTextField from '../../../common/form/form-text-field';
 import FormNumberField from '../../../common/form/form-number-field';
 import { FieldArray } from 'formik';
 import { DocumentNode } from 'graphql';
 import Decimal from 'decimal.js';
+import FormSelectField from '../../../common/form/form-select-field';
+
+interface InvoiceViewModel {
+    id?: string;
+    issueDate: Date;
+    dueDate: Date;
+    client: string;
+    items: InvoiceItemViewModel[];
+}
+
+interface InvoiceItemViewModel {
+    text: string;
+    unitCount: Decimal;
+    unitPrice: Decimal;
+}
+
+interface ClientViewModel {
+    id: string;
+    name: string;
+}
 
 interface InvoiceFormProps {
-    invoice: Invoice;
+    invoice: InvoiceViewModel;
+    clients: ClientViewModel[];
     mutation: DocumentNode;
     successMessage: string;
     onSuccess?: (resp: any) => void;
@@ -23,6 +43,7 @@ interface InvoiceFormProps {
 const validationSchema = yup.object().shape({
     issueDate: yup.date().required('issue date is required!'),
     dueDate: yup.date().required('due date is required!'),
+    client: yup.string().required('client is required!'),
     items: yup.array().of(yup.object().shape({
         text: yup.string().required('text is required!'),
         unitPrice: yup.number().moreThan(0).required('unit price is required'),
@@ -32,20 +53,22 @@ const validationSchema = yup.object().shape({
 
 class InvoiceForm extends Component<InvoiceFormProps> {
 
-    private toViewModel(invoice: Invoice) {
+    private toFormValues(invoice: InvoiceViewModel) {
         return {
             ...invoice,
-            items: invoice.items.map(item => ({
+            items: invoice.items && invoice.items.map(item => ({
                 ...item,
                 unitPrice: item.unitPrice.toNumber(),
                 unitCount: item.unitCount.toNumber()
-            }))
+            })) || []
         };
     }
 
-    private fromViewModel(formValues: any): Invoice {
+    private fromFormValues(formValues: any): any {
         return {
             ...formValues,
+            issueDate: formValues.issueDate.toISOString().substr(0, 10),
+            dueDate: formValues.dueDate.toISOString().substr(0, 10),
             items: formValues.items.map((item: { unitPrice: number, unitCount: number }) => ({
                 ...item,
                 unitPrice: new Decimal(item.unitPrice),
@@ -58,10 +81,10 @@ class InvoiceForm extends Component<InvoiceFormProps> {
         return (
             <FormPage>
                 <Form
-                    initialValues={this.toViewModel(this.props.invoice)}
+                    initialValues={this.toFormValues(this.props.invoice)}
                     validationSchema={validationSchema}
                     submitText="Save"
-                    formToModel={this.fromViewModel}
+                    formToModel={this.fromFormValues}
                     mutation={this.props.mutation}
                     successMessage={this.props.successMessage}
                     onSuccess={this.props.onSuccess}
@@ -75,6 +98,9 @@ class InvoiceForm extends Component<InvoiceFormProps> {
 
                             <FormRow>
                                 <div>Number: {formikProps.values.id}</div>
+                            </FormRow>
+                            <FormRow>
+                                <FormSelectField name="client" label="Client" items={this.props.clients} itemValue="id" itemLabel="name" />
                             </FormRow>
                             <FormRow>
                                 <FormDateField name="issueDate" label="Issue date" />
@@ -97,7 +123,7 @@ class InvoiceForm extends Component<InvoiceFormProps> {
                                                 </Button>
                                             </FormRow>
                                         ))}
-                                        <Button type="button" variant="contained" color="primary" onClick={() => arrayHelpers.push({ text: '', unitPrice: 1, unitCount: 1 })}>
+                                        <Button type="button" variant="contained" color="primary" onClick={() => arrayHelpers.push({ text: '', unitPrice: '', unitCount: 1 })}>
                                             add
                                         </Button>
                                     </div>
