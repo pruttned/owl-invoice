@@ -50,6 +50,10 @@ class ClientListPage extends Component<ClientListPageProps, ClientListState>{
         });
     }
 
+    redirectToClone = (id: string) => {
+        this.props.history.push(`/clients/${encodeURIComponent(id)}/clone`);
+    };
+
     render() {
         return (
             <React.Fragment>
@@ -58,7 +62,8 @@ class ClientListPage extends Component<ClientListPageProps, ClientListState>{
                         return <ClientList
                             items={data.clients}
                             menuRender={(item: Client, closeMenu: () => void) => [
-                                <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(item); closeMenu(); }}>Remove {item.name}</MenuItem>,
+                                <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(item); closeMenu(); }}>Remove</MenuItem>,
+                                <MenuItem key="clone" onClick={() => { this.redirectToClone(item.id); closeMenu(); }}>Clone</MenuItem>,
                             ]}
                         />
                     }}
