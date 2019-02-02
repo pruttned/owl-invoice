@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from '@material-ui/core';
+import { Fab } from '@material-ui/core';
 import * as yup from 'yup';
 import Form from '../../../common/form/form';
 import FormRow from '../../../common/form/form-row';
@@ -12,6 +12,7 @@ import { DocumentNode } from 'graphql';
 import Decimal from 'decimal.js';
 import FormSelectField from '../../../common/form/form-select-field';
 import { pick } from 'lodash';
+import { Delete as DeleteIcon, Add as AddIcon } from '@material-ui/icons';
 
 interface InvoiceViewModel {
     id?: string;
@@ -119,14 +120,14 @@ class InvoiceForm extends Component<InvoiceFormProps> {
                                                 <FormTextField name={`items[${index}].text`} label="Text" />
                                                 <FormNumberField name={`items[${index}].unitPrice`} label="Unit price" />
                                                 <FormNumberField name={`items[${index}].unitCount`} label="Unit count" />
-                                                <Button type="button" variant="contained" color="primary" onClick={() => arrayHelpers.remove(index)}>
-                                                    remove
-                                                </Button>
+                                                <Fab color='primary' onClick={() => arrayHelpers.remove(index)}>
+                                                    <DeleteIcon />
+                                                </Fab>
                                             </FormRow>
                                         ))}
-                                        <Button type="button" variant="contained" color="primary" onClick={() => arrayHelpers.push({ text: '', unitPrice: '', unitCount: 1 })}>
-                                            add
-                                        </Button>
+                                        <Fab color='primary' onClick={() => arrayHelpers.push({ text: '', unitPrice: '', unitCount: 1 })}>
+                                            <AddIcon />
+                                        </Fab>
                                     </div>
                                 )}
                             />
