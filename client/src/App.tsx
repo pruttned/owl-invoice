@@ -30,7 +30,7 @@ const theme = createMuiTheme({
 const drawerItems = [
   { to: '/invoices', label: 'Invoices' },
   { to: '/clients', label: 'Clients' },
-  { to: '/supplier', label: 'Supplier' } //tmp
+  { to: '/supplier', label: 'Supplier' }
 ]
 
 const drawer = (

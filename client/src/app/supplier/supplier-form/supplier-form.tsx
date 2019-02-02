@@ -7,6 +7,7 @@ import FormRow from '../../../common/form/form-row';
 import FormPage from '../../../common/page/form-page';
 import { DocumentNode } from 'graphql';
 import { pick } from 'lodash';
+import iban from 'iban';
 
 interface SupplierFormProps {
     supplier: any;
@@ -20,10 +21,6 @@ interface SupplierFormProps {
 const validationSchema = yupObject().shape({
     name: yupString()
         .required('name is required!'),
-    color: yupString()
-        .required('color is required!'),
-    initials: yupString()
-        .required('initials is required!'),
     address: yupString()
         .required('address is required!'),
     taxId: yupString()
@@ -32,7 +29,20 @@ const validationSchema = yupObject().shape({
         .required('businessId is required!'),
     vatNumber: yupString()
         .required('vatNumber is required!'),
+    register: yupString()
+        .required('register is required!'),
+    iban: yupString()
+        .required('IBAN is required!')
+        .test('iban', 'invalid IBAN', value => iban.isValid(value)),
+    bank: yupString()
+        .required('bank is required!'),
+    phoneNumber: yupString()
+        .required('phoneNumber is required!'),
+    email: yupString()
+        .required('email is required!')
+        .email('provide valid email address'),
 })
+
 
 class SupplierForm extends Component<SupplierFormProps, Supplier> {
     render() {
@@ -46,12 +56,15 @@ class SupplierForm extends Component<SupplierFormProps, Supplier> {
                     formToModel={(form: Supplier) => pick(form, [
                         'id',
                         'name',
-                        'color',
-                        'initials',
                         'address',
                         'taxId',
                         'businessId',
                         'vatNumber',
+                        'register',
+                        'iban',
+                        'bank',
+                        'phoneNumber',
+                        'email'
                     ])}
                     successMessage={this.props.successMessage}
                     onSuccess={this.props.onSuccess}
@@ -61,12 +74,6 @@ class SupplierForm extends Component<SupplierFormProps, Supplier> {
                         <React.Fragment>
                             <FormRow>
                                 <FormTextField name="name" label="Name" fullWidth />
-                            </FormRow>
-                            <FormRow>
-                                <FormTextField name="color" label="Color" fullWidth />
-                            </FormRow>
-                            <FormRow>
-                                <FormTextField name="initials" label="Initials" fullWidth />
                             </FormRow>
                             <FormRow>
                                 <FormTextField name="address" label="Address" fullWidth multiline rows="4" />
@@ -79,6 +86,21 @@ class SupplierForm extends Component<SupplierFormProps, Supplier> {
                             </FormRow>
                             <FormRow>
                                 <FormTextField name="vatNumber" label="Vat Number" fullWidth />
+                            </FormRow>
+                            <FormRow>
+                                <FormTextField name="register" label="Register" fullWidth />
+                            </FormRow>
+                            <FormRow>
+                                <FormTextField name="iban" label="IBAN" fullWidth />
+                            </FormRow>
+                            <FormRow>
+                                <FormTextField name="bank" label="Bank" fullWidth />
+                            </FormRow>
+                            <FormRow>
+                                <FormTextField name="phoneNumber" label="Phone number" fullWidth />
+                            </FormRow>
+                            <FormRow>
+                                <FormTextField name="email" label="Email" fullWidth />
                             </FormRow>
                         </React.Fragment>
                     )}
