@@ -30,7 +30,7 @@ const theme = createMuiTheme({
 //TODO: extract
 const drawer = (
   <List>
-    <Link to="/">
+    <Link to="/invoices">
       <ListItem button>
         <ListItemText primary="Invoices" />
       </ListItem>
