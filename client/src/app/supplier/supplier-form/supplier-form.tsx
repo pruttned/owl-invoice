@@ -54,7 +54,6 @@ class SupplierForm extends Component<SupplierFormProps, Supplier> {
                     submitText="Save"
                     mutation={this.props.mutation}
                     formToModel={(form: Supplier) => pick(form, [
-                        'id',
                         'name',
                         'address',
                         'taxId',
