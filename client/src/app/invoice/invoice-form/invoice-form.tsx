@@ -11,6 +11,7 @@ import { FieldArray } from 'formik';
 import { DocumentNode } from 'graphql';
 import Decimal from 'decimal.js';
 import FormSelectField from '../../../common/form/form-select-field';
+import { pick } from 'lodash';
 
 interface InvoiceViewModel {
     id?: string;
@@ -64,13 +65,13 @@ class InvoiceForm extends Component<InvoiceFormProps> {
         };
     }
 
-    private fromFormValues(formValues: any): any {
+    private fromFormValues(formValues: InvoiceViewModel): any {
         return {
-            ...formValues,
+            ...pick(formValues, 'id', 'client'),
             issueDate: formValues.issueDate.toISOString().substr(0, 10),
             dueDate: formValues.dueDate.toISOString().substr(0, 10),
-            items: formValues.items.map((item: { unitPrice: number, unitCount: number }) => ({
-                ...item,
+            items: formValues.items.map((item) => ({
+                ...pick(item, 'text'),
                 unitPrice: new Decimal(item.unitPrice),
                 unitCount: new Decimal(item.unitCount)
             }))

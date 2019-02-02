@@ -5,6 +5,7 @@ import ClientListPage from './app/client/pages/client-list-page';
 import ClientEditPage from './app/client/pages/client-edit-page';
 import ClientCreatePage from './app/client/pages/client-create-page';
 import InvoiceCreatePage from './app/invoice/pages/invoice-create-page';
+import InvoiceEditPage from './app/invoice/pages/invoice-edit-page';
 
 const AppRoutes = () => {
     return (
@@ -17,7 +18,7 @@ const AppRoutes = () => {
 
                 <Route path="/invoices/" exact component={InvoiceListPage} />
                 <Route path="/invoices/new" exact component={InvoiceCreatePage} />
-                {/* <Route path="/invoices/:id" exact component={InvoiceEditPage} /> */}
+                <Route path="/invoices/:id" exact component={InvoiceEditPage} />
             </Switch>
         </React.Fragment>
     );
