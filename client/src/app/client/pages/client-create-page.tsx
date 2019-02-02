@@ -1,28 +1,11 @@
 import React, { Component } from 'react';
-import { Client } from '../client';
 import ClientForm from '../client-form/client-form';
-import gql from 'graphql-tag';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
-
-
-const CLIENT_CREATE_MUTATION = gql`
-mutation createClient($model:CreateClientInput!) {
-    createClient(input: $model) {
-        name
-        color
-        initials
-        address
-        taxId
-        businessId
-        vatNumber
-    }
-  } 
-`;
+import { CLIENT_CREATE_MUTATION } from '../client-queries';
 
 interface ClientCreatePageProps extends RouteComponentProps<any> {
 }
-
 
 class ClientCreatePage extends Component<ClientCreatePageProps> {
 

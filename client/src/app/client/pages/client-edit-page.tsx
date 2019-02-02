@@ -1,43 +1,12 @@
 import React, { Component } from 'react';
 import { Client } from '../client';
 import ClientForm from '../client-form/client-form';
-import gql from 'graphql-tag';
 import QueryPanel from '../../../common/query/query-panel';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { MenuItem } from '@material-ui/core';
 import ClientRemoveDialog from '../client-remove-dialog/client-remove-dialog';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
-
-const CLIENT_GET_QUERY = gql`
-    query getClient($id: String!) {
-        client(id: $id) {
-            id
-            name
-            color
-            initials
-            address
-            taxId
-            businessId
-            vatNumber
-        }
-    } 
-`;
-
-const CLIENT_UPDATE_MUTATION = gql`
-mutation updateClient($model:UpdateClientInput!) {
-    updateClient(input: $model) {
-        id
-        name
-        color
-        initials
-        address
-        taxId
-        businessId
-        vatNumber
-    }
-  } 
-`;
-
+import { CLIENT_GET_QUERY, CLIENT_UPDATE_MUTATION } from '../client-queries';
 
 
 interface Response {
@@ -67,8 +36,13 @@ class ClientEditPage extends Component<ClientEditPageProps, ClientEditPageState>
             isRemoveDialogOpen: false
         });
     };
+
     redirectToList = (resp: any) => {
         this.props.history.push('/clients');
+    };
+
+    redirectToClone = (id: string) => {
+        this.props.history.push(`/clients/${encodeURIComponent(id)}/clone`);
     };
 
     render() {
@@ -84,7 +58,8 @@ class ClientEditPage extends Component<ClientEditPageProps, ClientEditPageState>
                                 successMessage="Client has been successfully updated"
                                 onSuccess={this.redirectToList}
                                 menuRender={(closeMenu: () => void) => [
-                                    <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(); closeMenu(); }}>Remove {data.client.name}</MenuItem>,
+                                    <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(); closeMenu(); }}>Remove</MenuItem>,
+                                    <MenuItem key="clone" onClick={() => { this.redirectToClone(data.client.id); closeMenu(); }}>Clone</MenuItem>,
                                 ]}
                             />
                             <ClientRemoveDialog
