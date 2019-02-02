@@ -9,6 +9,7 @@ interface Item {
 }
 interface ItemListProps<T extends Item> {
     items: T[];
+    highlightedItem?: T;
     itemUrl: (item: T) => string;
     itemRender: (item: T) => JSX.Element;
     menuRender: (item: T, closeMenu: () => void) => JSX.Element[];
@@ -63,7 +64,7 @@ class ItemList<T extends Item> extends Component<ItemListProps<T>, ItemListState
             <div className={styles.root}>
                 {
                     this.props.items.map(item => (
-                        <div key={item.id} className={styles.item}>
+                        <div key={item.id} className={`${styles.item} ${item === this.props.highlightedItem && styles.itemHighlighted}`}>
                             <Link to={this.props.itemUrl(item)} className={styles.itemContent}>
                                 {this.props.itemRender(item)}
                             </Link>

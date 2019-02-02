@@ -24,6 +24,24 @@
     cursor: pointer;
 }
 
+.itemHighlighted {
+    animation-name: itemHighlighted;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+}
+
+@keyframes itemHighlighted {
+    0% {
+      background-color: $highlight-color;
+    }
+    20% {
+      background-color: $highlight-color;
+    }
+    100% {
+      background-color: $back-color;
+    }
+}
+
 .item:hover {
     background: $back-sec-color;
 }
