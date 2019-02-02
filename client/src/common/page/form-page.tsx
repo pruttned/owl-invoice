@@ -29,15 +29,15 @@ class FormPage extends Component<FormPageProps, FormPageState>{
     };
     render() {
         const { menuAnchorEl } = this.state;
-
+        const menu = this.props.menuRender && this.props.menuRender(this.closeMenu);
         return (
             <React.Fragment>
-                <PageMenu>
+                {menu && menu.length && (<PageMenu>
                     <MenuButton onClick={this.openMenu} color="inherit" />
                     <Menu open={Boolean(menuAnchorEl)} anchorEl={menuAnchorEl} onClose={this.closeMenu}>
-                        {this.props.menuRender && this.props.menuRender(this.closeMenu)}
+                        {menu}
                     </Menu>
-                </PageMenu>
+                </PageMenu>)}
                 <div className={classNames(styles.root, { [styles.fullWidth]: this.props.fullWidth })}>{this.props.children}</div>
             </React.Fragment>
         );
