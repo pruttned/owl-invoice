@@ -16,7 +16,7 @@ const FormSelectField = ({ name, label, items, itemValue, itemLabel }: { name: s
                         onChange={event => form.setFieldValue(field.name, event.target.value, true)}
                         input={
                             <OutlinedInput
-                                labelWidth={200/*TODO*/} 
+                                labelWidth={42/*TODO:https://material-ui.com/demos/selects/   -- there is some ref from InputLabel*/} 
                                 name={field.name}
                             />
                         }
