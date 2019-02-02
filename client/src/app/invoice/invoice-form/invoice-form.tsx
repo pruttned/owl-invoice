@@ -98,9 +98,11 @@ class InvoiceForm extends Component<InvoiceFormProps> {
                             <br></br>
                             formik props: {JSON.stringify(formikProps.values)} */}
 
-                            <FormRow>
-                                <div>Number: {formikProps.values.id}</div>
-                            </FormRow>
+                            {formikProps.values.id && (
+                                <FormRow>
+                                    <div>Number: {formikProps.values.id}</div>
+                                </FormRow>
+                            )}
                             <FormRow>
                                 <FormSelectField name="client" label="Client" items={this.props.clients} itemValue="id" itemLabel="name" />
                             </FormRow>
