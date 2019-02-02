@@ -4,12 +4,28 @@ import { db } from '../db';
 const supplierDefaultId = 'default';
 
 class SupplierService {
-    get(): Promise<SupplierDocument | undefined> {
-        return db.suppliers.singleOrDefault(supplierDefaultId);
+    async get(): Promise<SupplierDocument> {
+        let supplierDocument = await this.tryGet();
+        if (!supplierDocument) {
+            supplierDocument = {
+                id: supplierDefaultId,
+                'name': 'xx',
+                'address': 'xx',
+                'taxId': 'xx',
+                'businessId': 'xx',
+                'vatNumber': 'xx',
+                'register': 'xx',
+                'iban': 'xx',
+                'bank': 'xx',
+                'phoneNumber': 'xx',
+                'email': 'xx'
+            };
+        }
+        return supplierDocument;
     }
 
     async update(supplier: SupplierUpdateModel): Promise<SupplierDocument> {
-        let supplierDocument = await this.get();
+        let supplierDocument = await this.tryGet();
         let isNew = !supplierDocument;
         if (!supplierDocument) {
             supplierDocument = {} as SupplierDocument;
@@ -18,6 +34,10 @@ class SupplierService {
         return isNew ?
             db.suppliers.create(supplierDocument) :
             db.suppliers.update(supplierDocument);
+    }
+
+    private tryGet(): Promise<SupplierDocument | undefined> {
+        return db.suppliers.singleOrDefault(supplierDefaultId);
     }
 }
 
