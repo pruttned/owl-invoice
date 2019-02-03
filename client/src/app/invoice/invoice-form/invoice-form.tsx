@@ -50,8 +50,12 @@ const validationSchema = yup.object().shape({
     client: yup.string().required('client is required!'),
     items: yup.array().of(yup.object().shape({
         text: yup.string().required('text is required!'),
-        unitPrice: yup.number().moreThan(0).required('unit price is required'),
-        unitCount: yup.number().moreThan(0).required('unit count is required'),
+        unitPrice: yup.number().typeError('unit price must a number')
+            .moreThan(0, 'unit price must greater than zero')
+            .required('unit price is required'),
+        unitCount: yup.number().typeError('unit count must a number')
+            .moreThan(0, 'unit count must greater than zero')
+            .required('unit count is required'),
     })).min(1, 'at least one item is required!').required()
 })
 
