@@ -19,12 +19,12 @@ const FormNumberField = (props: FormNumberFieldProps) => {
                     label={props.label}
                     variant="outlined"
                     error={
-                        Boolean(form.errors[name] && form.touched[name])
+                        Boolean(form.errors[props.name] && form.touched[props.name])
                     }
                     helperText={
-                        form.errors[name] &&
-                        form.touched[name] &&
-                        String(form.errors[name])
+                        form.errors[props.name] &&
+                        form.touched[props.name] &&
+                        String(form.errors[props.name])
                     }
                     fullWidth={props.fullWidth}
                     className={props.className}

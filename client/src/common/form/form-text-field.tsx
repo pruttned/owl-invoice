@@ -23,12 +23,12 @@ const FormTextField = (props: FormTextFieldProps) => {
                     rows={props.rows}
                     fullWidth={props.fullWidth}
                     error={
-                        Boolean(form.errors[name] && form.touched[name])
+                        Boolean(form.errors[props.name] && form.touched[props.name])
                     }
                     helperText={
-                        form.errors[name] &&
-                        form.touched[name] &&
-                        String(form.errors[name])
+                        form.errors[props.name] &&
+                        form.touched[props.name] &&
+                        String(form.errors[props.name])
                     }
                     className={props.className}
                 />
