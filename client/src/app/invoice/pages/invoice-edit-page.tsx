@@ -9,35 +9,7 @@ import { invoiceService } from '../invoice-service';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 import InvoiceRemoveDialog from '../invoice-remove-dialog/invoice-remove-dialog';
 import { MenuItem } from '@material-ui/core';
-
-const GET_QUERY = gql`
-    query getInvoice($id: String!) {
-        invoice(id: $id) {
-            id
-            issueDate
-            dueDate
-            client {
-                id
-                name
-                color
-                initials
-                address
-                taxId
-                businessId
-                vatNumber
-            }
-            items {
-                text
-                unitCount
-                unitPrice
-            }
-        }
-        clients {
-            id
-            name
-        }
-    }
-`;
+import { INVOICE_FORM_GET_QUERY } from '../invoice-queries';
 
 const INVOICE_UPDATE_QUERY = gql`
 mutation updateInvoice($model:UpdateInvoiceInput!) {
@@ -97,10 +69,14 @@ class InvoiceUpdatePage extends Component<InvoiceUpdatePageProps, InvoiceEditPag
         this.props.history.push('/invoices');
     };
 
+    redirectToClone = (id: string) => {
+        this.props.history.push(`/invoices/${encodeURIComponent(id)}/clone`);
+    };
+
     render() {
         return (
 
-            <QueryPanel<Response> query={GET_QUERY} variables={{ id: this.props.match.params.id }}>
+            <QueryPanel<Response> query={INVOICE_FORM_GET_QUERY} variables={{ id: this.props.match.params.id }}>
                 {(data) =>
                     (
                         <React.Fragment>
@@ -116,7 +92,7 @@ class InvoiceUpdatePage extends Component<InvoiceUpdatePageProps, InvoiceEditPag
                                 onSuccess={this.redirectToList}
                                 menuRender={(closeMenu: () => void) => [
                                     <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(); closeMenu(); }}>Remove</MenuItem>,
-                                    // <MenuItem key="clone" onClick={() => { this.redirectToClone(data.client.id); closeMenu(); }}>Clone</MenuItem>,
+                                    <MenuItem key="clone" onClick={() => { this.redirectToClone(data.invoice.id); closeMenu(); }}>Clone</MenuItem>,
                                 ]}
                             />
                             <InvoiceRemoveDialog

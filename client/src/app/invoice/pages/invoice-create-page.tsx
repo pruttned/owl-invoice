@@ -6,6 +6,7 @@ import Decimal from 'decimal.js';
 import QueryPanel from '../../../common/query/query-panel';
 import { Client } from '../../client/client';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
+import { INVOICE_CREATE_QUERY } from '../invoice-queries';
 
 const CLIENT_LIST_QUERY = gql`
     query listClients {
@@ -14,30 +15,6 @@ const CLIENT_LIST_QUERY = gql`
             name
         }
     }
-`;
-
-const INVOICE_CREATE_QUERY = gql`
-mutation createInvoice($model:CreateInvoiceInput!) {
-    createInvoice(input: $model) {
-        id
-        issueDate
-        dueDate
-        client {
-            name
-            color
-            initials
-            address
-            taxId
-            businessId
-            vatNumber
-        }
-        items {
-            text
-            unitCount
-            unitPrice
-        }
-    }
-  } 
 `;
 
 interface Response {
