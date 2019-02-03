@@ -6,6 +6,6 @@ export class AppStore {
 
     invalidateQueryCache(): Promise<any> {
         //keep local state
-        return this.client.resetStore();
+        return this.client.clearStore();
     }
 }
