@@ -11,6 +11,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import { MenuItem } from '@material-ui/core';
 import InvoiceRemoveDialog from '../invoice-remove-dialog/invoice-remove-dialog';
 import { INVOICE_LIST_QUERY } from '../invoice-queries';
+import { AppContext, AppContextValue } from '../../app-store/app-context';
 
 interface Response {
     invoices: Invoice[];
@@ -54,30 +55,35 @@ class InvoiceListPage extends Component<InvoiceListProps, InvoiceListState> {
 
     render() {
         return (
-            <React.Fragment>
-                <QueryPanel<Response> query={INVOICE_LIST_QUERY}>
-                    {(data) => {
-                        const invoices = data.invoices && data.invoices.map(invoice => invoiceService.fromResponse(invoice));
-                        return <InvoiceList
-                            items={invoices}
-                            menuRender={(item: Invoice, closeMenu: () => void) => [
-                                <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(item); closeMenu(); }}>Remove</MenuItem>,
-                                <MenuItem key="clone" onClick={() => { this.redirectToClone(item.id); closeMenu(); }}>Clone</MenuItem>,
-                            ]}
-                        />
-                    }}
-                </QueryPanel>
-                <PageFab onClick={this.navigateToAdd}>
-                    <AddIcon />
-                </PageFab>
-                {this.state.itemToRemove && (
-                    <InvoiceRemoveDialog
-                        open={this.state.isRemoveDialogOpen}
-                        item={this.state.itemToRemove}
-                        onClose={this.closeRemoveDialog}
-                    />
+            <AppContext.Consumer>
+                {(context: AppContextValue) => (
+                    <React.Fragment>
+                        <QueryPanel<Response> query={INVOICE_LIST_QUERY}>
+                            {(data) => {
+                                const invoices = data.invoices && data.invoices.map(invoice => invoiceService.fromResponse(invoice));
+                                return <InvoiceList
+                                    items={invoices}
+                                    menuRender={(item: Invoice, closeMenu: () => void) => [
+                                        <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(item); closeMenu(); }}>Remove</MenuItem>,
+                                        <MenuItem key="clone" onClick={() => { this.redirectToClone(item.id); closeMenu(); }}>Clone</MenuItem>,
+                                    ]}
+                                />
+                            }}
+                        </QueryPanel>
+                        <PageFab onClick={this.navigateToAdd}>
+                            <AddIcon />
+                        </PageFab>
+                        {this.state.itemToRemove && (
+                            <InvoiceRemoveDialog
+                                open={this.state.isRemoveDialogOpen}
+                                item={this.state.itemToRemove}
+                                onClose={this.closeRemoveDialog}
+                                onSuccess={() => context.appStore.refreshStore()}
+                            />
+                        )}
+                    </React.Fragment>
                 )}
-            </React.Fragment>
+            </AppContext.Consumer>
         );
     }
 }

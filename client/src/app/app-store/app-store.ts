@@ -8,4 +8,9 @@ export class AppStore {
         //keep local state
         return this.client.clearStore();
     }
+
+    refreshStore(): Promise<any> {
+        //keep local state
+        return this.client.resetStore();
+    }
 }
