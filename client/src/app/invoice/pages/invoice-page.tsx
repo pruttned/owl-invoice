@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import InvoiceRoutes from '../invoice-routes';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 
-const ClientPage = () =>
+const InvoicePage = () =>
     (
         <React.Fragment>
             <BreadcrumbsItem to="/invoices">Invoices</BreadcrumbsItem>
@@ -11,4 +11,4 @@ const ClientPage = () =>
     );
 
 
-export default ClientPage;
+export default InvoicePage;
