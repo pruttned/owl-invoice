@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 import QueryPanel from '../../../common/query/query-panel';
 import { Invoice } from '../invoice';
-import { INVOICE_FORM_GET_QUERY, INVOICE_CREATE_QUERY } from '../invoice-queries';
+import { INVOICE_FORM_GET_QUERY, INVOICE_CREATE_MUTATION } from '../invoice-queries';
 import InvoiceForm from '../invoice-form/invoice-form';
 import { Client } from '../../client/client';
 import { invoiceService } from '../invoice-service';
@@ -50,7 +50,7 @@ class InvoiceClonePage extends Component<InvoiceClonePageProps> {
                             <InvoiceForm
                                 invoice={invoice}
                                 clients={data.clients}
-                                mutation={INVOICE_CREATE_QUERY}
+                                mutation={INVOICE_CREATE_MUTATION}
                                 successMessage="Inivoice has been successfully created"
                                 onSuccess={this.redirectToList}
                                 invalidateQueryCache={true}

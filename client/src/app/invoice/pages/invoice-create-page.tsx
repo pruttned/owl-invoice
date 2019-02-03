@@ -6,16 +6,8 @@ import Decimal from 'decimal.js';
 import QueryPanel from '../../../common/query/query-panel';
 import { Client } from '../../client/client';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
-import { INVOICE_CREATE_QUERY } from '../invoice-queries';
-
-const CLIENT_LIST_QUERY = gql`
-    query listClients {
-        clients {
-            id
-            name
-        }
-    }
-`;
+import { INVOICE_CREATE_MUTATION } from '../invoice-queries';
+import { CLIENT_LIST_QUERY } from '../../client/client-queries';
 
 interface Response {
     clients: Client[];
@@ -52,7 +44,7 @@ class InvoiceCreatePage extends Component<InvoiceCreatePageProps> {
                                     items: [{ text: '', unitCount: new Decimal(1), unitPrice: new Decimal(1) }],
                                 }}
                                 clients={data.clients}
-                                mutation={INVOICE_CREATE_QUERY}
+                                mutation={INVOICE_CREATE_MUTATION}
                                 successMessage="Inivoice has been successfully created"
                                 onSuccess={this.onSuccess}
                                 invalidateQueryCache={true}

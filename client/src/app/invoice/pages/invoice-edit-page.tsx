@@ -9,32 +9,7 @@ import { invoiceService } from '../invoice-service';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 import InvoiceRemoveDialog from '../invoice-remove-dialog/invoice-remove-dialog';
 import { MenuItem } from '@material-ui/core';
-import { INVOICE_FORM_GET_QUERY } from '../invoice-queries';
-
-const INVOICE_UPDATE_QUERY = gql`
-mutation updateInvoice($model:UpdateInvoiceInput!) {
-    updateInvoice(input: $model) {
-        id
-        issueDate
-        dueDate
-        client {
-            id
-            name
-            color
-            initials
-            address
-            taxId
-            businessId
-            vatNumber
-        }
-        items {
-            text
-            unitCount
-            unitPrice
-        }
-    }
-  } 
-`;
+import { INVOICE_FORM_GET_QUERY, INVOICE_UPDATE_MUTATION } from '../invoice-queries';
 
 interface Response {
     invoice: Invoice;
@@ -87,7 +62,7 @@ class InvoiceUpdatePage extends Component<InvoiceUpdatePageProps, InvoiceEditPag
                                     client: data.invoice.client.id
                                 }}
                                 clients={data.clients}
-                                mutation={INVOICE_UPDATE_QUERY}
+                                mutation={INVOICE_UPDATE_MUTATION}
                                 successMessage="Invoice has been successfully updated"
                                 onSuccess={this.redirectToList}
                                 menuRender={(closeMenu: () => void) => [

@@ -10,26 +10,7 @@ import { Add as AddIcon } from '@material-ui/icons';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { MenuItem } from '@material-ui/core';
 import InvoiceRemoveDialog from '../invoice-remove-dialog/invoice-remove-dialog';
-
-const INVOICE_LIST_QUERY = gql`
-    query listInvoices {
-        invoices {
-            id
-            dueDate
-            issueDate
-            client {
-                id
-                name
-                color
-                initials
-            }
-            items{
-                unitCount
-                unitPrice
-            }
-        }
-    }
-`;
+import { INVOICE_LIST_QUERY } from '../invoice-queries';
 
 interface Response {
     invoices: Invoice[];
