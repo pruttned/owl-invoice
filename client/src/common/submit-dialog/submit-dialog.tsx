@@ -43,12 +43,17 @@ class SubmitDialog extends Component<SubmitDialogProps, SubmitDialogState>{
 
         postMutation({ variables: { model } }) //TODO: extract from form.tsx
             .then(resp => {
+                if (this.props.invalidateQueryCache) {
+                    return context.appStore.invalidateQueryCache()
+                        .then(() => resp);
+                } else {
+                    return resp;
+                }
+            })
+            .then(resp => {
                 this.props.enqueueSnackbar(this.props.successMessage, {
                     variant: 'success',
                 });
-                if (this.props.invalidateQueryCache) {
-                    context.appStore.invalidateQueryCache();
-                }
                 setSubmitting(false);
                 this.setState({ isSubmiting: false });
                 this.close();

@@ -37,13 +37,18 @@ const Form = (props: Props) => {
 
                                         postMutation({ variables: { model } })
                                             .then(resp => {
+                                                if (props.invalidateQueryCache) {
+                                                    return context.appStore.invalidateQueryCache()
+                                                        .then(() => resp);
+                                                } else {
+                                                    return resp;
+                                                }
+                                            })
+                                            .then(resp => {
                                                 setSubmitting(false);
                                                 props.enqueueSnackbar(props.successMessage, {
                                                     variant: 'success',
                                                 });
-                                                if (props.invalidateQueryCache) {
-                                                    context.appStore.invalidateQueryCache();
-                                                }
                                                 if (props.onSuccess) {
                                                     props.onSuccess(resp);
                                                 }

@@ -1,11 +1,11 @@
-import ApolloClient from "apollo-client";
+import ApolloClient, { ApolloQueryResult } from "apollo-client";
 
 export class AppStore {
     constructor(private client: ApolloClient<any>) {
     }
 
-    invalidateQueryCache() {
+    invalidateQueryCache(): Promise<any> {
         //keep local state
-        this.client.resetStore();
+        return this.client.resetStore();
     }
 }

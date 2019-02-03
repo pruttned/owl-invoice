@@ -1,0 +1,9 @@
+name: Customer 2 clone
+address: |-
+  This is address for customer2
+  it has more lines
+taxId: dic2
+businessId: ico2
+vatNumber: icdph2
+color: '#ffa375'
+initials: C1
