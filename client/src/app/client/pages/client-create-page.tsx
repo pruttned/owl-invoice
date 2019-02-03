@@ -9,7 +9,7 @@ interface ClientCreatePageProps extends RouteComponentProps<any> {
 
 class ClientCreatePage extends Component<ClientCreatePageProps> {
 
-    onSuccess = (resp: any) => {
+    redirectToList = (resp: any) => {
         this.props.history.push('/clients');
     };
 
@@ -28,7 +28,7 @@ class ClientCreatePage extends Component<ClientCreatePageProps> {
                 }}
                     mutation={CLIENT_CREATE_MUTATION}
                     successMessage="Client has been successfully created"
-                    onSuccess={this.onSuccess}
+                    onSuccess={this.redirectToList}
                     invalidateQueryCache={true}
                 />
             </React.Fragment>

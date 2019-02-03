@@ -6,16 +6,16 @@ import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 import { CLIENT_CREATE_MUTATION, CLIENT_GET_QUERY } from '../client-queries';
 import QueryPanel from '../../../common/query/query-panel';
 
-interface ClientCreatePageProps extends RouteComponentProps<any> {
+interface ClientClonePageProps extends RouteComponentProps<any> {
 }
 
 interface GetResponse {
     client: Client;
 };
 
-class ClientCreatePage extends Component<ClientCreatePageProps> {
+class ClientClonePage extends Component<ClientClonePageProps> {
 
-    onSuccess = (resp: any) => {
+    redirectToList = (resp: any) => {
         this.props.history.push('/clients');
     };
 
@@ -35,7 +35,7 @@ class ClientCreatePage extends Component<ClientCreatePageProps> {
                             <ClientForm client={client}
                                 mutation={CLIENT_CREATE_MUTATION}
                                 successMessage="Client has been successfully created"
-                                onSuccess={this.onSuccess}
+                                onSuccess={this.redirectToList}
                                 invalidateQueryCache={true}
                             />
                         </React.Fragment>
@@ -46,4 +46,4 @@ class ClientCreatePage extends Component<ClientCreatePageProps> {
     }
 };
 
-export default withRouter(ClientCreatePage);
+export default withRouter(ClientClonePage);
