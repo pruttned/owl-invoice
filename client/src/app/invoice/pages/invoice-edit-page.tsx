@@ -112,7 +112,7 @@ class InvoiceUpdatePage extends Component<InvoiceUpdatePageProps, InvoiceEditPag
                                 }}
                                 clients={data.clients}
                                 mutation={INVOICE_UPDATE_QUERY}
-                                successMessage="Inivoice has been successfully updated"
+                                successMessage="Invoice has been successfully updated"
                                 onSuccess={this.redirectToList}
                                 menuRender={(closeMenu: () => void) => [
                                     <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(); closeMenu(); }}>Remove</MenuItem>,
