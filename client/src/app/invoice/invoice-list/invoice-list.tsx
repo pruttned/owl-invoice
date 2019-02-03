@@ -11,7 +11,8 @@ import { groupBy, map } from 'lodash';
 import Decimal from 'decimal.js';
 
 interface InvoiceListProps {
-    items: Invoice[]
+    items: Invoice[];
+    menuRender: (item: Invoice, closeMenu: () => void) => JSX.Element[];
 }
 
 const IssueDateColumn = ({ invoice }: { invoice: Invoice }) => {
@@ -95,10 +96,7 @@ class InvoiceList extends Component<InvoiceListProps> {
                                         <PriceColumn invoice={item} />
                                     </div>
                                 )}
-                                menuRender={(item: any, closeMenu: () => void) => [
-                                    <MenuItem key="m1" onClick={() => { console.log(item); closeMenu(); }}>action1 {item.name}</MenuItem>,
-                                    <MenuItem key="m2" onClick={() => { console.log(item); closeMenu(); }}>action2 {item.name}</MenuItem>,
-                                ]}
+                                menuRender={this.props.menuRender}
                             />
                         </React.Fragment>
                     ))
