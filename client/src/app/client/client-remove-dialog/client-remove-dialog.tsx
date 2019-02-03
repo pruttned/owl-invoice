@@ -14,12 +14,6 @@ interface ClientRemoveDialogProps {
 
 class ClientRemoveDialog extends Component<ClientRemoveDialogProps>{
 
-    confirmRemoveDialog = (postMutation: (model: any) => Promise<any>) => {
-        postMutation({ id: module.id }).then(() => {
-            this.props && this.props.onClose();
-        });
-    }
-
     render() {
         return (
             <SubmitDialog
