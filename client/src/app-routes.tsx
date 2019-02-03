@@ -9,7 +9,7 @@ const AppRoutes = () => (
     <React.Fragment>
         <Switch>
             <Redirect from='/' exact to='/invoices' />
-            <Route path="/invoices" exact component={InvoicePage} />
+            <Route path="/invoices" component={InvoicePage} />
             <Route path="/clients" component={ClientPage} />
             <Route path="/supplier" component={SupplierPage} />
         </Switch>
