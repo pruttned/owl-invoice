@@ -44,12 +44,6 @@ class ClientListPage extends Component<ClientListPageProps, ClientListState>{
         });
     };
 
-    confirmRemoveDialog = (postMutation: (model: any) => Promise<any>) => {
-        postMutation({ id: '123' }).then(() => {
-            this.closeRemoveDialog();
-        });
-    }
-
     redirectToClone = (id: string) => {
         this.props.history.push(`/clients/${encodeURIComponent(id)}/clone`);
     };
