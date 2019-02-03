@@ -8,6 +8,7 @@ import PageFab from '../../../common/page-fab/page-fab';
 import { MenuItem, DialogTitle } from '@material-ui/core';
 import ClientRemoveDialog from '../client-remove-dialog/client-remove-dialog';
 import { CLIENT_LIST_QUERY } from '../client-queries';
+import { AppContext, AppContextValue } from '../../app-store/app-context';
 
 interface Response {
     clients: Client[];
@@ -50,29 +51,34 @@ class ClientListPage extends Component<ClientListPageProps, ClientListState>{
 
     render() {
         return (
-            <React.Fragment>
-                <QueryPanel<Response> query={CLIENT_LIST_QUERY}>
-                    {(data) => {
-                        return <ClientList
-                            items={data.clients}
-                            menuRender={(item: Client, closeMenu: () => void) => [
-                                <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(item); closeMenu(); }}>Remove</MenuItem>,
-                                <MenuItem key="clone" onClick={() => { this.redirectToClone(item.id); closeMenu(); }}>Clone</MenuItem>,
-                            ]}
-                        />
-                    }}
-                </QueryPanel>
-                <PageFab onClick={this.navigateToAdd}>
-                    <AddIcon />
-                </PageFab>
-                {this.state.itemToRemove && (
-                    <ClientRemoveDialog
-                        open={this.state.isRemoveDialogOpen}
-                        item={this.state.itemToRemove}
-                        onClose={this.closeRemoveDialog}
-                    />
+            <AppContext.Consumer>
+                {(context: AppContextValue) => (
+                    <React.Fragment>
+                        <QueryPanel<Response> query={CLIENT_LIST_QUERY}>
+                            {(data) => {
+                                return <ClientList
+                                    items={data.clients}
+                                    menuRender={(item: Client, closeMenu: () => void) => [
+                                        <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(item); closeMenu(); }}>Remove</MenuItem>,
+                                        <MenuItem key="clone" onClick={() => { this.redirectToClone(item.id); closeMenu(); }}>Clone</MenuItem>,
+                                    ]}
+                                />
+                            }}
+                        </QueryPanel>
+                        <PageFab onClick={this.navigateToAdd}>
+                            <AddIcon />
+                        </PageFab>
+                        {this.state.itemToRemove && (
+                            <ClientRemoveDialog
+                                open={this.state.isRemoveDialogOpen}
+                                item={this.state.itemToRemove}
+                                onClose={this.closeRemoveDialog}
+                                onSuccess={() => context.appStore.refreshStore()}
+                            />
+                        )}
+                    </React.Fragment>
                 )}
-            </React.Fragment>
+            </AppContext.Consumer>
         );
     }
 
