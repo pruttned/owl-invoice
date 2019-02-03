@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import { Client } from '../client';
-import gql from 'graphql-tag';
 import { DialogContentText } from '@material-ui/core';
 import SubmitDialog from '../../../common/submit-dialog/submit-dialog';
 import { Field } from 'formik';
-
-const CLIENT_REMOVE_MUTATION = gql`
-    mutation removeClient($model:String!) {
-        removeClient(id: $model)
-    } 
-`;
+import { CLIENT_REMOVE_MUTATION } from '../client-queries';
 
 interface ClientRemoveDialogProps {
     item: Client;
@@ -17,7 +11,6 @@ interface ClientRemoveDialogProps {
     open: boolean;
     onSuccess?: (resp: any) => void;
 }
-
 
 class ClientRemoveDialog extends Component<ClientRemoveDialogProps>{
 

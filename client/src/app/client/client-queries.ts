@@ -54,3 +54,9 @@ export const CLIENT_LIST_QUERY = gql`
         }
     }
 `;
+
+export const CLIENT_REMOVE_MUTATION = gql`
+    mutation removeClient($model:String!) {
+        removeClient(id: $model)
+    } 
+`;
