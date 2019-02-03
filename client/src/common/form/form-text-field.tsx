@@ -14,28 +14,25 @@ const FormTextField = (props: FormTextFieldProps) => {
             validateOnBlur
             validateOnChange
             name={props.name}
-            render={({ field, form }: any) => {
-                console.log(field);
-                return (
-                    <TextField
-                        {...field}
-                        label={props.label}
-                        variant="outlined"
-                        multiline={props.multiline}
-                        rows={props.rows}
-                        fullWidth={props.fullWidth}
-                        error={
-                            Boolean(form.errors[name] && form.touched[name])
-                        }
-                        helperText={
-                            form.errors[name] &&
-                            form.touched[name] &&
-                            String(form.errors[name])
-                        }
-                        className={props.className}
-                    />
-                )
-            }}
+            render={({ field, form }: any) => (
+                <TextField
+                    {...field}
+                    label={props.label}
+                    variant="outlined"
+                    multiline={props.multiline}
+                    rows={props.rows}
+                    fullWidth={props.fullWidth}
+                    error={
+                        Boolean(form.errors[name] && form.touched[name])
+                    }
+                    helperText={
+                        form.errors[name] &&
+                        form.touched[name] &&
+                        String(form.errors[name])
+                    }
+                    className={props.className}
+                />
+            )}
         />
     );
 };
