@@ -2,6 +2,7 @@ import React from 'react';
 import { TextField } from '@material-ui/core';
 import { Field } from 'formik';
 import { FormFieldBaseProps } from './form-field-base-props';
+import { get } from 'lodash';
 
 interface FormTextFieldProps extends FormFieldBaseProps {
     multiline?: boolean;
@@ -14,25 +15,29 @@ const FormTextField = (props: FormTextFieldProps) => {
             validateOnBlur
             validateOnChange
             name={props.name}
-            render={({ field, form }: any) => (
-                <TextField
-                    {...field}
-                    label={props.label}
-                    variant="outlined"
-                    multiline={props.multiline}
-                    rows={props.rows}
-                    fullWidth={props.fullWidth}
-                    error={
-                        Boolean(form.errors[props.name] && form.touched[props.name])
-                    }
-                    helperText={
-                        form.errors[props.name] &&
-                        form.touched[props.name] &&
-                        String(form.errors[props.name])
-                    }
-                    className={props.className}
-                />
-            )}
+            render={({ field, form }: any) => {
+                const error = get(form.errors, props.name);
+                const touched = get(form.touched, props.name);
+                return (
+                    <TextField
+                        {...field}
+                        label={props.label}
+                        variant="outlined"
+                        multiline={props.multiline}
+                        rows={props.rows}
+                        fullWidth={props.fullWidth}
+                        error={
+                            Boolean(error && touched)
+                        }
+                        helperText={
+                            error &&
+                            touched &&
+                            String(error)
+                        }
+                        className={props.className}
+                    />
+                )
+            }}
         />
     );
 };
