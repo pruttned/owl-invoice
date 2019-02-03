@@ -6,6 +6,7 @@ import QueryPanel from '../../../common/query/query-panel';
 import { Client } from '../../client/client';
 import { Invoice } from '../invoice';
 import { invoiceService } from '../invoice-service';
+import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 
 const GET_QUERY = gql`
     query getInvoice($id: String!) {
@@ -81,16 +82,19 @@ class InvoiceUpdatePage extends Component<InvoiceUpdatePageProps> {
             <QueryPanel<Response> query={GET_QUERY} variables={{ id: this.props.match.params.id }}>
                 {(data) =>
                     (
-                        <InvoiceForm
-                            invoice={{
-                                ...invoiceService.fromResponse(data.invoice),
-                                client: data.invoice.client.id
-                            }}
-                            clients={data.clients}
-                            mutation={INVOICE_UPDATE_QUERY}
-                            successMessage="Inivoice has been successfully updated"
-                            onSuccess={this.onSuccess}
-                        />
+                        <React.Fragment>
+                            <BreadcrumbsItem to={`/invoices/${encodeURIComponent(data.invoice.id)}`}>{data.invoice.id}</BreadcrumbsItem>
+                            <InvoiceForm
+                                invoice={{
+                                    ...invoiceService.fromResponse(data.invoice),
+                                    client: data.invoice.client.id
+                                }}
+                                clients={data.clients}
+                                mutation={INVOICE_UPDATE_QUERY}
+                                successMessage="Inivoice has been successfully updated"
+                                onSuccess={this.onSuccess}
+                            />
+                        </React.Fragment>
                     )
                 }
             </QueryPanel>

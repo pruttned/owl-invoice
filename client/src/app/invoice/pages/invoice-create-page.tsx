@@ -5,6 +5,7 @@ import InvoiceForm from '../invoice-form/invoice-form';
 import Decimal from 'decimal.js';
 import QueryPanel from '../../../common/query/query-panel';
 import { Client } from '../../client/client';
+import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 
 const CLIENT_LIST_QUERY = gql`
     query listClients {
@@ -64,19 +65,23 @@ class InvoiceCreatePage extends Component<InvoiceCreatePageProps> {
             <QueryPanel<Response> query={CLIENT_LIST_QUERY}>
                 {(data) =>
                     (
-                        <InvoiceForm
-                            invoice={{
-                                dueDate: this.getDefaultDueDate(),
-                                issueDate: new Date(),
-                                client: data.clients[0].id,
-                                items: [{ text: '', unitCount: new Decimal(1), unitPrice: new Decimal(1) }],
-                            }}
-                            clients={data.clients}
-                            mutation={INVOICE_CREATE_QUERY}
-                            successMessage="Inivoice has been successfully created"
-                            onSuccess={this.onSuccess}
-                            invalidateQueryCache={true}
-                        />)
+                        <React.Fragment>
+                            <BreadcrumbsItem to="/invoices/new">New</BreadcrumbsItem>
+                            <InvoiceForm
+                                invoice={{
+                                    dueDate: this.getDefaultDueDate(),
+                                    issueDate: new Date(),
+                                    client: data.clients[0].id,
+                                    items: [{ text: '', unitCount: new Decimal(1), unitPrice: new Decimal(1) }],
+                                }}
+                                clients={data.clients}
+                                mutation={INVOICE_CREATE_QUERY}
+                                successMessage="Inivoice has been successfully created"
+                                onSuccess={this.onSuccess}
+                                invalidateQueryCache={true}
+                            />
+                        </React.Fragment>
+                    )
                 }
             </QueryPanel>
         );
