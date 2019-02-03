@@ -14,6 +14,9 @@ export const clientResolver = {
         },
         updateClient(root: any, args: any): Promise<any> {
             return clientService.update(args.input);
-        }
+        },
+        removeClient(root: any, args: any): Promise<any> {
+            return clientService.remove(args.id);
+        },
     }
 }

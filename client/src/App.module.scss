@@ -1,4 +1,5 @@
 @import './breakpoints';
+@import './variables';
 $drawerWidth: 240px;
 .root {
     display: flex;
@@ -34,6 +35,10 @@ $drawerWidth: 240px;
             display: none;
         }
     }
+    .menuRight {
+        margin-left: auto;
+        display: flex;
+    }
 }
 
 .drawerPaper {
@@ -42,4 +47,10 @@ $drawerWidth: 240px;
 
 .drawer {
     width: $drawerWidth;
+}
+
+.drawerItemActive {
+    .drawerItemLabel {
+        color: $primary-color;
+    }
 }

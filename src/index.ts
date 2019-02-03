@@ -15,11 +15,12 @@ import { invoicePdfGenerator } from './app/invoice/invoice-pdf-generator';
 
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || 'localhost';
+const DIR = process.env.DIR || '.\\example\\db1';
 
 const typeDefs = glob.sync(path.join(__dirname, '**/*.graphql'))
     .map(f => gql(fs.readFileSync(f, 'utf8')));
 
-db.init('.\\example\\db1');
+db.init(DIR);
 
 const scalarResolver = {
     Date: GraphQLDate,

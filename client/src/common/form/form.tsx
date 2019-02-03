@@ -6,12 +6,14 @@ import { Mutation } from 'react-apollo';
 import { DocumentNode } from 'graphql';
 import { withSnackbar, InjectedNotistackProps } from 'notistack';
 import { AppContext, AppContextValue } from '../../app/app-store/app-context';
+import { notification } from '../notification/notification';
 
 //todo: cache refresh https://www.apollographql.com/docs/react/essentials/mutations.html - only for add - update is handled thanks to return of all fields
 
 interface Props extends InjectedNotistackProps {
     submitText: string;
-    initialValues: any, validationSchema?: any;
+    initialValues: any;
+    validationSchema?: any;
     children: (props: FormikProps<any>) => React.ReactNode;
     mutation: DocumentNode;
     formToModel: (form: any) => any;
@@ -39,16 +41,16 @@ const Form = (props: Props) => {
                                                 props.enqueueSnackbar(props.successMessage, {
                                                     variant: 'success',
                                                 });
+                                                if (props.invalidateQueryCache) {
+                                                    context.appStore.invalidateQueryCache();
+                                                }
                                                 if (props.onSuccess) {
-                                                    if (props.invalidateQueryCache) {
-                                                        context.appStore.invalidateQueryCache();
-                                                    }
                                                     props.onSuccess(resp);
                                                 }
                                             })
-                                            .catch(() => {
+                                            .catch(err => {
                                                 setSubmitting(false);
-                                                props.enqueueSnackbar('Failed to process request', {
+                                                props.enqueueSnackbar(notification.toErrorMessage(err), {
                                                     variant: 'error',
                                                 });
                                             });

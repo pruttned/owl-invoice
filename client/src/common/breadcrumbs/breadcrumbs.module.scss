@@ -1,0 +1,9 @@
+@import '../../variables';
+.link {
+    color: $text-inv-color;
+    opacity: 0.7;
+    &:hover,
+    &:focus {
+        opacity: 1;
+    }
+}
