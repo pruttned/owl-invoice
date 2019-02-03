@@ -1,31 +1,41 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import { Field } from 'formik';
+import { FormFieldBaseProps } from './form-field-base-props';
 
-const FormTextField = ({ name, label, multiline, rows, fullWidth }: { name: string, label: string, multiline?: boolean, rows?: string | number, fullWidth?: boolean }) => {
+interface FormTextFieldProps extends FormFieldBaseProps {
+    multiline?: boolean;
+    rows?: string | number;
+}
+
+const FormTextField = (props: FormTextFieldProps) => {
     return (
         <Field
             validateOnBlur
             validateOnChange
-            name={name}
-            render={({ field, form }: any) => (
-                <TextField
-                    {...field}
-                    label={label}
-                    variant="outlined"
-                    multiline={multiline}
-                    rows={rows}
-                    fullWidth={fullWidth}
-                    error={
-                        Boolean(form.errors[name] && form.touched[name])
-                    }
-                    helperText={
-                        form.errors[name] &&
-                        form.touched[name] &&
-                        String(form.errors[name])
-                    }
-                />
-            )}
+            name={props.name}
+            render={({ field, form }: any) => {
+                console.log(field);
+                return (
+                    <TextField
+                        {...field}
+                        label={props.label}
+                        variant="outlined"
+                        multiline={props.multiline}
+                        rows={props.rows}
+                        fullWidth={props.fullWidth}
+                        error={
+                            Boolean(form.errors[name] && form.touched[name])
+                        }
+                        helperText={
+                            form.errors[name] &&
+                            form.touched[name] &&
+                            String(form.errors[name])
+                        }
+                        className={props.className}
+                    />
+                )
+            }}
         />
     );
 };

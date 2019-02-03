@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Fab } from '@material-ui/core';
+import { Fab, Card, CardContent, CardActions, Button, Typography } from '@material-ui/core';
 import * as yup from 'yup';
 import Form from '../../../common/form/form';
 import FormRow from '../../../common/form/form-row';
@@ -13,6 +13,7 @@ import Decimal from 'decimal.js';
 import FormSelectField from '../../../common/form/form-select-field';
 import { pick } from 'lodash';
 import { Delete as DeleteIcon, Add as AddIcon } from '@material-ui/icons';
+import styles from './invoice-form.module.scss';
 
 interface InvoiceViewModel {
     id?: string;
@@ -105,14 +106,18 @@ class InvoiceForm extends Component<InvoiceFormProps> {
                                 </FormRow>
                             )}
                             <FormRow>
-                                <FormSelectField name="client" label="Client" items={this.props.clients} itemValue="id" itemLabel="name" />
+                                <FormSelectField name="client" label="Client" items={this.props.clients} itemValue="id" itemLabel="name" fullWidth />
                             </FormRow>
                             <FormRow>
-                                <FormDateField name="issueDate" label="Issue date" />
+                                <FormDateField name="issueDate" label="Issue date" fullWidth />
                             </FormRow>
                             <FormRow>
-                                <FormDateField name="dueDate" label="Due date" />
+                                <FormDateField name="dueDate" label="Due date" fullWidth />
                             </FormRow>
+
+                            <Typography component="h2" variant="h5">
+                                Items
+                            </Typography>
 
                             <FieldArray
                                 name="items"
@@ -120,17 +125,30 @@ class InvoiceForm extends Component<InvoiceFormProps> {
                                     <div>
                                         {formikProps.values.items.map((item: any, index: any) => (
                                             <FormRow key={index}>
-                                                <FormTextField name={`items[${index}].text`} label="Text" />
-                                                <FormNumberField name={`items[${index}].unitPrice`} label="Unit price" />
-                                                <FormNumberField name={`items[${index}].unitCount`} label="Unit count" />
-                                                <Fab color='primary' onClick={() => arrayHelpers.remove(index)}>
-                                                    <DeleteIcon />
-                                                </Fab>
+                                                <Card className={styles.itemCard}>
+                                                    <CardContent>
+                                                        <FormRow fullWidth>
+                                                            <FormTextField name={`items[${index}].text`} label="Text" fullWidth />
+                                                        </FormRow>
+                                                        <FormRow>
+                                                            <FormNumberField name={`items[${index}].unitPrice`} label="Unit price" className={styles.itemField} />
+                                                            <FormNumberField name={`items[${index}].unitCount`} label="Unit count" className={styles.itemField} />
+                                                        </FormRow>
+                                                    </CardContent>
+                                                    <CardActions>
+                                                        <Button size="small" onClick={() => arrayHelpers.remove(index)}>Remove</Button>
+                                                    </CardActions>
+                                                </Card>
+
                                             </FormRow>
                                         ))}
-                                        <Fab color='primary' onClick={() => arrayHelpers.push({ text: '', unitPrice: '', unitCount: 1 })}>
-                                            <AddIcon />
-                                        </Fab>
+                                        <FormRow>
+                                            <div className={styles.itemAddRow}>
+                                                <Fab color='primary' onClick={() => arrayHelpers.push({ text: '', unitPrice: '', unitCount: 1 })}>
+                                                    <AddIcon />
+                                                </Fab>
+                                            </div>
+                                        </FormRow>
                                     </div>
                                 )}
                             />

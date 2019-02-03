@@ -1,17 +1,21 @@
 import React from 'react';
 import { Field } from 'formik';
 import { InlineDatePicker } from "material-ui-pickers/DatePicker";
+import { FormFieldBaseProps } from './form-field-base-props';
 
-const FormDateField = ({ name, label }: { name: string, label: string }) => {
+interface FormDateFieldProps extends FormFieldBaseProps {
+}
+
+const FormDateField = (props: FormDateFieldProps) => {
     return (
         <Field
             validateOnBlur
             validateOnChange
-            name={name}
+            name={props.name}
             render={({ field, form }: any) => (
                 <InlineDatePicker
                     {...field}
-                    label={label}
+                    label={props.label}
                     variant="outlined"
                     error={
                         Boolean(form.errors[name] && form.touched[name])
@@ -25,6 +29,8 @@ const FormDateField = ({ name, label }: { name: string, label: string }) => {
                     format="DD.MM.YYYY"
                     onError={(_, error) => form.setFieldError(field.name, error)}
                     onChange={date => form.setFieldValue(field.name, date, true)}
+                    fullWidth={props.fullWidth}
+                    className={props.className}
                 />
             )}
         />
