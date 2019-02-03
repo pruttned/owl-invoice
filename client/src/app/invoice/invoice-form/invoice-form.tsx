@@ -40,6 +40,7 @@ interface InvoiceFormProps {
     successMessage: string;
     onSuccess?: (resp: any) => void;
     invalidateQueryCache?: boolean;
+    menuRender?: (closeMenu: () => void) => JSX.Element[];
 }
 
 const validationSchema = yup.object().shape({
@@ -81,7 +82,7 @@ class InvoiceForm extends Component<InvoiceFormProps> {
 
     render() {
         return (
-            <FormPage>
+            <FormPage menuRender={this.props.menuRender}>
                 <Form
                     initialValues={this.toFormValues(this.props.invoice)}
                     validationSchema={validationSchema}

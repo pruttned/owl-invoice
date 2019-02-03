@@ -7,6 +7,8 @@ import { Client } from '../../client/client';
 import { Invoice } from '../invoice';
 import { invoiceService } from '../invoice-service';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
+import InvoiceRemoveDialog from '../invoice-remove-dialog/invoice-remove-dialog';
+import { MenuItem } from '@material-ui/core';
 
 const GET_QUERY = gql`
     query getInvoice($id: String!) {
@@ -70,9 +72,28 @@ interface Response {
 interface InvoiceUpdatePageProps extends RouteComponentProps<any> {
 }
 
-class InvoiceUpdatePage extends Component<InvoiceUpdatePageProps> {
+interface InvoiceEditPageState {
+    isRemoveDialogOpen: boolean;
+}
 
-    onSuccess = (resp: any) => {
+class InvoiceUpdatePage extends Component<InvoiceUpdatePageProps, InvoiceEditPageState> {
+    state: InvoiceEditPageState = {
+        isRemoveDialogOpen: false
+    };
+
+    showRemoveItemDialog = () => {
+        this.setState({
+            isRemoveDialogOpen: true
+        });
+    };
+
+    closeRemoveDialog = () => {
+        this.setState({
+            isRemoveDialogOpen: false
+        });
+    };
+
+    redirectToList = (resp: any) => {
         this.props.history.push('/invoices');
     };
 
@@ -92,7 +113,17 @@ class InvoiceUpdatePage extends Component<InvoiceUpdatePageProps> {
                                 clients={data.clients}
                                 mutation={INVOICE_UPDATE_QUERY}
                                 successMessage="Inivoice has been successfully updated"
-                                onSuccess={this.onSuccess}
+                                onSuccess={this.redirectToList}
+                                menuRender={(closeMenu: () => void) => [
+                                    <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(); closeMenu(); }}>Remove</MenuItem>,
+                                    // <MenuItem key="clone" onClick={() => { this.redirectToClone(data.client.id); closeMenu(); }}>Clone</MenuItem>,
+                                ]}
+                            />
+                            <InvoiceRemoveDialog
+                                open={this.state.isRemoveDialogOpen}
+                                item={data.invoice}
+                                onClose={this.closeRemoveDialog}
+                                onSuccess={this.redirectToList}
                             />
                         </React.Fragment>
                     )
