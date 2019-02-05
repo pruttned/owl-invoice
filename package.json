@@ -11,7 +11,6 @@
     "start-server": "concurrently --kill-others-on-fail \"npm run watch-server\" \"npm run server\" \"gulp watch\"",
     "build-ts": "tsc",
     "watch-server": "tsc -w",
-    "postinstall": "cd client && npm i",
     "generate-invoice": "npx ts-node ./src/app/invoice/invoice-pdf-generator.ts"
   },
   "author": "",
