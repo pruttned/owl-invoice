@@ -2,6 +2,7 @@
   "name": "owl-invoice-client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@date-io/moment": "0.0.2",
     "@material-ui/core": "^3.9.1",

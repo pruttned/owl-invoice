@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "client": "cd client && npm start",
+    "client": "cd client && set 'REACT_APP_SERVER_BASE=http://localhost:3001' && npm start",
     "server": "gulp graphqlCopy && nodemon -e js,json,graphql --exec \"node -r dotenv/config\" dist/index.js",
     "start": "concurrently --kill-others-on-fail \"npm run watch-server\" \"gulp watch\" \"npm run server\" \"npm run client\"",
     "start-server": "concurrently --kill-others-on-fail \"npm run watch-server\" \"npm run server\" \"gulp watch\"",
@@ -14,7 +14,8 @@
     "build-server": "tsc && gulp graphqlCopy",
     "build-client": "cd client && npm run build && cd .. && gulp clientCopy",
     "build": "gulp clearDest && npm run build-server && npm run build-client",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "start-dist": "node -r dotenv/config dist/index.js"
   },
   "author": "",
   "license": "ISC",

@@ -16,7 +16,7 @@ import { AppContext } from './app/app-store/app-context';
 import { AppStore } from './app/app-store/app-store';
 
 const link = createHttpLink({
-    uri: 'http://localhost:3001/graphql'
+    uri: '/graphql'
 });
 
 const client = new ApolloClient({

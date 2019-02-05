@@ -13,9 +13,15 @@ import { GraphQLDecimal } from './common/graphql/decimal';
 import { supplierResolver } from './app/supplier/supplier-resolver';
 import { invoicePdfGenerator } from './app/invoice/invoice-pdf-generator';
 
-const PORT = process.env.PORT || 3001;
-const HOST = process.env.HOST || 'localhost';
-const DIR = process.env.DIR || '.\\example\\db1';
+['PORT', 'HOST', 'DIR'].forEach(v => {
+    if (!process.env[v]) {
+        throw new Error(`Missing ${v} env variable`);
+    }
+});
+
+const PORT = process.env.PORT!;
+const HOST = process.env.HOST!;
+const DIR = process.env.DIR!;
 
 const typeDefs = glob.sync(path.join(__dirname, '**/*.graphql'))
     .map(f => gql(fs.readFileSync(f, 'utf8')));
