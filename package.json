@@ -11,7 +11,7 @@
     "start-server": "concurrently --kill-others-on-fail \"npm run watch-server\" \"npm run server\" \"gulp watch\"",
     "watch-server": "tsc -w",
     "generate-invoice": "npx ts-node ./src/app/invoice/invoice-pdf-generator.ts",
-    "build-server": "tsc",
+    "build-server": "tsc && gulp graphqlCopy",
     "build-client": "cd client && npm run build && cd .. && gulp clientCopy",
     "build": "gulp clearDest && npm run build-server && npm run build-client",
     "prepublish": "npm run build"
