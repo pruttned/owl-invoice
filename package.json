@@ -9,9 +9,12 @@
     "server": "gulp graphqlCopy && nodemon -e js,json,graphql --exec \"node -r dotenv/config\" dist/index.js",
     "start": "concurrently --kill-others-on-fail \"npm run watch-server\" \"gulp watch\" \"npm run server\" \"npm run client\"",
     "start-server": "concurrently --kill-others-on-fail \"npm run watch-server\" \"npm run server\" \"gulp watch\"",
-    "build-ts": "tsc",
     "watch-server": "tsc -w",
-    "generate-invoice": "npx ts-node ./src/app/invoice/invoice-pdf-generator.ts"
+    "generate-invoice": "npx ts-node ./src/app/invoice/invoice-pdf-generator.ts",
+    "build-server": "tsc",
+    "build-client": "cd client && npm run build && cd .. && gulp clientCopy",
+    "build": "gulp clearDest && npm run build-server && npm run build-client",
+    "prepublish": "npm run build"
   },
   "author": "",
   "license": "ISC",
@@ -50,6 +53,7 @@
     "@types/micromatch": "^3.1.0",
     "@types/mkdirp": "^0.5.2",
     "concurrently": "^4.1.0",
+    "del": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-print": "^5.0.0",
     "jest": "^23.6.0",
