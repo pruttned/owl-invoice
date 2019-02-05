@@ -54,20 +54,17 @@ const server = new ApolloServer({
 server.applyMiddleware({ app, path: '/graphql' });
 app.use(bodyParser.json());
 
-// app.get('*', function (req: any, res: Response) {
-//     //res.send('asdasd');
-//     res.sendFile(path.join(__dirname, '../public/index.html'));
-// });
-
 app.post('/generateInvoicePdf', async function (req: Request, res: Response) {
     let pdfPath = await invoicePdfGenerator.generate(req.body.invoiceId, req.body.templateDefinitionId);
     res.send(pdfPath);
-    //res.send('asdasd');
-    // res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-// app.use('/generated', express.static(path.join(__dirname, '../generated')));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (_, res) => {
+    res.sendFile(path.join(__dirname + '/public/index.html'));
+});
 
 app.listen(PORT, () => {
-    console.log(`Go to http://${HOST}:${PORT}${server.graphqlPath} to run queries!`)
+    console.log(`Server running at http://${HOST}:${PORT}`)
 })
