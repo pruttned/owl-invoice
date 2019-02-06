@@ -75,7 +75,7 @@ class InvoiceListPage extends Component<InvoiceListProps, InvoiceListState> {
                                     menuRender={(item: Invoice, closeMenu: () => void) => [
                                         <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(item); closeMenu(); }}>Remove</MenuItem>,
                                         <MenuItem key="clone" onClick={() => { this.redirectToClone(item.id); closeMenu(); }}>Clone</MenuItem>,
-                                        <Divider />,
+                                        <Divider key="divider-0" />,
                                         <MenuItem key="export-sk" onClick={() => { this.exportSk(item.id); closeMenu(); }}>Export PDF - SK</MenuItem>,
                                         <MenuItem key="export-at" onClick={() => { this.exportAt(item.id); closeMenu(); }}>Export PDF - AT</MenuItem>,
                                     ]}

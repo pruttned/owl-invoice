@@ -77,7 +77,7 @@ class InvoiceUpdatePage extends Component<InvoiceUpdatePageProps, InvoiceEditPag
                                 menuRender={(closeMenu: () => void) => [
                                     <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(); closeMenu(); }}>Remove</MenuItem>,
                                     <MenuItem key="clone" onClick={() => { this.redirectToClone(data.invoice.id); closeMenu(); }}>Clone</MenuItem>,
-                                    <Divider />,
+                                    <Divider key="divider-0" />,
                                     <MenuItem key="export-sk" onClick={() => { this.exportSk(data.invoice.id); closeMenu(); }}>Export PDF - SK</MenuItem>,
                                     <MenuItem key="export-at" onClick={() => { this.exportAt(data.invoice.id); closeMenu(); }}>Export PDF - AT</MenuItem>,
                                 ]}
