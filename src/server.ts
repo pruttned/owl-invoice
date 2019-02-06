@@ -19,7 +19,7 @@ export function startServer(): Promise<string> {
         const typeDefs = glob.sync(path.join(__dirname, '**/*.graphql'))
             .map(f => gql(fs.readFileSync(f, 'utf8')));
 
-        db.init(DIR);
+        db.init(path.join(DIR, 'db'));
 
         const scalarResolver = {
             Date: GraphQLDate,

@@ -1,0 +1,11 @@
+client: cust1
+dueDate: 2017-12-03T00:00:00.000Z
+issueDate: 2017-01-01T00:00:00.000Z
+deliveryDate: 2018-07-31T00:00:00.000Z
+items:
+  - text: Práce na za mesiac jún 2018
+    unitCount: '100'
+    unitPrice: '10.5'
+  - text: Nejaká fuška
+    unitCount: '1'
+    unitPrice: '100'
