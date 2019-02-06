@@ -1,29 +1,40 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import { Field } from 'formik';
+import { FormFieldBaseProps } from './form-field-base-props';
+import { get } from 'lodash';
 
-const FormNumberField = ({ name, label }: { name: string, label: string }) => {
+interface FormNumberFieldProps extends FormFieldBaseProps {
+}
+
+const FormNumberField = (props: FormNumberFieldProps) => {
     return (
         <Field
             validateOnBlur
             validateOnChange
-            name={name}
-            render={({ field, form }: any) => (
-                <TextField
-                    type="number"
-                    {...field}
-                    label={label}
-                    variant="outlined"
-                    error={
-                        Boolean(form.errors[name] && form.touched[name])
-                    }
-                    helperText={
-                        form.errors[name] &&
-                        form.touched[name] &&
-                        String(form.errors[name])
-                    }
-                />
-            )}
+            name={props.name}
+            render={({ field, form }: any) => {
+                const error = get(form.errors, props.name);
+                const touched = get(form.touched, props.name);
+                return (
+                    <TextField
+                        type="number"
+                        {...field}
+                        label={props.label}
+                        variant="outlined"
+                        error={
+                            Boolean(error && touched)
+                        }
+                        helperText={
+                            error &&
+                            touched &&
+                            String(error)
+                        }
+                        fullWidth={props.fullWidth}
+                        className={props.className}
+                    />
+                )
+            }}
         />
     );
 };

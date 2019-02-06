@@ -1,0 +1,15 @@
+.itemCard {
+    width: 100%;
+    .itemField {
+        flex: 1;
+        margin-right: 10px;
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+.itemAddRow {
+    text-align: right;
+    width: 100%;
+}

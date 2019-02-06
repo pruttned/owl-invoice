@@ -13,9 +13,15 @@ import { GraphQLDecimal } from './common/graphql/decimal';
 import { supplierResolver } from './app/supplier/supplier-resolver';
 import { invoicePdfGenerator } from './app/invoice/invoice-pdf-generator';
 
-const PORT = process.env.PORT || 3001;
-const HOST = process.env.HOST || 'localhost';
-const DIR = process.env.DIR || '.\\example\\db1';
+['PORT', 'HOST', 'DIR'].forEach(v => {
+    if (!process.env[v]) {
+        throw new Error(`Missing ${v} env variable`);
+    }
+});
+
+const PORT = process.env.PORT!;
+const HOST = process.env.HOST!;
+const DIR = process.env.DIR!;
 
 const typeDefs = glob.sync(path.join(__dirname, '**/*.graphql'))
     .map(f => gql(fs.readFileSync(f, 'utf8')));
@@ -54,11 +60,6 @@ const server = new ApolloServer({
 server.applyMiddleware({ app, path: '/graphql' });
 app.use(bodyParser.json());
 
-// app.get('*', function (req: any, res: Response) {
-//     //res.send('asdasd');
-//     res.sendFile(path.join(__dirname, '../public/index.html'));
-// });
-
 app.get('/api/invoices/export', async function (req: Request, res: Response, next) {
     try {
         let pdfPath = await invoicePdfGenerator.generate(req.query.invoiceId, req.query.templateDefinitionId);
@@ -68,8 +69,12 @@ app.get('/api/invoices/export', async function (req: Request, res: Response, nex
     }
 });
 
-// app.use('/generated', express.static(path.join(__dirname, '../generated')));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (_, res) => {
+    res.sendFile(path.join(__dirname + '/public/index.html'));
+});
 
 app.listen(PORT, () => {
-    console.log(`Go to http://${HOST}:${PORT}${server.graphqlPath} to run queries!`)
+    console.log(`Server running at http://${HOST}:${PORT}`)
 })

@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './form-row.module.scss';
+import classNames from 'classnames';
 
-const FormRow = ({ children }: { children: JSX.Element[] | JSX.Element }) => {
+const FormRow = ({ children, fullWidth }: { children: JSX.Element[] | JSX.Element, fullWidth?: boolean }) => {
     return (
-        <div className={styles.root}>{children}</div>
+        <div className={classNames(styles.root, { [styles.fullWidth]: fullWidth })}>{children}</div>
     );
 };
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styles from './form-page.module.scss';
-import classNames from 'classnames';
 import { Menu } from '@material-ui/core';
 import { MenuButton } from '../button/menu-button';
 import PageMenu from './page-menu';
@@ -38,7 +37,7 @@ class FormPage extends Component<FormPageProps, FormPageState>{
                         {menu}
                     </Menu>
                 </PageMenu>)}
-                <div className={classNames(styles.root, { [styles.fullWidth]: this.props.fullWidth })}>{this.props.children}</div>
+                <div className={styles.root}>{this.props.children}</div>
             </React.Fragment>
         );
     }
