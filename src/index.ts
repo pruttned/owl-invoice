@@ -12,16 +12,20 @@ import { GraphQLDate } from 'graphql-iso-date';
 import { GraphQLDecimal } from './common/graphql/decimal';
 import { supplierResolver } from './app/supplier/supplier-resolver';
 import { invoicePdfGenerator } from './app/invoice/invoice-pdf-generator';
+import rc from 'rc';
 
-['PORT', 'HOST', 'DIR'].forEach(v => {
-    if (!process.env[v]) {
-        throw new Error(`Missing ${v} env variable`);
+const rcCfg = rc('owlinvoice');
+console.log(rcCfg);
+
+['DIR'].forEach(v => {
+    if (!process.env[v] && !rcCfg[v]) {
+        throw new Error(`Argument ${v} is missing. Specify it in .owlinvoicerc file or in ENV`);
     }
 });
 
-const PORT = process.env.PORT!;
-const HOST = process.env.HOST!;
-const DIR = process.env.DIR!;
+const PORT = process.env.PORT || rcCfg.PORT || 3001;
+const HOST = process.env.HOST || rcCfg.HOST || 'localhost';
+const DIR = process.env.DIR || rcCfg.DIR;
 
 const typeDefs = glob.sync(path.join(__dirname, '**/*.graphql'))
     .map(f => gql(fs.readFileSync(f, 'utf8')));
