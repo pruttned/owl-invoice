@@ -8,7 +8,7 @@ import { Client } from '../../client/client';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 import { INVOICE_CREATE_MUTATION } from '../invoice-queries';
 import { CLIENT_LIST_QUERY } from '../../client/client-queries';
-import moment = require('moment');
+import moment from 'moment';
 
 interface Response {
     clients: Client[];
