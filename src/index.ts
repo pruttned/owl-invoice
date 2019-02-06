@@ -59,11 +59,13 @@ app.use(bodyParser.json());
 //     res.sendFile(path.join(__dirname, '../public/index.html'));
 // });
 
-app.post('/generateInvoicePdf', async function (req: Request, res: Response) {
-    let pdfPath = await invoicePdfGenerator.generate(req.body.invoiceId, req.body.templateDefinitionId);
-    res.send(pdfPath);
-    //res.send('asdasd');
-    // res.sendFile(path.join(__dirname, '../public/index.html'));
+app.get('/api/invoices/export', async function (req: Request, res: Response, next) {
+    try {
+        let pdfPath = await invoicePdfGenerator.generate(req.query.invoiceId, req.query.templateDefinitionId);
+        res.sendFile(path.resolve(pdfPath));
+    } catch (err) {
+        next(err);
+    }
 });
 
 // app.use('/generated', express.static(path.join(__dirname, '../generated')));
