@@ -2,6 +2,7 @@
 client: cust1
 dueDate: 2017-12-03
 issueDate: 2017-01-01
+deliveryDate: 2017-01-01
 items:
     - text: 'Práce na za mesiac jún 2018'
       unitCount: '100'

@@ -17,6 +17,7 @@ describe('InvoiceDocumentProcessor', () => {
                 client: '1',
                 dueDate: new Date(),
                 issueDate: new Date(),
+                deliveryDate: new Date(),
                 items: [
                     {
                         text: 'someItem',

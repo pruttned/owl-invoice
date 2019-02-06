@@ -4,6 +4,7 @@ import { Client } from '../client/client';
 export interface Invoice {
     id: string;
     issueDate: Date;
+    deliveryDate: Date;
     dueDate: Date;
     client: Client;
     items: InvoiceItem[];

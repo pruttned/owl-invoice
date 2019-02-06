@@ -4,6 +4,7 @@ export interface InvoiceDocument {
     id: string;
     client: string,
     issueDate: Date,
+    deliveryDate: Date,
     dueDate: Date,
 
     items: InvoiceItem[]

@@ -53,6 +53,7 @@ class InvoiceViewModel {
     number: string;
     variableSymbol: string;
     issueDate: Date;
+    deliveryDate: Date;
     dueDate: Date;
     client: ClientViewModel;
     items: InvoiceItemViewModel[];
@@ -65,6 +66,7 @@ class InvoiceViewModel {
         this.number = invoiceDocument.id;
         this.variableSymbol = invoiceDocument.id;
         this.issueDate = invoiceDocument.issueDate;
+        this.deliveryDate = invoiceDocument.deliveryDate;
         this.dueDate = invoiceDocument.dueDate;
         this.client = new ClientViewModel(clientDocument);
         this.items = invoiceDocument.items ? invoiceDocument.items.map(item => new InvoiceItemViewModel(item)) : []

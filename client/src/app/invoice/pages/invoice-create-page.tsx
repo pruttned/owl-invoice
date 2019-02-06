@@ -8,6 +8,7 @@ import { Client } from '../../client/client';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 import { INVOICE_CREATE_MUTATION } from '../invoice-queries';
 import { CLIENT_LIST_QUERY } from '../../client/client-queries';
+import moment = require('moment');
 
 interface Response {
     clients: Client[];
@@ -28,6 +29,11 @@ class InvoiceCreatePage extends Component<InvoiceCreatePageProps> {
         return date;
     };
 
+    //TODO: extract
+    getDeliveryDate = () => {
+        return moment().add('months', -1).endOf('month').toDate();
+    };
+
     render() {
         return (
 
@@ -40,6 +46,7 @@ class InvoiceCreatePage extends Component<InvoiceCreatePageProps> {
                                 invoice={{
                                     dueDate: this.getDefaultDueDate(),
                                     issueDate: new Date(),
+                                    deliveryDate: this.getDeliveryDate(),
                                     client: data.clients[0].id,
                                     items: [{ text: '', unitCount: new Decimal(1), unitPrice: new Decimal(1) }],
                                 }}

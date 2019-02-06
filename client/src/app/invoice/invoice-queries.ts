@@ -5,6 +5,7 @@ mutation createInvoice($model:CreateInvoiceInput!) {
     createInvoice(input: $model) {
         id
         issueDate
+        deliveryDate
         dueDate
         client {
             name
@@ -29,6 +30,7 @@ export const INVOICE_FORM_GET_QUERY = gql`
         invoice(id: $id) {
             id
             issueDate
+            deliveryDate
             dueDate
             client {
                 id
@@ -59,6 +61,7 @@ export const INVOICE_LIST_QUERY = gql`
             id
             dueDate
             issueDate
+            deliveryDate
             client {
                 id
                 name
@@ -78,6 +81,7 @@ mutation updateInvoice($model:UpdateInvoiceInput!) {
     updateInvoice(input: $model) {
         id
         issueDate
+        deliveryDate
         dueDate
         client {
             id

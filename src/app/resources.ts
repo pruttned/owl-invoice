@@ -2,6 +2,7 @@ class ResourcesOfLanguage {
 
     invoice = { SK: 'faktúra', AT: 'Rechnung' }[this.language];
     issueDate = { SK: 'dátum vystavenia', AT: 'Rechnungsdatum' }[this.language];
+    deliveryDate = { SK: 'dátum dodania', AT: 'Lieferdatum' }[this.language];
     supplier = { SK: 'dodávateľ', AT: 'Lieferant' }[this.language];
     businessId = { SK: 'IČO', AT: 'IDN' }[this.language];
     vatNumber = { SK: 'IČ DPH', AT: 'UID NR' }[this.language];

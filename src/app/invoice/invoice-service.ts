@@ -42,6 +42,7 @@ export const invoiceService = new InvoiceService();
 
 interface InvoiceCreateModel {
     issueDate: Date,
+    deliveryDate: Date,
     dueDate: Date,
     client: string,
     items: InvoiceItemDoc[]
@@ -50,6 +51,7 @@ interface InvoiceCreateModel {
 interface InvoiceUpdateModel {
     id: string,
     issueDate: Date,
+    deliveryDate: Date,
     dueDate: Date,
     client: string,
     items: InvoiceItemDoc[]

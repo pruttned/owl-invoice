@@ -14,6 +14,7 @@ type Invoice
     id: String!,
     number: String!,
     issueDate: Date!,
+    deliveryDate: Date!,
     dueDate: Date!,
     client: Client!,
     items: [InvoiceItem]
@@ -22,6 +23,7 @@ type Invoice
 input CreateInvoiceInput
 { 
     issueDate: Date!,
+    deliveryDate: Date!,
     dueDate: Date!,
     client: String!,
     items: [InvoiceItemInput]
@@ -31,6 +33,7 @@ input UpdateInvoiceInput
 { 
     id: String!,
     issueDate: Date!,
+    deliveryDate: Date!,
     dueDate: Date!,
     client: String!,
     items: [InvoiceItemInput]

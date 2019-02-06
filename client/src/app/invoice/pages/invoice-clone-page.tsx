@@ -7,6 +7,7 @@ import { INVOICE_FORM_GET_QUERY, INVOICE_CREATE_MUTATION } from '../invoice-quer
 import InvoiceForm from '../invoice-form/invoice-form';
 import { Client } from '../../client/client';
 import { invoiceService } from '../invoice-service';
+import moment from 'moment';
 
 interface InvoiceClonePageProps extends RouteComponentProps<any> {
 }
@@ -28,6 +29,11 @@ class InvoiceClonePage extends Component<InvoiceClonePageProps> {
         return dueDate;
     };
 
+    //TODO: extract from create
+    getDeliveryDate = () => {
+        return moment().add('months', -1).endOf('month').toDate();
+    };
+
     render() {
         return (
             <QueryPanel<GetResponse> query={INVOICE_FORM_GET_QUERY} variables={{ id: this.props.match.params.id }}>
@@ -37,6 +43,7 @@ class InvoiceClonePage extends Component<InvoiceClonePageProps> {
                         ...original,
                         client: original.client.id,
                         issueDate: new Date(),
+                        deliveryDate: this.getDeliveryDate(),
                         dueDate: this.getDueDate(original),
                         items: original.items.map(item => ({ ...item }))
                     };

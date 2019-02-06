@@ -20,6 +20,7 @@ class InvoiceService {
             ...invoice,
             dueDate: new Date(Date.parse(invoice.dueDate as any)),
             issueDate: new Date(Date.parse(invoice.issueDate as any)),
+            deliveryDate: new Date(Date.parse(invoice.deliveryDate as any)),
             items: (invoice.items && invoice.items.map(item => ({
                 ...item,
                 unitCount: new Decimal(item.unitCount),

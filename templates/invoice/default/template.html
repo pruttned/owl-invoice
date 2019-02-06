@@ -294,6 +294,14 @@
                 </tr>
                 <tr>
                     <td class="payment-info-name">
+                        <%= html.capitalizeFirstLetter(resources.deliveryDate) %>:
+                    </td>
+                    <td class="payment-info-value">
+                        <%= html.formatDate(invoice.deliveryDate) %>
+                    </td>
+                </tr>           
+                <tr>
+                    <td class="payment-info-name">
                         <%= html.capitalizeFirstLetter(resources.issueDate) %>:
                     </td>
                     <td class="payment-info-value">

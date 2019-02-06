@@ -18,6 +18,7 @@ import styles from './invoice-form.module.scss';
 interface InvoiceViewModel {
     id?: string;
     issueDate: Date;
+    deliveryDate: Date,
     dueDate: Date;
     client: string;
     items: InvoiceItemViewModel[];
@@ -46,6 +47,7 @@ interface InvoiceFormProps {
 
 const validationSchema = yup.object().shape({
     issueDate: yup.date().required('issue date is required!'),
+    deliveryDate: yup.date().required('delivery date is required!'),
     dueDate: yup.date().required('due date is required!'),
     client: yup.string().required('client is required!'),
     items: yup.array().of(yup.object().shape({
@@ -76,6 +78,7 @@ class InvoiceForm extends Component<InvoiceFormProps> {
         return {
             ...pick(formValues, 'id', 'client'),
             issueDate: formValues.issueDate.toISOString().substr(0, 10),
+            deliveryDate: formValues.deliveryDate.toISOString().substr(0, 10),
             dueDate: formValues.dueDate.toISOString().substr(0, 10),
             items: formValues.items.map((item) => ({
                 ...pick(item, 'text'),
@@ -115,6 +118,9 @@ class InvoiceForm extends Component<InvoiceFormProps> {
                             <FormRow>
                                 <FormDateField name="issueDate" label="Issue date" fullWidth />
                             </FormRow>
+                            <FormRow>
+                                <FormDateField name="deliveryDate" label="Delivery date" fullWidth />
+                            </FormRow>                            
                             <FormRow>
                                 <FormDateField name="dueDate" label="Due date" fullWidth />
                             </FormRow>
