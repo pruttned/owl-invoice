@@ -20,8 +20,7 @@
   "bin": {
     "owlinvoice": "./dist/bin/index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "apollo-server-express": "^2.2.2",
     "chokidar": "^2.0.4",
