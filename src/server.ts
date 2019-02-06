@@ -70,7 +70,7 @@ export function startServer(): Promise<string> {
 
         app.listen(PORT, () => {
             const serverUrl = `http://${HOST}:${PORT}`;
-            console.log(`Server running at ${serverUrl}. db dir = ${DIR}`)
+            console.log(`Server running at ${serverUrl}. base dir = ${DIR}`)
             resolve(serverUrl);
         })
     });
