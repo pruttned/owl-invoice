@@ -1,6 +1,6 @@
 import { pdfGenerator } from '../../common/pdf-generator';
 import path from 'path';
-import { Language, resources } from '../resources';
+import { resources } from '../resources';
 import { htmlHelper } from '../../common/htmlHelper';
 import { InvoiceDocument, InvoiceItem } from './invoice-document';
 import Decimal from 'decimal.js';
@@ -10,10 +10,10 @@ import { SupplierDocument } from '../supplier/supplier-document';
 import { invoiceService } from './invoice-service';
 import { clientService } from '../client/client-service';
 import { invoiceTemplateDefinitionService } from './invoice-template-definition-service';
-import { db } from '../db';
+import { DIR } from '../../config';
 
 class InvoicePdfGenerator {
-    private outDir = 'generated';
+    private outDir = path.join(DIR, 'generated');
 
     public async generate(invoiceId: string, templateDefinitionId: string): Promise<string> {
         let templateDefinition = invoiceTemplateDefinitionService.getById(templateDefinitionId);

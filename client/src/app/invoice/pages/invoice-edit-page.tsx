@@ -8,8 +8,9 @@ import { Invoice } from '../invoice';
 import { invoiceService } from '../invoice-service';
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 import InvoiceRemoveDialog from '../invoice-remove-dialog/invoice-remove-dialog';
-import { MenuItem } from '@material-ui/core';
+import { MenuItem, Divider } from '@material-ui/core';
 import { INVOICE_FORM_GET_QUERY, INVOICE_UPDATE_MUTATION } from '../invoice-queries';
+import { apiProxy, InvoiceTemplateDefinition } from '../../api-proxy';
 
 interface Response {
     invoice: Invoice;
@@ -48,6 +49,14 @@ class InvoiceUpdatePage extends Component<InvoiceUpdatePageProps, InvoiceEditPag
         this.props.history.push(`/invoices/${encodeURIComponent(id)}/clone`);
     };
 
+    exportSk = (invoiceId: string) => {
+        apiProxy.exportInvoice(invoiceId, InvoiceTemplateDefinition.DefaultSK);
+    };
+
+    exportAt = (invoiceId: string) => {
+        apiProxy.exportInvoice(invoiceId, InvoiceTemplateDefinition.DefaultAT);
+    };
+
     render() {
         return (
 
@@ -68,6 +77,9 @@ class InvoiceUpdatePage extends Component<InvoiceUpdatePageProps, InvoiceEditPag
                                 menuRender={(closeMenu: () => void) => [
                                     <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(); closeMenu(); }}>Remove</MenuItem>,
                                     <MenuItem key="clone" onClick={() => { this.redirectToClone(data.invoice.id); closeMenu(); }}>Clone</MenuItem>,
+                                    <Divider key="divider-0" />,
+                                    <MenuItem key="export-sk" onClick={() => { this.exportSk(data.invoice.id); closeMenu(); }}>Export PDF - SK</MenuItem>,
+                                    <MenuItem key="export-at" onClick={() => { this.exportAt(data.invoice.id); closeMenu(); }}>Export PDF - AT</MenuItem>,
                                 ]}
                             />
                             <InvoiceRemoveDialog
