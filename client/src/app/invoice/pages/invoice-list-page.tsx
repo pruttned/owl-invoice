@@ -8,10 +8,11 @@ import { invoiceService } from '../invoice-service';
 import PageFab from '../../../common/page-fab/page-fab';
 import { Add as AddIcon } from '@material-ui/icons';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { MenuItem } from '@material-ui/core';
+import { MenuItem, Divider } from '@material-ui/core';
 import InvoiceRemoveDialog from '../invoice-remove-dialog/invoice-remove-dialog';
 import { INVOICE_LIST_QUERY } from '../invoice-queries';
 import { AppContext, AppContextValue } from '../../app-store/app-context';
+import { apiProxy, InvoiceTemplateDefinition } from '../../api-proxy';
 
 interface Response {
     invoices: Invoice[];
@@ -53,6 +54,14 @@ class InvoiceListPage extends Component<InvoiceListProps, InvoiceListState> {
         });
     };
 
+    exportSk = (invoiceId: string) => {
+        apiProxy.exportInvoice(invoiceId, InvoiceTemplateDefinition.DefaultSK);
+    };
+
+    exportAt = (invoiceId: string) => {
+        apiProxy.exportInvoice(invoiceId, InvoiceTemplateDefinition.DefaultAT);
+    };
+    
     render() {
         return (
             <AppContext.Consumer>
@@ -66,6 +75,9 @@ class InvoiceListPage extends Component<InvoiceListProps, InvoiceListState> {
                                     menuRender={(item: Invoice, closeMenu: () => void) => [
                                         <MenuItem key="remove" onClick={() => { this.showRemoveItemDialog(item); closeMenu(); }}>Remove</MenuItem>,
                                         <MenuItem key="clone" onClick={() => { this.redirectToClone(item.id); closeMenu(); }}>Clone</MenuItem>,
+                                        <Divider />,
+                                        <MenuItem key="export-sk" onClick={() => { this.exportSk(item.id); closeMenu(); }}>Export PDF - SK</MenuItem>,
+                                        <MenuItem key="export-at" onClick={() => { this.exportAt(item.id); closeMenu(); }}>Export PDF - AT</MenuItem>,
                                     ]}
                                 />
                             }}
