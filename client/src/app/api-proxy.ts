@@ -1,5 +1,5 @@
 class ApiProxy {
-    private apiBaseUrl = 'api';
+    private apiBaseUrl = '/api';
 
     exportInvoice(invoiceId: string, templateDefinition: InvoiceTemplateDefinition) {
         window.open(`${this.apiBaseUrl}/invoices/export?invoiceId=${encodeURIComponent(invoiceId)}&templateDefinitionId=${templateDefinition}`);
