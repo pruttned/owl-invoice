@@ -1,9 +1,11 @@
 # owl-invoice
 
 ## Install
+1.
 ```sh
 npm install owl-invoice -g
 ```
+2. install [wkhtmltopdf](https://wkhtmltopdf.org/downloads.html) and add it to PATH
 
 ## Configuration
 - create `.owlinvoicerc` in the user`s home directory
