@@ -14,6 +14,7 @@ import { DIR } from '../../config';
 
 class InvoicePdfGenerator {
     private outDir = path.join(DIR, 'generated');
+    private templatesDir = path.join(__dirname, '../../../content/templates');
 
     public async generate(invoiceId: string, templateDefinitionId: string): Promise<string> {
         let templateDefinition = invoiceTemplateDefinitionService.getById(templateDefinitionId);
@@ -22,7 +23,7 @@ class InvoicePdfGenerator {
             supplier: await this.getSupplier(),
             resources: resources.get(templateDefinition.templateParams.language),
             html: htmlHelper,
-            getTemplateResourcePath: (relativePath: string) => `file:///${path.resolve(path.join('templates', 'invoice', templateDefinition.templateName, relativePath))}`,
+            getTemplateResourcePath: (relativePath: string) => `file:///${path.resolve(path.join(this.templatesDir, 'invoice', templateDefinition.templateName, relativePath))}`,
         };
 
         let templatePath = path.join('invoice', templateDefinition.templateName, 'template.html');

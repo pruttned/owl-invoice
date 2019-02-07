@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 class PdfGenerator {
-    private templatesDir = 'templates';
+    private templatesDir = path.join(__dirname, '../../content/templates');
 
     public generate(templatePath: string, model: any, pdfPath: string): Promise<object> {
         return new Promise((resolve, reject) => {
