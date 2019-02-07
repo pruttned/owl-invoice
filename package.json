@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "client": "cd client && set 'REACT_APP_SERVER_BASE=http://localhost:3001' && npm start",
+    "client": "cd client && npm start",
     "server": "gulp graphqlCopy && nodemon -e js,json,graphql --exec \"node -r dotenv/config\" dist/index.js",
     "start": "concurrently --kill-others-on-fail \"npm run watch-server\" \"gulp watch\" \"npm run server\" \"npm run client\"",
     "start-server": "concurrently --kill-others-on-fail \"npm run watch-server\" \"npm run server\" \"gulp watch\"",
@@ -34,6 +34,7 @@
     "graphql": "^14.0.2",
     "graphql-iso-date": "^3.6.1",
     "graphql-tools": "^4.0.3",
+    "http-proxy-middleware": "^0.19.1",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.11",
     "micromatch": "^3.1.10",
