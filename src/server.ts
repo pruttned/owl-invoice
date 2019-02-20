@@ -13,9 +13,15 @@ import { GraphQLDecimal } from './common/graphql/decimal';
 import { supplierResolver } from './app/supplier/supplier-resolver';
 import { invoicePdfGenerator } from './app/invoice/invoice-pdf-generator';
 import { DIR, HOST, PORT } from './config';
+const webpush = require('web-push');
 
 export function startServer(): Promise<string> {
     return new Promise((resolve) => {
+
+        const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
+        const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
+        webpush.setVapidDetails(`mailto:${process.env.EMAIL_VAPID_KEY}`, publicVapidKey, privateVapidKey);
+
         const typeDefs = glob.sync(path.join(__dirname, '**/*.graphql'))
             .map(f => gql(fs.readFileSync(f, 'utf8')));
 
@@ -62,12 +68,25 @@ export function startServer(): Promise<string> {
             }
         });
 
+        app.post('/api/subscribe', (req, res) => {
+            const subscription = req.body;
+            res.status(201).json({});
+            const payload = JSON.stringify({ title: 'test' });
+
+            console.log(subscription);
+
+            webpush.sendNotification(subscription, payload).catch((error: any) => {
+                console.error(error.stack);
+            });
+        });
+
         app.use(express.static(path.join(__dirname, 'public')));
 
         app.get('*', (_, res) => {
             res.sendFile(path.join(__dirname + '/public/index.html'));
         });
 
+        
         app.listen(PORT, () => {
             const serverUrl = `http://${HOST}:${PORT}`;
             console.log(`Server running at ${serverUrl}. base dir = ${DIR}`)

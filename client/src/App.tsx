@@ -9,6 +9,7 @@ import MuiPickersUtilsProvider from 'material-ui-pickers/MuiPickersUtilsProvider
 import MomentUtils from '@date-io/moment';
 import { BreadcrumbsProvider } from 'react-breadcrumbs-dynamic';
 import Breadcrumbs from './common/breadcrumbs/breadcrumbs';
+import * as serviceWorker from './service-worker';
 
 const theme = createMuiTheme({
   typography: {
@@ -58,6 +59,11 @@ class App extends Component<any, AppState> {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
+  notif = () => {
+    serviceWorker.register();
+
+  }
+
   render() {
     return (
       <BreadcrumbsProvider>
@@ -68,6 +74,7 @@ class App extends Component<any, AppState> {
               <div className={styles.root}>
                 <AppBar position="fixed" className={styles.appBar}>
                   <Toolbar>
+                    <button onClick={this.notif}>notif</button>
                     <IconButton
                       className={styles.menuButton}
                       color="inherit"
