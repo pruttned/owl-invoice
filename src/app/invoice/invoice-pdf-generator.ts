@@ -11,6 +11,8 @@ import { invoiceService } from './invoice-service';
 import { clientService } from '../client/client-service';
 import { invoiceTemplateDefinitionService } from './invoice-template-definition-service';
 import { DIR } from '../../config';
+import Handlebars from 'handlebars';
+import moment from 'moment';
 
 class InvoicePdfGenerator {
     private outDir = path.join(DIR, 'generated');
@@ -18,8 +20,11 @@ class InvoicePdfGenerator {
 
     public async generate(invoiceId: string, templateDefinitionId: string): Promise<string> {
         let templateDefinition = invoiceTemplateDefinitionService.getById(templateDefinitionId);
+
+        let invoiceModel = await this.getInvoice(invoiceId);
+        this.processItemTemplates(invoiceModel, templateDefinition.templateParams.language);
         let viewModel = {
-            invoice: await this.getInvoice(invoiceId),
+            invoice: invoiceModel,
             supplier: await this.getSupplier(),
             resources: resources.get(templateDefinition.templateParams.language),
             html: htmlHelper,
@@ -31,6 +36,15 @@ class InvoicePdfGenerator {
 
         await pdfGenerator.generate(templatePath, viewModel, pdfPath);
         return pdfPath;
+    }
+
+    private processItemTemplates(invoice: InvoiceViewModel, language: string): any {
+        const helpers = {
+            helpers: {
+                date: (date: Date, format: string) => new Handlebars.SafeString(moment(date).locale(language).format(format))
+            }
+        };
+        invoice.items.forEach(item => item.text = Handlebars.compile(item.text)({ ...invoice, item }, helpers));
     }
 
     private getInvoicePdfName(invoice: InvoiceViewModel): string {
