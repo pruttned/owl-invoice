@@ -1,0 +1,11 @@
+type RepoPullResult 
+{ 
+    files: [String],
+    changes: Int,
+    insertions: Int,
+    deletions: Int,
+}
+
+extend type Mutation {
+    pullRepo: RepoPullResult
+}

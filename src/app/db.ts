@@ -5,6 +5,8 @@ import { DocumentCollection } from './../common/document-db/document-collection'
 import { DocumentFsWatcher } from './../common/document-db/document-fs-watcher';
 import { DocumentFs } from './../common/document-db/document-fs';
 import { SupplierDocument } from './supplier/supplier-document';
+import { promisify } from 'util';
+import mkdirp from 'mkdirp';
 
 class Db {
     private documentFs: DocumentFs | null = null;
@@ -12,7 +14,12 @@ class Db {
     private _invoices: DocumentCollection<InvoiceDocument> | null = null;
     private _clients: DocumentCollection<ClientDocument> | null = null;
     private _suppliers: DocumentCollection<SupplierDocument> | null = null;
+    private _dir: string | null = null;
 
+    get dir(): string {
+        this.checkIsInit();
+        return this._dir!;
+    }
     get invoices(): DocumentCollection<InvoiceDocument> {
         this.checkIsInit();
         return this._invoices!;
@@ -30,6 +37,8 @@ class Db {
         if (this.documentFsWatcher) {
             throw new Error('Db is already initialized')
         }
+        this._dir = dir;
+        mkdirp.sync(dir);
         this.documentFsWatcher = new DocumentFsWatcher(dir);
         this.documentFs = new DocumentFs(dir, this.documentFsWatcher);
 

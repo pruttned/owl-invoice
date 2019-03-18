@@ -54,3 +54,11 @@ $drawerWidth: 240px;
         color: $primary-color;
     }
 }
+
+.initProgress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    flex-direction: column;
+}

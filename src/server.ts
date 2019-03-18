@@ -13,12 +13,12 @@ import { GraphQLDecimal } from './common/graphql/decimal';
 import { supplierResolver } from './app/supplier/supplier-resolver';
 import { invoicePdfGenerator } from './app/invoice/invoice-pdf-generator';
 import { DIR, HOST, PORT } from './config';
+import { repoResolver } from './app/repo/repo-resolver';
 
 export function startServer(): Promise<string> {
     return new Promise((resolve) => {
         const typeDefs = glob.sync(path.join(__dirname, '**/*.graphql'))
             .map(f => gql(fs.readFileSync(f, 'utf8')));
-
         db.init(path.join(DIR, 'db'));
 
         const scalarResolver = {
@@ -33,7 +33,8 @@ export function startServer(): Promise<string> {
                 scalarResolver,
                 clientResolver,
                 invoiceResolver,
-                supplierResolver),
+                supplierResolver,
+                repoResolver),
             context: async () => ({
                 // someNumber: await Promise.resolve(123),
                 // loaders: {
