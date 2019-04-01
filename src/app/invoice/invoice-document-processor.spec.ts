@@ -14,6 +14,7 @@ describe('InvoiceDocumentProcessor', () => {
         test('correctly transforms the document', () => {
             let document: InvoiceDocument = {
                 id: '0',
+                number: '0',
                 client: '1',
                 dueDate: new Date(),
                 issueDate: new Date(),
