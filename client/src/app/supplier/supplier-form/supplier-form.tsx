@@ -27,8 +27,7 @@ const validationSchema = yupObject().shape({
         .required('taxId is required!'),
     businessId: yupString()
         .required('businessId is required!'),
-    vatNumber: yupString()
-        .required('vatNumber is required!'),
+    vatNumber: yupString(),
     register: yupString()
         .required('register is required!'),
     iban: yupString()

@@ -5,7 +5,7 @@ type Supplier
     address: String!,
     taxId: String!, #DIC
     businessId: String!, #ICO
-    vatNumber: String!, #IC DPH
+    vatNumber: String, #IC DPH
     register: String!,
     iban: String!,
     bank: String!,

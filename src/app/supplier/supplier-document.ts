@@ -4,7 +4,7 @@ export interface SupplierDocument {
     address: string;
     taxId: string; //DIC
     businessId: string; //ICO
-    vatNumber: string; //IC DPH
+    vatNumber?: string; //IC DPH
     register: string;
     iban: string;
     bank: string;
