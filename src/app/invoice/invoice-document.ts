@@ -6,6 +6,7 @@ export interface InvoiceDocument {
     issueDate: Date,
     deliveryDate: Date,
     dueDate: Date,
+    number: string,
 
     items: InvoiceItem[]
 }

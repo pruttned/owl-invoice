@@ -1,6 +1,7 @@
 import { InvoiceDocument, InvoiceItem as InvoiceItemDoc } from './invoice-document';
 import { db } from '../db';
 import { max, padStart } from 'lodash';
+import { repoService } from '../repo/repo-service';
 
 class InvoiceService {
     getAll(): Promise<InvoiceDocument[]> {
@@ -11,20 +12,28 @@ class InvoiceService {
     }
     async create(invoice: InvoiceCreateModel): Promise<InvoiceDocument> {
         const number = await this.getNextNumberInYear(invoice.issueDate.getFullYear());
-        const invoiceDocument = {
+        let invoiceDocument: InvoiceDocument = {
             ...invoice,
             id: number,
             number,
         };
-        return db.invoices.create(invoiceDocument);
+        invoiceDocument = await db.invoices.create(invoiceDocument);
+        await repoService.commitAndPush(`invoice(${invoiceDocument.id}):created`);
+        return invoiceDocument;
     }
     async update(invoice: InvoiceUpdateModel): Promise<InvoiceDocument> {
         let invoiceDocument = await db.invoices.single(invoice.id);
         invoiceDocument = { ...invoiceDocument, ...invoice };
-        return db.invoices.update(invoiceDocument);
+        invoiceDocument = await db.invoices.update(invoiceDocument);
+
+        await repoService.commitAndPush(`invoice(${invoice.id}):updated`);
+
+        return invoiceDocument;
+
     }
-    remove(id: string): Promise<any> {
-        return db.invoices.remove(id);
+    async remove(id: string): Promise<any> {
+        await db.invoices.remove(id);
+        await repoService.commitAndPush(`invoice(${id}):removed`);
     }
 
     async getNextNumberInYear(year: number): Promise<string> {
