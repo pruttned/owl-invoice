@@ -109,7 +109,7 @@ class ClientViewModel {
     address: string;
     taxId: string; //DIC
     businessId: string; //ICO
-    vatNumber: string; //IC DPH    
+    vatNumber?: string; //IC DPH    
 
     constructor(document: ClientDocument) {
         this.name = document.name;
