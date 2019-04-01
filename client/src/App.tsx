@@ -12,6 +12,9 @@ import Breadcrumbs from './common/breadcrumbs/breadcrumbs';
 import { Mutation } from 'react-apollo';
 import { REPO_PULL_MUTATION } from './app/repo/repo-queries';
 import { MutationOnMount } from './common/mutation/mutation-on-mount';
+import { ApolloError } from 'apollo-client';
+import { withSnackbar, InjectedNotistackProps } from 'notistack';
+import { notification } from './common/notification/notification';
 
 const theme = createMuiTheme({
   typography: {
@@ -48,12 +51,15 @@ const drawer = (
   </List>
 );
 
+interface AppProps extends InjectedNotistackProps {
+}
+
 interface AppState {
   mobileOpen: boolean;
   repoRefreshDone: boolean;
 }
 
-class App extends Component<any, AppState> {
+class App extends Component<AppProps, AppState> {
   state = {
     mobileOpen: false,
     repoRefreshDone: false
@@ -63,14 +69,20 @@ class App extends Component<any, AppState> {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
+  onInitLoadError = (err: any) => {
+    this.props.enqueueSnackbar(notification.toErrorMessage(err), {
+      variant: 'error',
+    });
+  }
+
   render() {
     return (
       <BreadcrumbsProvider>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
           <MuiThemeProvider theme={theme}>
-            <MutationOnMount mutation={REPO_PULL_MUTATION}>
-              {(_, { loading, error }) =>
+            <MutationOnMount mutation={REPO_PULL_MUTATION} onError={this.onInitLoadError}>
+              {(_, { loading }) =>
                 loading ? this.renderInitLoad() : this.renderApp()
               }
             </MutationOnMount>
@@ -146,4 +158,4 @@ class App extends Component<any, AppState> {
   }
 }
 
-export default App;
+export default withSnackbar(App);
