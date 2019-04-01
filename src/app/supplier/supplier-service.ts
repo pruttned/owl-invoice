@@ -1,5 +1,6 @@
 import { SupplierDocument } from './supplier-document';
 import { db } from '../db';
+import { repoService } from '../repo/repo-service';
 
 const supplierDefaultId = 'default';
 
@@ -31,9 +32,11 @@ class SupplierService {
             supplierDocument = {} as SupplierDocument;
         }
         supplierDocument = { ...supplierDocument, ...supplier, id: supplierDefaultId };
-        return isNew ?
-            db.suppliers.create(supplierDocument) :
-            db.suppliers.update(supplierDocument);
+        supplierDocument = isNew ?
+            await db.suppliers.create(supplierDocument) :
+            await db.suppliers.update(supplierDocument);
+        await repoService.commitAndPush(`supplier(${supplierDocument.id}):${isNew ? 'updated' : 'create'}`);
+        return supplierDocument;
     }
 
     private tryGet(): Promise<SupplierDocument | undefined> {
